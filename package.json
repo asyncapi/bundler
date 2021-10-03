@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Souvikns/asyncapi-document-bundler#readme",
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@asyncapi/parser": "^1.10.0",
     "js-yaml": "^4.1.0"
   }
 }

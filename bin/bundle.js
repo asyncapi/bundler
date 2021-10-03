@@ -26,8 +26,8 @@ async function run(argv) {
 }
 
 run(process.argv)
-  .then((val) => {
-    console.log(val);
+  .then((res) => {
+    console.log(res);
   })
   .catch((error) => {
     console.log(error.message);
