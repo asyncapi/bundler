@@ -1,0 +1,28 @@
+{
+  "name": "asyncapi-document-bundler",
+  "version": "1.0.0",
+  "description": "Bundle references from an single AsyncAPI document into a single file.",
+  "main": "index.js",
+  "bin": {
+    "asyncapi-bundle": "./bin/bundle.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Souvikns/asyncapi-document-bundler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Souvikns/asyncapi-document-bundler/issues"
+  },
+  "homepage": "https://github.com/Souvikns/asyncapi-document-bundler#readme",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "js-yaml": "^4.1.0"
+  }
+}
