@@ -8,7 +8,6 @@ const asyncapiBundler = require("../src"),
 async function run(argv) {
   const inputFilePath = argv[2];
   const outputFilePath = argv[3];
-  console.log(inputFilePath, outputFilePath);
   if (typeof inputFilePath && typeof outputFilePath === "undefined") {
     throw new Error("Missing parameters");
   }
@@ -30,5 +29,5 @@ run(process.argv)
     console.log(res);
   })
   .catch((error) => {
-    console.log(error.message);
+    console.error("Error >> ",error.message);
   });
