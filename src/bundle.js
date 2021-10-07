@@ -1,11 +1,15 @@
-const $RefParser = require('@apidevtools/json-schema-ref-parser');
-const parser = require('@asyncapi/parser');
 const _ = require('lodash');
+const {loadFiles} = require('./file-loader');
+const {validateSpecFiles} = require('./validate');
 
-async function bundle(spec) {
-  const doc =  _.cloneDeep(spec)
-  await parser.parse(spec);
-  return await $RefParser.dereference(doc);
+/**
+ * 
+ * @param {(string | string[])} dirOrFilePath 
+ */
+async function bundle(dirOrFilePath) {
+  const specFiles = await loadFiles(dirOrFilePath);
+  validateSpecFiles(specFiles);
+  
 }
 
 module.exports = bundle;

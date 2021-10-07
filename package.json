@@ -25,6 +25,7 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@asyncapi/parser": "^1.10.0",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "recursive-readdir": "^2.2.2"
   }
 }
