@@ -1,6 +1,12 @@
 const _ = require('lodash');
 const {loadFiles} = require('./file-loader');
 const {validateSpecFiles} = require('./validate');
+const yaml = require('js-yaml');
+
+module.exports = {
+  bundle, 
+  bundleSpec
+};
 
 /**
  * 
@@ -10,7 +16,14 @@ const {validateSpecFiles} = require('./validate');
 async function bundle(dirOrFilePath, outputPath) {
   const specFiles = await loadFiles(dirOrFilePath);
   validateSpecFiles(specFiles);
-  
+  return bundleSpec(specFiles);
 }
 
-module.exports = bundle;
+async function bundleSpec(files) {
+  let doc;
+  files.forEach(file => {
+    doc = _.merge(doc, yaml.load(file.raw));
+  })
+
+  return doc
+}
