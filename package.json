@@ -7,7 +7,7 @@
     "asyncapi-bundle": "./bin/bundle.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc"
   },
   "repository": {
@@ -27,5 +27,8 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "recursive-readdir": "^2.2.2"
+  },
+  "devDependencies": {
+    "jest": "^27.2.4"
   }
 }
