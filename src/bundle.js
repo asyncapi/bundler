@@ -1,7 +1,6 @@
 const { InvalidInputError } = require("./errors");
 const {
-  resolveFilePaths,
-  parseFiles
+  parsedObjects
 } = require('./utils');
 const _ = require('lodash');
 
@@ -9,16 +8,11 @@ class Bundler {
   
   /**
    * 
-   * @param {stringp[]} filepaths 
+   * @param {stringp[]} specs 
    */
-  async bundle(filepaths){
-    if(typeof filepaths !== 'object' && Array.isArray(filepaths)){
-      throw new InvalidInputError();
-    }
-    const resolvedFilePaths = resolveFilePaths(filepaths);
-    const files = await parseFiles(resolvedFilePaths);
-    const document = _.merge(files.map(file => JSON.parse(file.raw)))
-    return document;
+  async bundle(specs){
+    const documents = await parsedObjects(specs);
+    return _.merge(documents.map(doc => doc.spec));
   }
 }
 
