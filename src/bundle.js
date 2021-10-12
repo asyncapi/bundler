@@ -12,7 +12,11 @@ class Bundler {
    */
   async bundle(specs){
     const documents = await parsedObjects(specs);
-    return _.merge(documents.map(doc => doc.spec));
+    let doc = {};
+    documents.forEach(el => {
+      doc = _.merge(doc, el.spec);
+    })
+    return doc;
   }
 }
 
