@@ -1,5 +1,1 @@
-const bundle = require('./bundle');
-
-module.exports = {
-  bundle
-}
+module.exports = require('./bundle.js');

@@ -1,11 +1,26 @@
-const $RefParser = require('@apidevtools/json-schema-ref-parser');
-const parser = require('@asyncapi/parser');
+const { InvalidInputError } = require("./errors");
+const {
+  resolveFilePaths,
+  parseFiles
+} = require('./utils');
 const _ = require('lodash');
 
-async function bundle(spec) {
-  const doc =  _.cloneDeep(spec)
-  await parser.parse(spec);
-  return await $RefParser.dereference(doc);
+class Bundler {
+  
+  /**
+   * 
+   * @param {stringp[]} filepaths 
+   */
+  async bundle(filepaths){
+    if(typeof filepaths !== 'object' && Array.isArray(filepaths)){
+      throw new InvalidInputError();
+    }
+    const resolvedFilePaths = resolveFilePaths(filepaths);
+    const files = await parseFiles(resolvedFilePaths);
+    const document = _.merge(files.map(file => JSON.parse(file.raw)))
+    return document;
+  }
 }
 
-module.exports = bundle;
+
+module.exports = new Bundler();
