@@ -1,16 +1,36 @@
 #!/usr/bin/env node
+const {Command} = require('commander');
 const bundler = require('../src');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 
-const main = async (files) => {
-  const doc = await bundler.bundle(files.map(file => fs.readFileSync(
-    path.resolve(process.cwd(), file),
-    'utf-8'
-  )))
-  console.log(doc);
-} 
+const program = new Command();
 
-main(process.argv.splice(2)).catch(e => {
-  console.error(e);
-})
+program
+  .name('asyncapi-bundler')
+  .addHelpCommand(false)
+  .option('-o, --output <path>', 'Specify the output path')
+  .option('-f, --folder', 'All inputs are taken as folder paths')
+  .argument('<filepaths>', 'paths of the file to bundle')
+
+program.parse(process.argv);
+
+const args = program.args;
+const opts = program.opts();
+
+async function main(files, options){
+  if(Array.isArray(files) && typeof files[0] === 'string') {
+    const doc = await bundler.bundle(files.map(file => fs.readFileSync(
+      path.resolve(process.cwd(), file),
+      'utf-8'
+    )));
+    if(options.output) {
+      fs.writeFileSync(path.resolve(process.cwd(), options.output), JSON.stringify(doc));
+      console.log('File created!');
+    }else {
+      console.log(doc)
+    }
+  }
+}
+
+main(args, opts).catch(e => console.error(e));
