@@ -20,5 +20,5 @@ const doc = await bundler.bundle([
   './tube.yml'
 ]);
 
-console.log(doc); // the complete asyncapi bundled asyncapi document.
+console.log(doc); // the complete bundled asyncapi document.
 ```
