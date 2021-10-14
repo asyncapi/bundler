@@ -1,5 +1,5 @@
 # asyncapi-document-bundler
-Bundle multiple AsyncAPI spec files into one complete spec file. 
+Bundle multiple AsyncAPI spec files into one complete spec file. To learn more about the usecase visit [example](./tests/README.md);
 
 ## Usage 
 
