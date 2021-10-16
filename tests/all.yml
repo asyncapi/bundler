@@ -8,26 +8,6 @@ info:
   contact:
     email: info@zorarobotics.be
 channels:
-  zbos/camera/picture/event:
-    subscribe:
-      summary: 'event: Get picture'
-      description: ''
-      tags:
-        - name: Camera
-          description: All camera related topics.
-      message:
-        payload:
-          type: string
-        name: String
-  zbos/camera/picture/get:
-    publish:
-      summary: Get picture
-      description: ''
-      tags:
-        - name: Camera
-          description: All camera related topics.
-      message:
-        $ref: '#/components/messages/keyMessage'
   zbos/audio/player/start:
     publish:
       summary: Play media
@@ -49,20 +29,45 @@ channels:
         name: AudioOptions
         examples:
           - payload:
-              requestId: '1'
+              requestId: "1"
               url: Url
               loop: true
   zbos/audio/player/stop:
     publish:
       summary: Stop media
-      description: ''
+      description: ""
       tags:
         - name: Audio
           description: All audio related topics.
       message:
-        $ref: '#/components/messages/emptyMessage'
+        $ref: "#/components/messages/emptyMessage"
+  zbos/camera/picture/event:
+    subscribe:
+      summary: "event: Get picture"
+      description: ""
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        payload:
+          type: string
+        name: String
+  zbos/camera/picture/get:
+    publish:
+      summary: Get picture
+      description: ""
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        $ref: "#/components/messages/keyMessage"
 components:
   messages:
+    emptyMessage:
+      payload:
+        type: object
+      name: EmptyMessage
+      summary: Empty message
     keyMessage:
       payload:
         type: object
@@ -75,11 +80,6 @@ components:
       examples:
         - payload:
             key: ABCxyz
-    emptyMessage:
-      payload:
-        type: object
-      name: EmptyMessage
-      summary: Empty message
 servers:
   local:
     url: 127.0.0.1
@@ -88,9 +88,9 @@ servers:
     variables:
       port:
         enum:
-          - '1883'
-          - '9001'
-        default: '1883'
+          - "1883"
+          - "9001"
+        default: "1883"
   cloud:
     url: zbos-mqtt.zoracloud.com
     protocol: mqtt
@@ -98,7 +98,7 @@ servers:
     variables:
       port:
         enum:
-          - '1883'
-          - '1884'
-          - '9001'
-          - '9002'
+          - "1883"
+          - "1884"
+          - "9001"
+          - "9002"
