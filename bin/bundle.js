@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 const { Command } = require("commander");
-const bundler = require("../src");
+const {bundle} = require('../lib');
 const fs = require("fs");
 const path = require("path");
-const yaml = require("js-yaml");
 
 const program = new Command();
 
@@ -21,34 +20,31 @@ const args = program.args;
 const opts = program.opts();
 
 async function main(files, options) {
-  if (Array.isArray(files) && typeof files[0] === "string") {
+  if (Array.isArray(files)) {
     let base;
     if(options.base) {
       base = fs.readFileSync(path.resolve(process.cwd(), options.base), 'utf-8');
     }
-    const doc = await bundler.bundle(
-      files.map((file) =>
-        fs.readFileSync(path.resolve(process.cwd(), file), "utf-8")
-      ), {base: base}
+
+    const document = await bundle(
+      files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
+      {
+        base: base
+      }
     );
-    if (options.output) {
-      const ext = path.extname(options.output);
-      if (ext === ".yml" || ext === ".yaml") {
-        fs.writeFileSync(
-          path.resolve(process.cwd(), options.output),
-          yaml.dump(doc),
-          { encoding: "utf-8" }
-        );
+
+    if(options.output) {
+      if(path.extname(options.output) === '.yml' || path.extname(options.output) === '.yaml') {
+        fs.writeFileSync(path.resolve(process.cwd(), options.output), document.yml(), {encoding: 'utf-8'});
+        return console.log('File Successfully created');
       }
-      if (ext === ".json") {
-        fs.writeFileSync(
-          path.resolve(process.cwd(), options.output),
-          JSON.stringify(doc)
-        );
+
+      if(path.extname(options.output) === '.json') {
+        fs.writeFileSync(path.resolve(process.cwd(), options.output), document.string(), {encoding: 'utf-8'});
+        return console.log('File Successfully created');
       }
-      console.log("File created!");
-    } else {
-      console.log(doc);
+    }else {
+      console.log(document.json());
     }
   }
 }
