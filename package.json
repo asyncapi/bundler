@@ -7,8 +7,7 @@
     "asyncapi-bundle": "./bin/bundle.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,5 +27,8 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "meow": "^10.1.1"
+  },
+  "devDependencies": {
+    "jest": "^27.2.5"
   }
 }
