@@ -10,7 +10,7 @@ program
   .name("asyncapi-bundler")
   .addHelpCommand(false)
   .option("-o, --output <path>", "Specify the output path")
-  .option("-f, --folder", "All inputs are taken as folder paths")
+  .option("-f, --folder", "All inputs are taken as folder paths (not implemented yet) ")
   .option('-b, --base <path>', "File path of the base asyncapi file whose data will be retained")
   .argument("<filepaths>", "paths of the file to bundle");
 
