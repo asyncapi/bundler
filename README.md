@@ -25,8 +25,8 @@ asyncapi-bundle <file-paths> -o <output-path> -b <base-file-path>
 ```
 asyncapi-bundle ./camera.yml ./audio.yml -b ./base.yml -o all.yml
 ```
-Spec files 
 
+**Files**
 ```yml
 #audio.yml
 asyncapi: 2.0.0
