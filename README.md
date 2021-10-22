@@ -19,9 +19,9 @@ asyncapi-bundle <file-paths> -o <output-path> -b <base-file-path>
 #### Examples 
 
 <details>
-<summary>Merge multiple AsyncAPI documents into one</summary>
+<summary><b>Merge multiple AsyncAPI documents into one</b></summary>
 
-CLI command
+**CLI command**
 ```
 asyncapi-bundle ./camera.yml ./audio.yml -b ./base.yml -o all.yml
 ```
@@ -274,7 +274,7 @@ servers:
 
 
 <details>
-<summary>Resolve external references into a single file</summary>
+<summary><b>Resolve external references into a single file</b></summary>
 
 **CLI Command**
 ```
