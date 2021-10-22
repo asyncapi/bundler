@@ -10,7 +10,8 @@ describe("bundler should ", () => {
         fs.readFileSync(path.resolve(process.cwd(), file), "utf-8")
       ),
       {
-        base: fs.readFileSync(path.resolve(process.cwd(), './tests/base.yml'), 'utf-8')
+        base: fs.readFileSync(path.resolve(process.cwd(), './tests/base.yml'), 'utf-8'),
+        validate: false
       }
     );
     console.log(response.yml());

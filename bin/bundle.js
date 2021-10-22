@@ -29,7 +29,7 @@ async function main(files, options) {
     const document = await bundle(
       files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
       {
-        base: base
+        base: base,
       }
     );
 
