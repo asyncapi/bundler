@@ -1,7 +1,9 @@
 # asyncapi-bundler
-Combine multiple AsyncAPI spec files into one complete spec file. 
+Combine multiple AsyncAPI spec files into one complete spec file or resolve external `$ref`'s in one file. 
 
-Inspired by [zbos](https://bitbucket.org/qbmt/zbos-mqtt-api/src/master/) where they have multiple specification files for their different interfaces. This is easy to maintain as for a particular interface only that specific specification file is needed, but for the customer they do not care for the granularity and they look at the platform as one, so they need only one specification file. This is what `asyncapi-document-builder` is trying to solve, to provide a way to effectively bundle differnt AsyncAPI specification files. For example check [here](./tests/README.md)
+As of now you can use AsyncAPI Bundler for two specific use cases - 
+- Merge different AsyncAPI specifications into one. 
+- Resolve all references from an single AsyncAPI docuement into a single file. 
 
 ## Usage 
 
@@ -13,6 +15,325 @@ asyncapi-bundle <file-paths> -o <output-path> -b <base-file-path>
 `Options`
 - `-o, --output` - path of the output file
 - `-b, --base` - path of the base file. 
+
+#### Examples 
+
+<details>
+<summary>Merge multiple AsyncAPI documents into one</summary>
+
+CLI command
+```
+asyncapi-bundle ./camera.yml ./audio.yml -b ./base.yml -o all.yml
+```
+Spec files 
+
+```yml
+#audio.yml
+asyncapi: 2.0.0
+id: 'urn:zbos-mqtt-api'
+defaultContentType: application/json
+info:
+  title: Audio
+  version: 2.6.3
+  description: API for communication with ZBOS by Zora Robotics.
+  contact:
+    email: info@zorarobotics.be
+channels:
+  zbos/audio/player/start:
+    publish:
+      summary: Play media
+      description: |
+        Play specific media from audio options
+      tags:
+        - name: Audio
+          description: All audio related topics.
+      message:
+        payload:
+          type: object
+          properties:
+            requestId:
+              type: string
+            url:
+              type: string
+            loop:
+              type: boolean
+        name: AudioOptions
+        examples:
+          - payload:
+              requestId: '1'
+              url: Url
+              loop: true
+  zbos/audio/player/stop:
+    publish:
+      summary: Stop media
+      description: ''
+      tags:
+        - name: Audio
+          description: All audio related topics.
+      message:
+        $ref: '#/components/messages/emptyMessage'
+components:
+  messages:
+    emptyMessage:
+      payload:
+        type: object
+      name: EmptyMessage
+      summary: Empty message
+
+
+# camera.yml
+asyncapi: 2.0.0
+id: 'urn:zbos-mqtt-api'
+defaultContentType: application/json
+info:
+  title: Camera
+  version: 2.6.3
+  description: API for communication with ZBOS by Zora Robotics.
+  contact:
+    email: info@zorarobotics.be
+channels:
+  zbos/camera/picture/event:
+    subscribe:
+      summary: 'event: Get picture'
+      description: ''
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        payload:
+          type: string
+        name: String
+  zbos/camera/picture/get:
+    publish:
+      summary: Get picture
+      description: ''
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        $ref: '#/components/messages/keyMessage'
+components:
+  messages:
+    keyMessage:
+      payload:
+        type: object
+        properties:
+          key:
+            type: string
+            description: Required random key
+      name: KeyResult
+      summary: Random key
+      examples:
+        - payload:
+            key: ABCxyz
+
+# base.yml
+asyncapi: 2.0.0
+id: 'urn:zbos-mqtt-api'
+defaultContentType: 'application/json'
+info:
+  title: ZBOS MQTT API
+  version: 2.6.3
+  description: API for communication with ZBOS by Zora Robotics.
+  contact:
+    email: info@zorarobotics.be
+servers:
+  local:
+    url: '127.0.0.1'
+    protocol: mqtt
+    description: This is the local robot broker.
+    variables:
+      port:
+        enum:
+          - '1883'
+          - '9001'
+        default: '1883'
+  cloud:
+    url: zbos-mqtt.zoracloud.com
+    protocol: mqtt
+    description: This is the cloud broker.
+    variables:
+      port:
+        enum:
+          - '1883'
+          - '1884'
+          - '9001'
+          - '9002'
+
+# all.yml
+asyncapi: 2.0.0
+id: urn:zbos-mqtt-api
+defaultContentType: application/json
+info:
+  title: ZBOS MQTT API
+  version: 2.6.3
+  description: API for communication with ZBOS by Zora Robotics.
+  contact:
+    email: info@zorarobotics.be
+channels:
+  zbos/audio/player/start:
+    publish:
+      summary: Play media
+      description: |
+        Play specific media from audio options
+      tags:
+        - name: Audio
+          description: All audio related topics.
+      message:
+        payload:
+          type: object
+          properties:
+            requestId:
+              type: string
+            url:
+              type: string
+            loop:
+              type: boolean
+        name: AudioOptions
+        examples:
+          - payload:
+              requestId: "1"
+              url: Url
+              loop: true
+  zbos/audio/player/stop:
+    publish:
+      summary: Stop media
+      description: ""
+      tags:
+        - name: Audio
+          description: All audio related topics.
+      message:
+        $ref: "#/components/messages/emptyMessage"
+  zbos/camera/picture/event:
+    subscribe:
+      summary: "event: Get picture"
+      description: ""
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        payload:
+          type: string
+        name: String
+  zbos/camera/picture/get:
+    publish:
+      summary: Get picture
+      description: ""
+      tags:
+        - name: Camera
+          description: All camera related topics.
+      message:
+        $ref: "#/components/messages/keyMessage"
+components:
+  messages:
+    emptyMessage:
+      payload:
+        type: object
+      name: EmptyMessage
+      summary: Empty message
+    keyMessage:
+      payload:
+        type: object
+        properties:
+          key:
+            type: string
+            description: Required random key
+      name: KeyResult
+      summary: Random key
+      examples:
+        - payload:
+            key: ABCxyz
+servers:
+  local:
+    url: 127.0.0.1
+    protocol: mqtt
+    description: This is the local robot broker.
+    variables:
+      port:
+        enum:
+          - "1883"
+          - "9001"
+        default: "1883"
+  cloud:
+    url: zbos-mqtt.zoracloud.com
+    protocol: mqtt
+    description: This is the cloud broker.
+    variables:
+      port:
+        enum:
+          - "1883"
+          - "1884"
+          - "9001"
+          - "9002"
+
+
+```
+
+
+</details>
+
+
+<details>
+<summary>Resolve external references into a single file</summary>
+
+**CLI Command**
+```
+asyncapi-bundle ./asyncapi.yaml -o all.yaml
+```
+
+**Files**
+```yaml
+
+# asyncapi.yaml
+asyncapi: '2.2.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: './messages.yaml#/messages/UserSignedUp'
+
+# messages.yaml
+messages:
+  UserSignedUp:
+    payload:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          format: email
+          description: Email of the user
+
+# all.yaml
+asyncapi: 2.2.0
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+              description: Name of the user
+            email:
+              type: string
+              format: email
+              description: Email of the user
+
+```
+
+</details>
 
 ### Using as a library
 
