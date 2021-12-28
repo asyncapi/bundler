@@ -15,7 +15,7 @@ Combine multiple AsyncAPI spec files into one complete spec file or resolve exte
 
 As of now you can use AsyncAPI Bundler for two specific use cases - 
 - Merge different AsyncAPI specifications into one. 
-- Resolve all references from an single AsyncAPI docuement into a single file. 
+- Resolve all references from an single AsyncAPI document into a single file. 
 
 ## Usage 
 
