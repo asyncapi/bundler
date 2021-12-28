@@ -1,4 +1,16 @@
-# asyncapi-bundler
+<h5 align="center">
+  <br>
+  <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
+  <br>
+  AsyncAPI Bundler
+</h5>
+<p align="center">
+  <em>Bundle multiple Specificatin files into one</em>
+</p>
+
+
+
+## What does Bundler do?
 Combine multiple AsyncAPI spec files into one complete spec file or resolve external `$ref`'s in one file. 
 
 As of now you can use AsyncAPI Bundler for two specific use cases - 
