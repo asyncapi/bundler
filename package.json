@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "echo 
     "doc": "jsdoc2md ./lib/index.js > docs.md",
     "lint": "echo \"No linter configured yet\"",
     "generate:assets": "echo \"No assets to configure\""
