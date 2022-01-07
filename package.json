@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Souvikns/asyncapi-document-bundler.git"
+    "url": "git+https://github.com/asyncapi/bundler.git"
   },
   "keywords": [],
-  "author": "@asyncapi",
+  "author": "Souvik De <souvikde.ns@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/asyncapi/bundler/issues"
