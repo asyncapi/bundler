@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Bundle references from an single AsyncAPI document into a single file.",
   "main": "index.js",
-  "bin": {
-    "asyncapi-bundle": "./bin/bundle.js"
-  },
   "scripts": {
     "test": "jest",
     "doc": "jsdoc2md ./lib/index.js > docs.md"
