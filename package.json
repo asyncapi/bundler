@@ -10,6 +10,8 @@
     "get:name": "echo $npm_package_name",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release"
+    "lint": "echo \"No linter configured yet\"",
+    "generate:assets": "echo \"No assets to configure\""
   },
   "repository": {
     "type": "git",
