@@ -1,28 +1,53 @@
 {
-  "name": "asyncapi-document-bundler",
-  "version": "1.0.0",
+  "name": "@asyncapi/bundler",
+  "version": "0.0.1",
   "description": "Bundle references from an single AsyncAPI document into a single file.",
-  "main": "index.js",
-  "bin": {
-    "asyncapi-bundle": "./bin/bundle.js"
-  },
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest",
     "doc": "jsdoc2md ./lib/index.js > docs.md",
+    "get:version": "echo $npm_package_version",
+    "get:name": "echo $npm_package_name",
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
+    "release": "semantic-release",
     "lint": "echo \"No linter configured yet\"",
     "generate:assets": "echo \"No assets to configure\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Souvikns/asyncapi-document-bundler.git"
+    "url": "git+https://github.com/asyncapi/bundler.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Souvik De <souvikde.ns@gmail.com>",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Souvikns/asyncapi-document-bundler/issues"
+    "url": "https://github.com/asyncapi/bundler/issues"
   },
-  "homepage": "https://github.com/Souvikns/asyncapi-document-bundler#readme",
+  "homepage": "https://github.com/asyncapi/bundler",
+  "publishConfig": {
+    "access": "public"
+  },
+  "release": {
+       "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
+  },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@asyncapi/parser": "^1.10.0",
@@ -32,8 +57,14 @@
     "meow": "^10.1.1"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^8.0.3",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "conventional-changelog-conventionalcommits": "^4.6.3",
     "jest": "^27.2.5",
     "jsdoc": "^3.6.7",
-    "jsdoc-to-markdown": "^7.1.0"
+    "jsdoc-to-markdown": "^7.1.0",
+    "semantic-release": "^18.0.1"
   }
 }
