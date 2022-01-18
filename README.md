@@ -20,12 +20,78 @@
 </p>
 
 
-## What does Bundler do?
-Combine multiple AsyncAPI spec files into one complete spec file or resolve external `$ref`'s in one file. 
+## Overview 
+An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if - 
 
-As of now you can use AsyncAPI Bundler for two specific use cases - 
-- Merge different AsyncAPI specifications into one. 
-- Resolve all references from an single AsyncAPI document into a single file. 
+<details>
+<summary>your specification file is divided into different smaller files and is using json `$ref` to reference components </summary>
+
+```yaml
+
+# asyncapi.yaml
+asyncapi: '2.2.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signup:
+    subscribe:
+      message:
+        $ref: './messages.yaml#/messages/UserSignedUp'
+
+#messages.yaml
+messages:
+  UserSignedUp:
+    payload:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          format: email
+          description: Email of the user
+
+# After combining 
+asyncapi: 2.2.0
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+              description: Name of the user
+            email:
+              type: string
+              format: email
+              description: Email of the user
+
+```
+
+</details>
+
+<details>
+<summary>you have different standalone specification files that define a larger system, see examples here </summary>
+
+```yaml
+
+#
+
+```
+
+</details>
+
+
+
 
 ## Installation 
 
