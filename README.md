@@ -8,6 +8,16 @@
   <em>Bundle multiple Specificatin files into one</em>
 </p>
 
+<p align="center">
+<a href="https://github.com/asyncapi/bundler/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/asyncapi/bundler"></a>
+<a href="https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml">
+<img src="https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml/badge.svg" alt="PR testing - if Node project"  />
+</a>
+<a href="https://www.npmjs.com/package/@asyncapi/bundler">
+<img alt="npm" src="https://img.shields.io/npm/dw/@asyncapi/bundler">
+</a>
+
+</p>
 
 
 ## What does Bundler do?
@@ -17,12 +27,18 @@ As of now you can use AsyncAPI Bundler for two specific use cases -
 - Merge different AsyncAPI specifications into one. 
 - Resolve all references from an single AsyncAPI document into a single file. 
 
+## Installation 
+
+```
+npm install @asyncapi/bundler
+```
+
 ## Usage 
 
 AsyncAPI-bundler could be easily used within your javascript projects as a Nodejs module. 
 
 ```js
-const bundler = require('asyncapi-bundler');
+const bundler = require('@asyncapi/bundler');
 const fs = require('fs');
 const path = require('path');
 
