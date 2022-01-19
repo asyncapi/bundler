@@ -84,14 +84,77 @@ channels:
 
 ```yaml
 
-#
+# signup.yaml 
+asyncapi: '2.2.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user Signup 
 
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+            email:
+              type: string
+              format: email
+
+
+# login.yaml
+asyncapi: '2.2.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signup
+
+channels:
+  user/loggenin:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+
+# After combining 
+# asyncapi.yaml 
+asyncapi: '2.2.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge for processing user authentication 
+
+channles:
+  user/signedup:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+            email:
+              type: string
+              format: email
+  user/loggedin:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
 ```
 
 </details>
 
-
-
+<br>
 
 ## Installation 
 
