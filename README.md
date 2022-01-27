@@ -19,6 +19,18 @@
 
 </p>
 
+<br>
+
+<!-- toc is generated with GitHub Actions do not remove toc markers  -->
+
+<!-- toc -->
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#usage)
+- [bundle(files, options)](#bundlefiles-options)
+
+<!-- tocstop -->
 
 ## Overview 
 An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if - 
@@ -194,4 +206,3 @@ console.log(document.json()); // the complete bundled asyncapi document.
 | options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
 | options.parser | <code>Object</code> | asyncapi parser object |
 | options.validate | <code>boolean</code> | pass false to not validate file before merge |
-
