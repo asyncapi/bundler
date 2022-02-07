@@ -1,4 +1,4 @@
-const { bundle } = require("../../lib");
+const bundle = require("../../lib");
 const fs = require("fs");
 const path = require("path");
 
@@ -14,7 +14,6 @@ describe("bundler should ", () => {
         validate: false
       }
     );
-    console.log(response.yml());
     expect(response).toBeDefined();
   });
 });
