@@ -34,7 +34,11 @@
 
 **Example**  
 ```js
-const document = new Document(parsedJSONList, base);console.log(document.json()); // get json objectconsole.log(document.yml()); // get yaml stringconsole.log(document.string()); // get json string
+const document = new Document(parsedJSONList, base);
+
+console.log(document.json()); // get json object
+console.log(document.yml()); // get yaml string
+console.log(document.string()); // get json string
 ```
 <a name="Document+json"></a>
 
@@ -63,5 +67,13 @@ const document = new Document(parsedJSONList, base);console.log(document.json(
 
 **Example**  
 ```js
-const bundler = requrie('@asyncapi/bundler');const fs = require('fs');const path = requrie('path');const document = await bundler.bundle(fs.readFileSync(  path.resolve('./asyncapi.yaml', 'utf-8')));console.log(document.yml());
+const bundler = requrie('@asyncapi/bundler');
+const fs = require('fs');
+const path = requrie('path');
+
+const document = await bundler.bundle(fs.readFileSync(
+  path.resolve('./asyncapi.yaml', 'utf-8')
+));
+
+console.log(document.yml());
 ```
