@@ -28,7 +28,7 @@
     "access": "public"
   },
   "release": {
-       "branches": [
+    "branches": [
       "master"
     ],
     "plugins": [
