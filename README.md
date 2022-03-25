@@ -1,25 +1,8 @@
-<h5 align="center">
-  <br>
-  <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
-  <br>
-  AsyncAPI Bundler
-</h5>
-<p align="center">
-  <em>Bundle multiple Specificatin files into one</em>
-</p>
+[![AsyncAPI Bundler](./assets/logo.png)](https://www.asyncapi.com)
 
-<p align="center">
-<a href="https://github.com/asyncapi/bundler/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/asyncapi/bundler"></a>
-<a href="https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml">
-<img src="https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml/badge.svg" alt="PR testing - if Node project"  />
-</a>
-<a href="https://www.npmjs.com/package/@asyncapi/bundler">
-<img alt="npm" src="https://img.shields.io/npm/dw/@asyncapi/bundler">
-</a>
-
-</p>
-
-<br>
+[![Github license](https://img.shields.io/github/license/asyncapi/bundler)](https://github.com/asyncapi/bundler/blob/main/LICENSE)
+[![PR testing - if Node project](https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml/badge.svg)](https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml)
+[![npm](https://img.shields.io/npm/dw/@asyncapi/bundler)](https://www.npmjs.com/package/@asyncapi/bundler)
 
 <!-- toc is generated with GitHub Actions do not remove toc markers  -->
 
