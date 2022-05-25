@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/bundler",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Bundle references from an single AsyncAPI document into a single file.",
   "main": "lib/index.js",
   "scripts": {
