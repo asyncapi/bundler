@@ -67,13 +67,19 @@ console.log(document.string()); // get json string
 
 **Example**  
 ```js
-const bundler = requrie('@asyncapi/bundler');
+const bundle = requrie('@asyncapi/bundler');
 const fs = require('fs');
 const path = requrie('path');
 
-const document = await bundler.bundle(fs.readFileSync(
+const document = await bundle(fs.readFileSync(
   path.resolve('./asyncapi.yaml', 'utf-8')
 ));
 
 console.log(document.yml());
 ```
+<a name="bundle..resolvedJsons"></a>
+
+### bundle~resolvedJsons
+Bundle all external references for each files.
+
+**Kind**: inner constant of [<code>bundle</code>](#bundle)  
