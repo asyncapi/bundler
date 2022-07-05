@@ -10,6 +10,12 @@
 <dl>
 <dt><a href="#bundle">bundle(files, options)</a> ⇒ <code><a href="#Document">Document</a></code></dt>
 <dd></dd>
+<dt><a href="#isExternalReference">isExternalReference(ref)</a> ⇒ <code>boolean</code></dt>
+<dd></dd>
+<dt><a href="#resolve">resolve(parsedJSONs)</a></dt>
+<dd></dd>
+<dt><a href="#getExternalChannelRefs">getExternalChannelRefs(parsedJSON)</a></dt>
+<dd></dd>
 </dl>
 
 <a name="Document"></a>
@@ -83,3 +89,30 @@ console.log(document.yml());
 Bundle all external references for each files.
 
 **Kind**: inner constant of [<code>bundle</code>](#bundle)  
+<a name="isExternalReference"></a>
+
+## isExternalReference(ref) ⇒ <code>boolean</code>
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| ref | <code>string</code> | 
+
+<a name="resolve"></a>
+
+## resolve(parsedJSONs)
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| parsedJSONs | <code>Array.&lt;object&gt;</code> | 
+
+<a name="getExternalChannelRefs"></a>
+
+## getExternalChannelRefs(parsedJSON)
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| parsedJSON | <code>object</code> | 
+
