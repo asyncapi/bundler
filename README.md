@@ -15,8 +15,8 @@
 
 <!-- tocstop -->
 
-## Overview 
-An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if - 
+## Overview
+An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if -
 
 <details>
 <summary>your specification file is divided into different smaller files and is using json `$ref` to reference components </summary>
@@ -49,7 +49,7 @@ messages:
           format: email
           description: Email of the user
 
-# After combining 
+# After combining
 asyncapi: 2.2.0
 info:
   title: Account Service
@@ -79,12 +79,12 @@ channels:
 
 ```yaml
 
-# signup.yaml 
+# signup.yaml
 asyncapi: '2.2.0'
 info:
   title: Account Service
   version: 1.0.0
-  description: This service is in charge of processing user Signup 
+  description: This service is in charge of processing user Signup
 
 channels:
   user/signedup:
@@ -117,13 +117,13 @@ channels:
             displayName:
               type: string
 
-# After combining 
-# asyncapi.yaml 
+# After combining
+# asyncapi.yaml
 asyncapi: '2.2.0'
 info:
   title: Account Service
   version: 1.0.0
-  description: This service is in charge for processing user authentication 
+  description: This service is in charge for processing user authentication
 
 channles:
   user/signedup:
@@ -151,24 +151,24 @@ channles:
 
 <br>
 
-## Installation 
+## Installation
 
 ```
 npm install @asyncapi/bundler
 ```
 
-## Usage 
+## Usage
 
-AsyncAPI-bundler could be easily used within your javascript projects as a Nodejs module. 
+AsyncAPI-bundler could be easily used within your javascript projects as a Nodejs module.
 
 ```js
-const bundler = require('@asyncapi/bundler');
+const bundle = require('@asyncapi/bundler');
 const fs = require('fs');
 const path = require('path');
 
 const filePaths = ['./camera.yml','./audio.yml']
-const document = await bundler.bundle(
-  filePaths.map(filePath => fs.readFileSync(path.resolve(filePaths), 'utf-8')),
+const document = await bundle(
+  filePaths.map(filePath => fs.readFileSync(path.resolve(filePath), 'utf-8')),
   {
     base: fs.readFileSync(path.resolve('./base.yml'), 'utf-8')
   }
@@ -180,7 +180,7 @@ console.log(document.json()); // the complete bundled asyncapi document.
 <a name="bundle"></a>
 
 ## bundle(files, options)
-**Kind**: global function  
+**Kind**: global function
 
 | Param | Type | Description |
 | --- | --- | --- |
