@@ -10,11 +10,13 @@
 <dl>
 <dt><a href="#bundle">bundle(files, options)</a> ⇒ <code><a href="#Document">Document</a></code></dt>
 <dd></dd>
+<dt><a href="#parse">parse(JSONSchema)</a></dt>
+<dd><p>resolves external references and updates $refs</p>
+</dd>
 <dt><a href="#isExternalReference">isExternalReference(ref)</a> ⇒ <code>boolean</code></dt>
-<dd></dd>
-<dt><a href="#resolve">resolve(parsedJSONs)</a></dt>
-<dd></dd>
-<dt><a href="#getExternalChannelRefs">getExternalChannelRefs(parsedJSON)</a></dt>
+<dd><p>This function checks for external reference.</p>
+</dd>
+<dt><a href="#resolveExternalRefs">resolveExternalRefs(parsedJSON, $refs)</a> ⇒ <code>ExternalComponents</code></dt>
 <dd></dd>
 </dl>
 
@@ -89,30 +91,35 @@ console.log(document.yml());
 Bundle all external references for each files.
 
 **Kind**: inner constant of [<code>bundle</code>](#bundle)  
+<a name="parse"></a>
+
+## parse(JSONSchema)
+resolves external references and updates $refs
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| JSONSchema | <code>Array.&lt;Object&gt;</code> | 
+
 <a name="isExternalReference"></a>
 
 ## isExternalReference(ref) ⇒ <code>boolean</code>
+This function checks for external reference.
+
 **Kind**: global function  
 
 | Param | Type |
 | --- | --- |
 | ref | <code>string</code> | 
 
-<a name="resolve"></a>
+<a name="resolveExternalRefs"></a>
 
-## resolve(parsedJSONs)
+## resolveExternalRefs(parsedJSON, $refs) ⇒ <code>ExternalComponents</code>
 **Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| parsedJSONs | <code>Array.&lt;object&gt;</code> | 
-
-<a name="getExternalChannelRefs"></a>
-
-## getExternalChannelRefs(parsedJSON)
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| parsedJSON | <code>object</code> | 
+| parsedJSON | <code>Array.&lt;Object&gt;</code> | 
+| $refs | <code>$RefParser</code> | 
 
