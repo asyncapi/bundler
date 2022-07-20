@@ -54,6 +54,7 @@
     "@asyncapi/parser": "^1.15.1",
     "commander": "^8.2.0",
     "js-yaml": "^4.1.0",
+    "jsonpath-plus": "^6.0.1",
     "lodash": "^4.17.21",
     "meow": "^10.1.1"
   },
