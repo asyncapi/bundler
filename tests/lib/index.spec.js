@@ -16,4 +16,18 @@ describe("bundler should ", () => {
     );
     expect(response).toBeDefined();
   });
+
+  test("should bundle references into components", async () => {
+    const files = ['./tests/asyncapi.yaml']
+    const doc = await bundle(
+      files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), "utf-8")),
+      {
+        referenceIntoComponents: true
+      }
+    )
+
+    const asyncapiObject = doc.json();
+    expect(asyncapiObject.channels['user/signedup'].subscribe.message['$ref']).toMatch('#/components/messages/UserSignedUp')
+  })
+
 });

@@ -18,6 +18,8 @@
 </dd>
 <dt><a href="#resolveExternalRefs">resolveExternalRefs(parsedJSON, $refs)</a> ⇒ <code>ExternalComponents</code></dt>
 <dd></dd>
+<dt><a href="#resolve">resolve(asyncapiDocuments, options)</a> ⇒ <code>Array.&lt;Object&gt;</code></dt>
+<dd></dd>
 </dl>
 
 <a name="Document"></a>
@@ -72,6 +74,7 @@ console.log(document.string()); // get json string
 | options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
 | options.parser | <code>Object</code> | asyncapi parser object |
 | options.validate | <code>boolean</code> | pass false to not validate file before merge |
+| options.referenceIntoComponents | <code>boolean</code> | pass true value to resolve references into component |
 
 **Example**  
 ```js
@@ -122,4 +125,15 @@ This function checks for external reference.
 | --- | --- |
 | parsedJSON | <code>Array.&lt;Object&gt;</code> | 
 | $refs | <code>$RefParser</code> | 
+
+<a name="resolve"></a>
+
+## resolve(asyncapiDocuments, options) ⇒ <code>Array.&lt;Object&gt;</code>
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| asyncapiDocuments | <code>Object</code> | 
+| options | <code>Object</code> | 
+| options.referenceIntoComponents | <code>boolean</code> | 
 
