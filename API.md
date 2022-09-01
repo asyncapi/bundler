@@ -72,8 +72,6 @@ console.log(document.string()); // get json string
 | files | <code>Array.&lt;string&gt;</code> \| <code>Array.&lt;Object&gt;</code> | files that are to be bundled |
 | options | <code>Object</code> |  |
 | options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
-| options.parser | <code>Object</code> | asyncapi parser object |
-| options.validate | <code>boolean</code> | pass false to not validate file before merge |
 | options.referenceIntoComponents | <code>boolean</code> | pass true value to resolve references into component |
 
 **Example**  

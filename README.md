@@ -11,6 +11,7 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
+  * [Resolving external references into components](#resolving-external-references-into-components)
 - [bundle(files, options)](#bundlefiles-options)
 
 <!-- tocstop -->
@@ -24,7 +25,7 @@ An official library that lets you bundle/merge your specification files into one
 ```yaml
 
 # asyncapi.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -50,7 +51,7 @@ messages:
           description: Email of the user
 
 # After combining
-asyncapi: 2.2.0
+asyncapi: 2.4.0
 info:
   title: Account Service
   version: 1.0.0
@@ -80,7 +81,7 @@ channels:
 ```yaml
 
 # signup.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -101,7 +102,7 @@ channels:
 
 
 # login.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -119,7 +120,7 @@ channels:
 
 # After combining
 # asyncapi.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -178,16 +179,14 @@ console.log(document.json()); // the complete bundled asyncapi document.
 ```
 
 ### Resolving external references into components
-**Experimental** 
-
-This is a experimental feature, for now you can resolve external references in messages under `compoents/messages` 
+For now you can resolve external references in messages under `compoents/messages`.
 
 <details>
 <summary>For Example</summary>
 
 ```yml
 # asyncapi.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -213,7 +212,7 @@ messages:
           description: Email of the user
 
 # After combining 
-asyncapi: 2.2.0
+asyncapi: 2.4.0
 info:
   title: Account Service
   version: 1.0.0
