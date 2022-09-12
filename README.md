@@ -179,7 +179,7 @@ console.log(document.json()); // the complete bundled asyncapi document.
 ```
 
 ### Resolving external references into components
-For now you can resolve external references in messages under `compoents/messages`.
+You can resolve external references by moving them to Messages object, under `compoents/messages`.
 
 <details>
 <summary>For Example</summary>
@@ -247,7 +247,7 @@ const path = require('path')
 
 const document = await bundle(
   fs.readFileSync(path.resolve('./asyncapi.yml'), 'utf-8'),
-  referenceIntoComponents: true
+  { referenceIntoComponents: true }
   );
 
 console.log(document.json()); 
