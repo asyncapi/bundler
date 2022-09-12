@@ -242,7 +242,7 @@ components:
 
 ```ts
 const bundle = require('@asyncapi/bundler')
-const fs = requrie('fs')
+const fs = require('fs')
 const path = require('path')
 
 const document = await bundle(
