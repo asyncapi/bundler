@@ -11,6 +11,7 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
+  * [Resolving external references into components](#resolving-external-references-into-components)
 - [bundle(files, options)](#bundlefiles-options)
 
 <!-- tocstop -->
@@ -24,7 +25,7 @@ An official library that lets you bundle/merge your specification files into one
 ```yaml
 
 # asyncapi.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -50,7 +51,7 @@ messages:
           description: Email of the user
 
 # After combining
-asyncapi: 2.2.0
+asyncapi: 2.4.0
 info:
   title: Account Service
   version: 1.0.0
@@ -80,7 +81,7 @@ channels:
 ```yaml
 
 # signup.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -101,7 +102,7 @@ channels:
 
 
 # login.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -119,7 +120,7 @@ channels:
 
 # After combining
 # asyncapi.yaml
-asyncapi: '2.2.0'
+asyncapi: '2.4.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -177,6 +178,82 @@ const document = await bundle(
 console.log(document.json()); // the complete bundled asyncapi document.
 ```
 
+### Resolving external references into components
+You can resolve external references by moving them to Messages object, under `compoents/messages`.
+
+<details>
+<summary>For Example</summary>
+
+```yml
+# asyncapi.yaml
+asyncapi: '2.4.0'
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signup:
+    subscribe:
+      message:
+        $ref: './messages.yaml#/messages/UserSignedUp'
+
+#messages.yaml
+messages:
+  UserSignedUp:
+    payload:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          format: email
+          description: Email of the user
+
+# After combining 
+asyncapi: 2.4.0
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: '#/components/messages/UserSignedUp'
+components: 
+  messages:
+    UserSignedUp:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Name of the user
+          email:
+            type: string
+            format: email
+            description: Email of the user
+```
+</details>
+
+</br>
+
+```ts
+const bundle = require('@asyncapi/bundler')
+const fs = require('fs')
+const path = require('path')
+
+const document = await bundle(
+  fs.readFileSync(path.resolve('./asyncapi.yml'), 'utf-8'),
+  { referenceIntoComponents: true }
+  );
+
+console.log(document.json()); 
+```
+
+
 <a name="bundle"></a>
 
 ## bundle(files, options)
@@ -187,5 +264,6 @@ console.log(document.json()); // the complete bundled asyncapi document.
 | files | <code>Array.&lt;string&gt;</code> \| <code>Array.&lt;Object&gt;</code> | files that are to be bundled |
 | options | <code>Object</code> |  |
 | options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
-| options.parser | <code>Object</code> | asyncapi parser object |
-| options.validate | <code>boolean</code> | pass false to not validate file before merge |
+| options.referenceIntoComponents | <code>boolean<code> | pass true to resovle external references to components. |
+
+

@@ -10,6 +10,16 @@
 <dl>
 <dt><a href="#bundle">bundle(files, options)</a> ⇒ <code><a href="#Document">Document</a></code></dt>
 <dd></dd>
+<dt><a href="#parse">parse(JSONSchema)</a></dt>
+<dd><p>resolves external references and updates $refs</p>
+</dd>
+<dt><a href="#isExternalReference">isExternalReference(ref)</a> ⇒ <code>boolean</code></dt>
+<dd><p>This function checks for external reference.</p>
+</dd>
+<dt><a href="#resolveExternalRefs">resolveExternalRefs(parsedJSON, $refs)</a> ⇒ <code>ExternalComponents</code></dt>
+<dd></dd>
+<dt><a href="#resolve">resolve(asyncapiDocuments, options)</a> ⇒ <code>Array.&lt;Object&gt;</code></dt>
+<dd></dd>
 </dl>
 
 <a name="Document"></a>
@@ -62,18 +72,66 @@ console.log(document.string()); // get json string
 | files | <code>Array.&lt;string&gt;</code> \| <code>Array.&lt;Object&gt;</code> | files that are to be bundled |
 | options | <code>Object</code> |  |
 | options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
-| options.parser | <code>Object</code> | asyncapi parser object |
-| options.validate | <code>boolean</code> | pass false to not validate file before merge |
+| options.referenceIntoComponents | <code>boolean</code> | pass true value to resolve references into component |
 
 **Example**  
 ```js
-const bundler = requrie('@asyncapi/bundler');
+const bundle = requrie('@asyncapi/bundler');
 const fs = require('fs');
 const path = requrie('path');
 
-const document = await bundler.bundle(fs.readFileSync(
+const document = await bundle(fs.readFileSync(
   path.resolve('./asyncapi.yaml', 'utf-8')
 ));
 
 console.log(document.yml());
 ```
+<a name="bundle..resolvedJsons"></a>
+
+### bundle~resolvedJsons
+Bundle all external references for each files.
+
+**Kind**: inner constant of [<code>bundle</code>](#bundle)  
+<a name="parse"></a>
+
+## parse(JSONSchema)
+resolves external references and updates $refs
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| JSONSchema | <code>Array.&lt;Object&gt;</code> | 
+
+<a name="isExternalReference"></a>
+
+## isExternalReference(ref) ⇒ <code>boolean</code>
+This function checks for external reference.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| ref | <code>string</code> | 
+
+<a name="resolveExternalRefs"></a>
+
+## resolveExternalRefs(parsedJSON, $refs) ⇒ <code>ExternalComponents</code>
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| parsedJSON | <code>Array.&lt;Object&gt;</code> | 
+| $refs | <code>$RefParser</code> | 
+
+<a name="resolve"></a>
+
+## resolve(asyncapiDocuments, options) ⇒ <code>Array.&lt;Object&gt;</code>
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| asyncapiDocuments | <code>Object</code> | 
+| options | <code>Object</code> | 
+| options.referenceIntoComponents | <code>boolean</code> | 
+
