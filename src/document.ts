@@ -1,32 +1,37 @@
-const _ = require("lodash");
-const yaml = require("js-yaml");
+import { merge } from 'lodash';
+import yaml from 'js-yaml';
+
+import { AsyncAPIObject } from '../types';
+
+export interface Document {
+  _doc: AsyncAPIObject;
+}
 
 /**
  * @class
- * 
+ *
  * @example
- * 
+ *
  * const document = new Document(parsedJSONList, base);
- * 
+ *
  * console.log(document.json()); // get json object
  * console.log(document.yml()); // get yaml string
  * console.log(document.string()); // get json string
  */
 
-class Document {
+export class Document {
   /**
-   * 
-   * @param {Object[]} parsedJSONList 
-   * @param {Object} [base] 
+   *
+   * @param {Object[]} parsedJSONList
+   * @param {Object} base
    */
-  constructor(parsedJSONList, base) {
-    this._doc = {};
+  constructor(parsedJSONList: AsyncAPIObject[], base: AsyncAPIObject) {
     for (const resolvedJSON of parsedJSONList) {
-      this._doc = _.merge(this._doc, resolvedJSON);
+      this._doc = merge(this._doc, resolvedJSON);
     }
 
-    if (typeof base !== "undefined") {
-      this._doc = _.merge(this._doc, base);
+    if (typeof base !== 'undefined') {
+      this._doc = merge(this._doc, base);
     }
   }
 
@@ -47,9 +52,7 @@ class Document {
   /**
    * @return {string}
    */
-  string(){
+  string() {
     return JSON.stringify(this._doc);
   }
 }
-
-module.exports = Document;

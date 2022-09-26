@@ -5,21 +5,24 @@
 <dd></dd>
 </dl>
 
+## Members
+
+<dl>
+<dt><a href="#validate">validate</a> ⇒ <code>Array.&lt;Object&gt;</code></dt>
+<dd></dd>
+</dl>
+
 ## Functions
 
 <dl>
-<dt><a href="#bundle">bundle(files, options)</a> ⇒ <code><a href="#Document">Document</a></code></dt>
+<dt><a href="#bundle">bundle(files, [options])</a> ⇒ <code><a href="#Document">Document</a></code></dt>
 <dd></dd>
-<dt><a href="#parse">parse(JSONSchema)</a></dt>
-<dd><p>resolves external references and updates $refs</p>
-</dd>
 <dt><a href="#isExternalReference">isExternalReference(ref)</a> ⇒ <code>boolean</code></dt>
-<dd><p>This function checks for external reference.</p>
-</dd>
+<dd><p>Checks if <code>ref</code> is an external reference.</p></dd>
 <dt><a href="#resolveExternalRefs">resolveExternalRefs(parsedJSON, $refs)</a> ⇒ <code>ExternalComponents</code></dt>
 <dd></dd>
-<dt><a href="#resolve">resolve(asyncapiDocuments, options)</a> ⇒ <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
+<dt><a href="#parse">parse(JSONSchema)</a></dt>
+<dd><p>Resolves external references and updates $refs.</p></dd>
 </dl>
 
 <a name="Document"></a>
@@ -28,19 +31,19 @@
 **Kind**: global class  
 
 * [Document](#Document)
-    * [new Document(parsedJSONList, [base])](#new_Document_new)
+    * [new Document(parsedJSONList, base)](#new_Document_new)
     * [.json()](#Document+json) ⇒ <code>Object</code>
     * [.yml()](#Document+yml) ⇒ <code>string</code>
     * [.string()](#Document+string) ⇒ <code>string</code>
 
 <a name="new_Document_new"></a>
 
-### new Document(parsedJSONList, [base])
+### new Document(parsedJSONList, base)
 
 | Param | Type |
 | --- | --- |
 | parsedJSONList | <code>Array.&lt;Object&gt;</code> | 
-| [base] | <code>Object</code> | 
+| base | <code>Object</code> | 
 
 **Example**  
 ```js
@@ -62,23 +65,34 @@ console.log(document.string()); // get json string
 
 ### document.string() ⇒ <code>string</code>
 **Kind**: instance method of [<code>Document</code>](#Document)  
+<a name="validate"></a>
+
+## validate ⇒ <code>Array.&lt;Object&gt;</code>
+**Kind**: global variable  
+
+| Param | Type |
+| --- | --- |
+| asyncapiDocuments | <code>Object</code> | 
+| options | <code>Object</code> | 
+| options.referenceIntoComponents | <code>boolean</code> | 
+
 <a name="bundle"></a>
 
-## bundle(files, options) ⇒ [<code>Document</code>](#Document)
+## bundle(files, [options]) ⇒ [<code>Document</code>](#Document)
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> \| <code>Array.&lt;Object&gt;</code> | files that are to be bundled |
-| options | <code>Object</code> |  |
-| options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
-| options.referenceIntoComponents | <code>boolean</code> | pass true value to resolve references into component |
+| files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled.</p> |
+| [options] | <code>Object</code> |  |
+| [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
+| [options.referenceIntoComponents] | <code>boolean</code> | <p>Pass <code>true</code> to resolve external references to components.</p> |
 
 **Example**  
 ```js
-const bundle = requrie('@asyncapi/bundler');
+const bundle = require('@asyncapi/bundler');
 const fs = require('fs');
-const path = requrie('path');
+const path = require('path');
 
 const document = await bundle(fs.readFileSync(
   path.resolve('./asyncapi.yaml', 'utf-8')
@@ -89,24 +103,13 @@ console.log(document.yml());
 <a name="bundle..resolvedJsons"></a>
 
 ### bundle~resolvedJsons
-Bundle all external references for each files.
+<p>Bundle all external references for each file.</p>
 
 **Kind**: inner constant of [<code>bundle</code>](#bundle)  
-<a name="parse"></a>
-
-## parse(JSONSchema)
-resolves external references and updates $refs
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| JSONSchema | <code>Array.&lt;Object&gt;</code> | 
-
 <a name="isExternalReference"></a>
 
 ## isExternalReference(ref) ⇒ <code>boolean</code>
-This function checks for external reference.
+<p>Checks if <code>ref</code> is an external reference.</p>
 
 **Kind**: global function  
 
@@ -124,14 +127,14 @@ This function checks for external reference.
 | parsedJSON | <code>Array.&lt;Object&gt;</code> | 
 | $refs | <code>$RefParser</code> | 
 
-<a name="resolve"></a>
+<a name="parse"></a>
 
-## resolve(asyncapiDocuments, options) ⇒ <code>Array.&lt;Object&gt;</code>
+## parse(JSONSchema)
+<p>Resolves external references and updates $refs.</p>
+
 **Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| asyncapiDocuments | <code>Object</code> | 
-| options | <code>Object</code> | 
-| options.referenceIntoComponents | <code>boolean</code> | 
+| JSONSchema | <code>Array.&lt;Object&gt;</code> | 
 

@@ -17,10 +17,10 @@
 <!-- tocstop -->
 
 ## Overview
-An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if -
+An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if:
 
 <details>
-<summary>your specification file is divided into different smaller files and is using json `$ref` to reference components </summary>
+<summary>your specification file is divided into different smaller files and is using JSON `$ref` property to reference components </summary>
 
 ```yaml
 
@@ -160,7 +160,7 @@ npm install @asyncapi/bundler
 
 ## Usage
 
-AsyncAPI-bundler could be easily used within your javascript projects as a Nodejs module.
+AsyncAPI bundler can be easily used within your JavaScript project as a Node.js module:
 
 ```js
 const bundle = require('@asyncapi/bundler');
@@ -175,14 +175,14 @@ const document = await bundle(
   }
 );
 
-console.log(document.json()); // the complete bundled asyncapi document.
+console.log(document.json()); // the complete bundled AsyncAPI document
 ```
 
 ### Resolving external references into components
-You can resolve external references by moving them to Messages object, under `compoents/messages`.
+You can resolve external references by moving them to Messages Object, under `components/messages`.
 
 <details>
-<summary>For Example</summary>
+<summary>For example</summary>
 
 ```yml
 # asyncapi.yaml
@@ -261,9 +261,7 @@ console.log(document.json());
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> \| <code>Array.&lt;Object&gt;</code> | files that are to be bundled |
-| options | <code>Object</code> |  |
-| options.base | <code>string</code> \| <code>object</code> | base object whose prperties will be retained. |
-| options.referenceIntoComponents | <code>boolean<code> | pass true to resovle external references to components. |
-
-
+| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled. |
+| [options] | <code>Object</code> |  |
+| [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
+| [options.referenceIntoComponents] | <code>boolean<code> | Pass `true` to resolve external references to components. |
