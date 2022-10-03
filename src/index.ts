@@ -22,8 +22,8 @@ import type { AsyncAPIObject } from './spec-types';
  *     referenceIntoComponents: true,
  *   });
  *
- * console.log(document.yml()); // the complete bundled AsyncAPI document
- * writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+ *   console.log(document.yml()); // the complete bundled AsyncAPI document
+ *   writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
  * }
  *
  * main().catch(e => console.error(e));

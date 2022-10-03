@@ -3,10 +3,6 @@ import yaml from 'js-yaml';
 
 import type { AsyncAPIObject } from './spec-types';
 
-export interface Document {
-  _doc: AsyncAPIObject;
-}
-
 /**
  * @class
  *
@@ -20,6 +16,8 @@ export interface Document {
  */
 
 export class Document {
+  private _doc: AsyncAPIObject = {} as any;
+
   /**
    *
    * @param {Object[]} parsedJSONList
