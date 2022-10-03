@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 import { parse } from './parser';
 import { ParserError } from './errors';
 
-import { AsyncAPIObject } from '../types';
+import type { AsyncAPIObject } from './spec-types';
 
 export const toJS = (asyncapiYAMLorJSON: string | object) => {
   if (!asyncapiYAMLorJSON) {

@@ -2,8 +2,8 @@ import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { JSONPath } from 'jsonpath-plus';
 import { merge } from 'lodash';
 
-import { $Refs } from '@apidevtools/json-schema-ref-parser/lib/index';
-import { AsyncAPIObject, ComponentsObject, MessageObject } from '../types';
+import type { $Refs } from '@apidevtools/json-schema-ref-parser';
+import type { AsyncAPIObject, ComponentsObject, MessageObject } from './spec-types';
 
 class ExternalComponents {
   ref;

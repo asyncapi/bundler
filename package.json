@@ -3,8 +3,9 @@
   "version": "0.2.3",
   "description": "Bundle references from an single AsyncAPI document into a single file.",
   "main": "lib/index.js",
-  "types": "types.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "test": "jest",
     "docs": "jsdoc2md --files \"src/**/*.ts\" --configure ./jsdoc2md.json > API.md",
     "get:version": "echo $npm_package_version",
@@ -13,7 +14,7 @@
     "release": "semantic-release",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
-    "generate:assets": "npm run docs && npm run generate:readme:toc",
+    "generate:assets": "npm run build && npm run docs && npm run generate:readme:toc",
     "generate:readme:toc": "markdown-toc -i README.md"
   },
   "repository": {
@@ -30,6 +31,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib/"
+  ],
   "release": {
     "branches": [
       "master"
@@ -54,6 +60,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@asyncapi/parser": "^1.17.0",
+    "@types/json-schema": "^7.0.11",
     "commander": "^8.2.0",
     "js-yaml": "^4.1.0",
     "jsonpath-plus": "^6.0.1",
@@ -71,7 +78,6 @@
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/jest": "^29.0.1",
     "@types/js-yaml": "^4.0.5",
-    "@types/json-schema": "^7.0.11",
     "@types/lodash": "^4.14.185",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.37.0",

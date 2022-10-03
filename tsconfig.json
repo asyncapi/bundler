@@ -9,7 +9,7 @@
     "lib": [
       "esnext",
     ],
-    "declaration": false,
+    "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

@@ -1,7 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
-import { bundle } from '../../src';
+import bundle from '../../src';
 import fs from 'fs';
 import path from 'path';
+
+import type { ReferenceObject } from '../../src/spec-types';
 
 describe('bundler should ', () => {
   test('should return bundled doc', async () => {
@@ -18,6 +20,7 @@ describe('bundler should ', () => {
         validate: false,
       }
     );
+    
     expect(response).toBeDefined();
   });
 
@@ -33,8 +36,8 @@ describe('bundler should ', () => {
     );
 
     const asyncapiObject = doc.json();
-    expect(
-      asyncapiObject.channels?['user/signedup'].subscribe.message['$ref']
-    ).toMatch('#/components/messages/UserSignedUp');
+    const message = asyncapiObject.channels?.['user/signedup']?.subscribe?.message as ReferenceObject;
+
+    expect(message.$ref).toMatch('#/components/messages/UserSignedUp');
   });
 });

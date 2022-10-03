@@ -10,7 +10,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@asyncapi/bundler": "^0.2.2",
+    "@asyncapi/bundler": "../",
     "@types/node": "^18.7.23"
   }
 }

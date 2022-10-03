@@ -1,7 +1,7 @@
 import { toJS, resolve } from './util';
 import { Document } from './document';
 
-import { AsyncAPIObject } from '../types';
+import type { AsyncAPIObject } from './spec-types';
 
 /**
  *
@@ -24,7 +24,7 @@ import { AsyncAPIObject } from '../types';
  *
  * console.log(document.yml());
  */
-export const bundle = async (files: string[], options: any = {}) => {
+export default async function bundle(files: string[], options: any = {}) {
   if (typeof options.base !== 'undefined') {
     options.base = toJS(options.base);
   }
@@ -40,3 +40,5 @@ export const bundle = async (files: string[], options: any = {}) => {
 
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);
 };
+
+export { Document }

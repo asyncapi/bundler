@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import yaml from 'js-yaml';
 
-import { AsyncAPIObject } from '../types';
+import type { AsyncAPIObject } from './spec-types';
 
 export interface Document {
   _doc: AsyncAPIObject;
