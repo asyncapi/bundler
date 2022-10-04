@@ -12,12 +12,12 @@
 - [Installation](#installation)
 - [Usage](#usage)
   * [Resolving external references into components](#resolving-external-references-into-components)
-- [bundle(files, options)](#bundlefiles-options)
+- [bundle(files, [options])](#bundlefiles-options)
 
 <!-- tocstop -->
 
 ## Overview
-An official library that lets you bundle/merge your specification files into one. AsyncAPI bundler can help you if:
+An official library that lets you bundle/merge your specification files into one. AsyncAPI Bundler can help you if:
 
 <details>
 <summary>your specification file is divided into different smaller files and is using JSON `$ref` property to reference components </summary>
@@ -36,7 +36,7 @@ channels:
       message:
         $ref: './messages.yaml#/messages/UserSignedUp'
 
-#messages.yaml
+# messages.yaml
 messages:
   UserSignedUp:
     payload:
@@ -160,22 +160,25 @@ npm install @asyncapi/bundler
 
 ## Usage
 
-AsyncAPI bundler can be easily used within your JavaScript project as a Node.js module:
+AsyncAPI Bundler can be easily used within your TypeScript project:
 
-```js
-const bundle = require('@asyncapi/bundler');
-const fs = require('fs');
-const path = require('path');
+```ts
+import { readFileSync, writeFileSync } from 'fs';
+import bundle from '@asyncapi/bundler';
 
-const filePaths = ['./camera.yml','./audio.yml']
-const document = await bundle(
-  filePaths.map(filePath => fs.readFileSync(path.resolve(filePath), 'utf-8')),
-  {
-    base: fs.readFileSync(path.resolve('./base.yml'), 'utf-8')
-  }
-);
+async function main() {
+  const filePaths = ['./camera.yml','./audio.yml'];
+  const document = await bundle(
+    filePaths.map(filePath => readFileSync(filePath, 'utf-8')), {
+      base: readFileSync('./base.yml', 'utf-8'),
+    }
+  );
 
-console.log(document.json()); // the complete bundled AsyncAPI document
+  console.log(document.yml()); // the complete bundled AsyncAPI document
+  writeFileSync('asyncapi.yaml', document.yml()); // the complete bundled AsyncAPI document
+}
+
+main().catch(e => console.error(e));
 ```
 
 ### Resolving external references into components
@@ -185,19 +188,28 @@ You can resolve external references by moving them to Messages Object, under `co
 <summary>For example</summary>
 
 ```yml
-# asyncapi.yaml
-asyncapi: '2.4.0'
+# main.yaml
+asyncapi: 2.5.0
 info:
   title: Account Service
   version: 1.0.0
   description: This service is in charge of processing user signups
 channels:
-  user/signup:
+  user/signedup:
     subscribe:
       message:
         $ref: './messages.yaml#/messages/UserSignedUp'
+  test:
+    subscribe:
+      message:
+        $ref: '#/components/messages/TestMessage'
+components:
+  messages:
+    TestMessage:
+      payload:
+        type: string
 
-#messages.yaml
+# messages.yaml
 messages:
   UserSignedUp:
     payload:
@@ -210,9 +222,15 @@ messages:
           type: string
           format: email
           description: Email of the user
+  UserLoggedIn:
+    payload:
+      type: object
+      properties:
+        id: string
 
-# After combining 
-asyncapi: 2.4.0
+# After combining
+# asyncapi.yaml
+asyncapi: 2.5.0
 info:
   title: Account Service
   version: 1.0.0
@@ -222,8 +240,15 @@ channels:
     subscribe:
       message:
         $ref: '#/components/messages/UserSignedUp'
-components: 
+  test:
+    subscribe:
+      message:
+        $ref: '#/components/messages/TestMessage'
+components:
   messages:
+    TestMessage:
+      payload:
+        type: string
     UserSignedUp:
       payload:
         type: object
@@ -235,33 +260,38 @@ components:
             type: string
             format: email
             description: Email of the user
+
 ```
 </details>
 
 </br>
 
 ```ts
-const bundle = require('@asyncapi/bundler')
-const fs = require('fs')
-const path = require('path')
+import { readFileSync, writeFileSync } from 'fs';
+import bundle from '@asyncapi/bundler';
 
-const document = await bundle(
-  fs.readFileSync(path.resolve('./asyncapi.yml'), 'utf-8'),
-  { referenceIntoComponents: true }
-  );
+async function main() {
+  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+    referenceIntoComponents: true,
+  });
 
-console.log(document.json()); 
+  console.log(document.yml()); // the complete bundled AsyncAPI document
+  writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+}
+
+main().catch(e => console.error(e));
+ 
 ```
 
 
 <a name="bundle"></a>
 
-## bundle(files, options)
+## bundle(files, [options])
 **Kind**: global function
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled. |
+| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and fed through `Array.map()` and `fs.readFileSync`, which is the same). |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
 | [options.referenceIntoComponents] | <code>boolean<code> | Pass `true` to resolve external references to components. |

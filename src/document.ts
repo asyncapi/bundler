@@ -14,9 +14,9 @@ export interface Document {
  *
  * const document = new Document(parsedJSONList, base);
  *
- * console.log(document.json()); // get json object
- * console.log(document.yml()); // get yaml string
- * console.log(document.string()); // get json string
+ * console.log(document.json()); // get JSON object
+ * console.log(document.yml()); // get YAML string
+ * console.log(document.string()); // get JSON string
  */
 
 export class Document {

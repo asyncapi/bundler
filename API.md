@@ -49,9 +49,9 @@
 ```js
 const document = new Document(parsedJSONList, base);
 
-console.log(document.json()); // get json object
-console.log(document.yml()); // get yaml string
-console.log(document.string()); // get json string
+console.log(document.json()); // get JSON object
+console.log(document.yml()); // get YAML string
+console.log(document.string()); // get JSON string
 ```
 <a name="Document+json"></a>
 
@@ -83,22 +83,26 @@ console.log(document.string()); // get json string
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled.</p> |
+| files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and fed through <code>Array.map()</code> and <code>fs.readFileSync</code>, which is the same, see <code>README.md</code>).</p> |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
 | [options.referenceIntoComponents] | <code>boolean</code> | <p>Pass <code>true</code> to resolve external references to components.</p> |
 
 **Example**  
 ```js
-const bundle = require('@asyncapi/bundler');
-const fs = require('fs');
-const path = require('path');
+import { readFileSync, writeFileSync } from 'fs';
+import bundle from '@asyncapi/bundler';
 
-const document = await bundle(fs.readFileSync(
-  path.resolve('./asyncapi.yaml', 'utf-8')
-));
+async function main() {
+  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+    referenceIntoComponents: true,
+  });
 
-console.log(document.yml());
+console.log(document.yml()); // the complete bundled AsyncAPI document
+writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+}
+
+main().catch(e => console.error(e));
 ```
 <a name="bundle..resolvedJsons"></a>
 

@@ -53,7 +53,7 @@ async function resolveExternalRefs(parsedJSON: AsyncAPIObject, $refs: $Refs) {
     ({ parent, parentProperty }: { parent: any; parentProperty: string }) => {
       const ref = parent[String(parentProperty)]['$ref'];
       if (isExternalReference(ref)) {
-        const value = String($refs.get(ref));
+        const value: any = $refs.get(ref);
         const component = new ExternalComponents(ref, value);
         if (componentObj.messages) {
           componentObj.messages[String(component.getKey())] =

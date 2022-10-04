@@ -5,7 +5,7 @@ import type { AsyncAPIObject } from './spec-types';
 
 /**
  *
- * @param {string[]} files Array of stringified AsyncAPI documents in YAML format, that are to be bundled.
+ * @param {string[]} files Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and fed through `Array.map()` and `fs.readFileSync`, which is the same, see `README.md`).
  * @param {Object} [options]
  * @param {string | object} [options.base] Base object whose properties will be retained.
  * @param {boolean} [options.referenceIntoComponents] Pass `true` to resolve external references to components.
@@ -14,15 +14,20 @@ import type { AsyncAPIObject } from './spec-types';
  *
  * @example
  *
- * const bundle = require('@asyncapi/bundler');
- * const fs = require('fs');
- * const path = require('path');
+ * import { readFileSync, writeFileSync } from 'fs';
+ * import bundle from '@asyncapi/bundler';
  *
- * const document = await bundle(fs.readFileSync(
- *   path.resolve('./asyncapi.yaml', 'utf-8')
- * ));
+ * async function main() {
+ *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+ *     referenceIntoComponents: true,
+ *   });
  *
- * console.log(document.yml());
+ * console.log(document.yml()); // the complete bundled AsyncAPI document
+ * writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+ * }
+ *
+ * main().catch(e => console.error(e));
+ *
  */
 export default async function bundle(files: string[], options: any = {}) {
   if (typeof options.base !== 'undefined') {
@@ -30,7 +35,7 @@ export default async function bundle(files: string[], options: any = {}) {
   }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
-  
+
   /**
    * Bundle all external references for each file.
    */
@@ -39,6 +44,6 @@ export default async function bundle(files: string[], options: any = {}) {
   });
 
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);
-};
+}
 
-export { Document }
+export { Document };
