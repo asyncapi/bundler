@@ -160,7 +160,7 @@ npm install @asyncapi/bundler
 
 ## Usage
 
-AsyncAPI Bundler can be easily used within your TypeScript project:
+AsyncAPI Bundler can be easily used within your JavaScript projects as a Node.js module:
 
 ```ts
 import { readFileSync, writeFileSync } from 'fs';
@@ -291,7 +291,7 @@ main().catch(e => console.error(e));
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and fed through `Array.map()` and `fs.readFileSync`, which is the same). |
+| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via `Array.map()` and `fs.readFileSync`, which is the same). |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
 | [options.referenceIntoComponents] | <code>boolean<code> | Pass `true` to resolve external references to components. |

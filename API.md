@@ -83,7 +83,7 @@ console.log(document.string()); // get JSON string
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and fed through <code>Array.map()</code> and <code>fs.readFileSync</code>, which is the same, see <code>README.md</code>).</p> |
+| files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via <code>Array.map()</code> and <code>fs.readFileSync</code>, which is the same, see <code>README.md</code>).</p> |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
 | [options.referenceIntoComponents] | <code>boolean</code> | <p>Pass <code>true</code> to resolve external references to components.</p> |
@@ -98,8 +98,8 @@ async function main() {
     referenceIntoComponents: true,
   });
 
-console.log(document.yml()); // the complete bundled AsyncAPI document
-writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+  console.log(document.yml()); // the complete bundled AsyncAPI document
+  writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
 }
 
 main().catch(e => console.error(e));
