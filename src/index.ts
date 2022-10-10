@@ -38,6 +38,7 @@ export default async function bundle(files: string[], options: any = {}) {
 
   /**
    * Bundle all external references for each file.
+   * @private
    */
   const resolvedJsons = await resolve(parsedJsons, {
     referenceIntoComponents: options.referenceIntoComponents,

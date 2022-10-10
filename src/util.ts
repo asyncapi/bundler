@@ -6,6 +6,9 @@ import { ParserError } from './errors';
 
 import type { AsyncAPIObject } from './spec-types';
 
+/**
+ * @private
+ */
 export const toJS = (asyncapiYAMLorJSON: string | object) => {
   if (!asyncapiYAMLorJSON) {
     throw new ParserError({
@@ -38,6 +41,9 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
   return yaml.load(asyncapiYAMLorJSON);
 };
 
+/**
+ * @private
+ */
 export const validate = async (
   parsedJSONs: AsyncAPIObject[],
   parser: { parse(asyncapi: string | any): Promise<any> }
@@ -53,6 +59,7 @@ export const validate = async (
  * @param {Object} options
  * @param {boolean} options.referenceIntoComponents
  * @returns {Array<Object>}
+ * @private
  */
 export const resolve = async (
   asyncapiDocuments: AsyncAPIObject[],
