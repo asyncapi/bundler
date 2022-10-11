@@ -5,24 +5,11 @@
 <dd></dd>
 </dl>
 
-## Members
-
-<dl>
-<dt><a href="#validate">validate</a> ⇒ <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 ## Functions
 
 <dl>
 <dt><a href="#bundle">bundle(files, [options])</a> ⇒ <code><a href="#Document">Document</a></code></dt>
 <dd></dd>
-<dt><a href="#isExternalReference">isExternalReference(ref)</a> ⇒ <code>boolean</code></dt>
-<dd><p>Checks if <code>ref</code> is an external reference.</p></dd>
-<dt><a href="#resolveExternalRefs">resolveExternalRefs(parsedJSON, $refs)</a> ⇒ <code>ExternalComponents</code></dt>
-<dd></dd>
-<dt><a href="#parse">parse(JSONSchema)</a></dt>
-<dd><p>Resolves external references and updates $refs.</p></dd>
 </dl>
 
 <a name="Document"></a>
@@ -65,17 +52,6 @@ console.log(document.string()); // get JSON string
 
 ### document.string() ⇒ <code>string</code>
 **Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="validate"></a>
-
-## validate ⇒ <code>Array.&lt;Object&gt;</code>
-**Kind**: global variable  
-
-| Param | Type |
-| --- | --- |
-| asyncapiDocuments | <code>Object</code> | 
-| options | <code>Object</code> | 
-| options.referenceIntoComponents | <code>boolean</code> | 
-
 <a name="bundle"></a>
 
 ## bundle(files, [options]) ⇒ [<code>Document</code>](#Document)
@@ -104,41 +80,3 @@ async function main() {
 
 main().catch(e => console.error(e));
 ```
-<a name="bundle..resolvedJsons"></a>
-
-### bundle~resolvedJsons
-<p>Bundle all external references for each file.</p>
-
-**Kind**: inner constant of [<code>bundle</code>](#bundle)  
-<a name="isExternalReference"></a>
-
-## isExternalReference(ref) ⇒ <code>boolean</code>
-<p>Checks if <code>ref</code> is an external reference.</p>
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| ref | <code>string</code> | 
-
-<a name="resolveExternalRefs"></a>
-
-## resolveExternalRefs(parsedJSON, $refs) ⇒ <code>ExternalComponents</code>
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| parsedJSON | <code>Array.&lt;Object&gt;</code> | 
-| $refs | <code>$RefParser</code> | 
-
-<a name="parse"></a>
-
-## parse(JSONSchema)
-<p>Resolves external references and updates $refs.</p>
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| JSONSchema | <code>Array.&lt;Object&gt;</code> | 
-

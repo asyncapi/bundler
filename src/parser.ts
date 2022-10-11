@@ -5,6 +5,10 @@ import { merge } from 'lodash';
 import type { $Refs } from '@apidevtools/json-schema-ref-parser';
 import type { AsyncAPIObject, ComponentsObject, MessageObject } from './spec-types';
 
+/**
+ * @class
+ * @private
+ */
 class ExternalComponents {
   ref;
   resolvedJSON;
@@ -23,6 +27,9 @@ class ExternalComponents {
   }
 }
 
+/**
+ * @private
+ */
 function crawlChannelPropertiesForRefs(JSONSchema: AsyncAPIObject) {
   // eslint-disable-next-line
   return JSONPath({ json: JSONSchema, path: `$.channels.*.*.message['$ref']` });
@@ -32,6 +39,7 @@ function crawlChannelPropertiesForRefs(JSONSchema: AsyncAPIObject) {
  * Checks if `ref` is an external reference.
  * @param {string} ref
  * @returns {boolean}
+ * @private
  */
 function isExternalReference(ref: string) {
   return !ref.startsWith('#');
@@ -42,6 +50,7 @@ function isExternalReference(ref: string) {
  * @param {Object[]} parsedJSON
  * @param {$RefParser} $refs
  * @returns {ExternalComponents}
+ * @private
  */
 async function resolveExternalRefs(parsedJSON: AsyncAPIObject, $refs: $Refs) {
   const componentObj: ComponentsObject = { messages: {} };
@@ -71,6 +80,7 @@ async function resolveExternalRefs(parsedJSON: AsyncAPIObject, $refs: $Refs) {
 /**
  * Resolves external references and updates $refs.
  * @param {Object[]} JSONSchema
+ * @private
  */
 export async function parse(JSONSchema: AsyncAPIObject) {
   const $ref: any = await $RefParser.resolve(JSONSchema);
