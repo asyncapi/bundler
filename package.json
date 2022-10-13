@@ -34,7 +34,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "lib/"
+    "/lib"
   ],
   "release": {
     "branches": [
