@@ -13,6 +13,7 @@
 - [Usage](#usage)
   * [Resolving external references into components](#resolving-external-references-into-components)
 - [bundle(files, [options])](#bundlefiles-options)
+- [Contributors](#contributors)
 
 <!-- tocstop -->
 
@@ -295,3 +296,32 @@ main().catch(e => console.error(e));
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
 | [options.referenceIntoComponents] | <code>boolean<code> | Pass `true` to resolve external references to components. |
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Souvikns"><img src="https://avatars.githubusercontent.com/u/41781438?v=4?s=100" width="100px;" alt=""/><br /><sub><b>souvik</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=Souvikns" title="Code">💻</a> <a href="#ideas-Souvikns" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-Souvikns" title="Design">🎨</a> <a href="https://github.com/asyncapi/bundler/pulls?q=is%3Apr+reviewed-by%3ASouvikns" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-Souvikns" title="Maintenance">🚧</a> <a href="https://github.com/asyncapi/bundler/commits?author=Souvikns" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/magicmatatjahu"><img src="https://avatars.githubusercontent.com/u/20404945?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maciej Urbańczyk</b></sub></a><br /><a href="#ideas-magicmatatjahu" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/asyncapi/bundler/pulls?q=is%3Apr+reviewed-by%3Amagicmatatjahu" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/toukirkhan"><img src="https://avatars.githubusercontent.com/u/88899011?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mohd Toukir Khan</b></sub></a><br /><a href="#infra-toukirkhan" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/MrYugs"><img src="https://avatars.githubusercontent.com/u/5838714?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MrYugs</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=MrYugs" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/amanbedi1"><img src="https://avatars.githubusercontent.com/u/82234871?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Amanpreet Singh Bedi</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=amanbedi1" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/hillariter"><img src="https://avatars.githubusercontent.com/u/7823186?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexey Vasilevich</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=hillariter" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/aeworxet"><img src="https://avatars.githubusercontent.com/u/16149591?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Viacheslav Turovskyi</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=aeworxet" title="Code">💻</a> <a href="#infra-aeworxet" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/bundler/commits?author=aeworxet" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.brainfart.dev/"><img src="https://avatars.githubusercontent.com/u/6995927?s=400&amp;u=70200e882bc86db94917031d3ced1e805ebe07ab&amp;v=4?s=100" width="100px;" alt=""/><br /><sub><b>Lukasz Gornicki</b></sub></a><br /><a href="#infra-derberg" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/bundler/pulls?q=is%3Apr+reviewed-by%3Aderberg" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
