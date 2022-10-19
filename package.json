@@ -15,7 +15,8 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "generate:assets": "npm run build && npm run docs && npm run generate:readme:toc",
-    "generate:readme:toc": "markdown-toc -i README.md"
+    "generate:readme:toc": "markdown-toc -i README.md",
+    "prepublishOnly": "npm run generate:assets"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "access": "public"
   },
   "files": [
+    "API.md",
     "LICENSE",
     "README.md",
     "/lib"
