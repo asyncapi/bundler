@@ -1,0 +1,97 @@
+{
+  "projectName": "bundler",
+  "projectOwner": "asyncapi",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Souvikns",
+      "name": "souvik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41781438?v=4",
+      "profile": "https://github.com/Souvikns",
+      "contributions": [
+        "code",
+        "ideas",
+        "design",
+        "review",
+        "maintenance",
+        "doc"
+      ]
+    },
+    {
+      "login": "magicmatatjahu",
+      "name": "Maciej Urbańczyk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20404945?v=4",
+      "profile": "https://github.com/magicmatatjahu",
+      "contributions": [
+        "ideas",
+        "review"
+      ]
+    },
+    {
+      "login": "toukirkhan",
+      "name": "Mohd Toukir Khan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88899011?v=4",
+      "profile": "https://github.com/toukirkhan",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "MrYugs",
+      "name": "MrYugs",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5838714?v=4",
+      "profile": "https://github.com/MrYugs",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "amanbedi1",
+      "name": "Amanpreet Singh Bedi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82234871?v=4",
+      "profile": "https://github.com/amanbedi1",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "hillariter",
+      "name": "Alexey Vasilevich",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7823186?v=4",
+      "profile": "https://github.com/hillariter",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "aeworxet",
+      "name": "Viacheslav Turovskyi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16149591?v=4",
+      "profile": "https://github.com/aeworxet",
+      "contributions": [
+        "code",
+        "infra",
+        "doc"
+      ]
+    },
+    {
+      "login": "derberg",
+      "name": "Lukasz Gornicki",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6995927?s=400&amp;u=70200e882bc86db94917031d3ced1e805ebe07ab&amp;v=4",
+      "profile": "https://www.brainfart.dev/",
+      "contributions": [
+        "infra",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 4,
+  "skipCi": false
+}
