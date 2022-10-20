@@ -5,15 +5,21 @@ import type { AsyncAPIObject } from './spec-types';
 
 /**
  *
- * @param {string[]} files Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via `Array.map()` and `fs.readFileSync`, which is the same, see `README.md`).
+ * @param {string[]} files Array of stringified AsyncAPI documents in YAML
+ * format, that are to be bundled (or array of filepaths, resolved and passed
+ * via `Array.map()` and `fs.readFileSync`, which is the same, see `README.md`).
  * @param {Object} [options]
- * @param {string | object} [options.base] Base object whose properties will be retained.
- * @param {boolean} [options.referenceIntoComponents] Pass `true` to resolve external references to components.
+ * @param {string | object} [options.base] Base object whose properties will be
+ * retained.
+ * @param {boolean} [options.referenceIntoComponents] Pass `true` to resolve
+ * external references to components.
  *
  * @return {Document}
  *
  * @example
  *
+ * **TypeScript**
+ * ```ts
  * import { readFileSync, writeFileSync } from 'fs';
  * import bundle from '@asyncapi/bundler';
  *
@@ -27,6 +33,41 @@ import type { AsyncAPIObject } from './spec-types';
  * }
  *
  * main().catch(e => console.error(e));
+ * ```
+ *
+ * **JavaScript CJS module system**
+ * ```js
+ * 'use strict';
+ *
+ * const { readFileSync, writeFileSync } = require('fs');
+ * const bundle = require('@asyncapi/bundler');
+ *
+ * async function main() {
+ *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+ *     referenceIntoComponents: true,
+ *   });
+ *   writeFileSync('asyncapi.yaml', document.yml());
+ * }
+ *
+ * main().catch(e => console.error(e));
+ * ```
+ *
+ * **JavaScript ESM module system**
+ * ```js
+ * 'use strict';
+ *
+ * import { readFileSync, writeFileSync } from 'fs';
+ * import bundle from '@asyncapi/bundler';
+ *
+ * async function main() {
+ *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+ *     referenceIntoComponents: true,
+ *   });
+ *   writeFileSync('asyncapi.yaml', document.yml());
+ * }
+ *
+ * main().catch(e => console.error(e)); 
+ * ```
  *
  */
 export default async function bundle(files: string[], options: any = {}) {
@@ -47,4 +88,6 @@ export default async function bundle(files: string[], options: any = {}) {
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);
 }
 
-export { Document };
+// 'module.exports' is added to maintain backward compatibility with Node.js
+// projects, that use CJS module system.
+module.exports = bundle;
