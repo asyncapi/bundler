@@ -1,8 +1,6 @@
 /**
- * To use `.js` extension with CJS module system, make sure
- * `package.json`
- * DOES NOT contain line
- * `"type": "module",`
+ * In case `.cjs` extension is used, Node.js will recognize CJS module system
+ * automatically.
  */
 
 'use strict';

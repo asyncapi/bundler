@@ -1,5 +1,5 @@
 /**
- * To use ESM module system, first add to
+ * To use `.js` extension with ESM module system, first add to
  * `package.json`
  * line
  * `"type": "module",`

@@ -1,14 +1,12 @@
 /**
- * To use `.js` extension with CJS module system, make sure
- * `package.json`
- * DOES NOT contain line
- * `"type": "module",`
+ * In case `.mjs` extension is used, Node.js will recognize ESM module system
+ * automatically.
  */
 
 'use strict';
 
-const { readFileSync, writeFileSync } = require('fs');
-const bundle = require('@asyncapi/bundler');
+import { readFileSync, writeFileSync } from 'fs';
+import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
