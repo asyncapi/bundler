@@ -163,9 +163,11 @@ npm install @asyncapi/bundler
 
 AsyncAPI Bundler can be easily used within your JavaScript projects as a Node.js module:
 
-```ts
-import { readFileSync, writeFileSync } from 'fs';
-import bundle from '@asyncapi/bundler';
+```js
+'use strict';
+
+const { readFileSync, writeFileSync } = require('fs');
+const bundle = require('@asyncapi/bundler');
 
 async function main() {
   const filePaths = ['./camera.yml','./audio.yml'];
@@ -264,9 +266,9 @@ components:
 
 ```
 </details>
+<br />
 
-</br>
-
+**TypeScript**
 ```ts
 import { readFileSync, writeFileSync } from 'fs';
 import bundle from '@asyncapi/bundler';
@@ -281,9 +283,42 @@ async function main() {
 }
 
 main().catch(e => console.error(e));
- 
 ```
 
+**JavaScript CJS module system**
+```js
+'use strict';
+
+const { readFileSync, writeFileSync } = require('fs');
+const bundle = require('@asyncapi/bundler');
+
+async function main() {
+  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+    referenceIntoComponents: true,
+  });
+  writeFileSync('asyncapi.yaml', document.yml());
+}
+
+main().catch(e => console.error(e));
+```
+
+**JavaScript ESM module system**
+```js
+'use strict';
+
+import { readFileSync, writeFileSync } from 'fs';
+import bundle from '@asyncapi/bundler';
+
+async function main() {
+  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+    referenceIntoComponents: true,
+  });
+  writeFileSync('asyncapi.yaml', document.yml());
+}
+
+main().catch(e => console.error(e)); 
+
+```
 
 <a name="bundle"></a>
 
