@@ -44,6 +44,9 @@ describe('bundler should ', () => {
   test('should not throw if value of `$ref` is not a string', async () => {
     const files = ['./tests/wrong-ref-not-string.yaml'];
 
+    // If async function `bundle()` resolved Promise successfully, that means it
+    // did not throw exception during process of execution, which is the
+    // objective of testing.
     expect(
       await bundle(
         files.map(file =>
@@ -59,6 +62,9 @@ describe('bundler should ', () => {
   test('should not throw if value of `$ref` is absent', async () => {
     const files = ['./tests/wrong-ref-absent.yaml'];
 
+    // If async function `bundle()` resolved Promise successfully, that means it
+    // did not throw exception during process of execution, which is the
+    // objective of testing.
     expect(
       await bundle(
         files.map(file =>
