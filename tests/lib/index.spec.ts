@@ -1,4 +1,4 @@
-import { describe, expect, test, jest } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
 import fs from 'fs';
 import path from 'path';
