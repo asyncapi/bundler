@@ -40,4 +40,36 @@ describe('bundler should ', () => {
 
     expect(message.$ref).toMatch('#/components/messages/UserSignedUp');
   });
+
+  test('should not throw if value of `$ref` is not a string', async () => {
+    const files = ['./tests/wrong-ref-not-string.yaml'];
+    const response = await bundle(
+      files.map(file =>
+        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+      ),
+      {
+        referenceIntoComponents: true,
+      }
+    );
+
+    const result = response.json();
+
+    expect(result).toBeDefined();
+  });
+
+  test('should not throw if value of `$ref` is absent', async () => {
+    const files = ['./tests/wrong-ref-absent.yaml'];
+    const response = await bundle(
+      files.map(file =>
+        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+      ),
+      {
+        referenceIntoComponents: true,
+      }
+    );
+
+    const result = response.json();
+
+    expect(result).toBeDefined();
+  });
 });
