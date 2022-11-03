@@ -1,11 +1,12 @@
 import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
+import { isExternalReference } from '../../src/parser';
 import fs from 'fs';
 import path from 'path';
 
 import type { ReferenceObject } from '../../src/spec-types';
 
-describe('bundler should ', () => {
+describe('[integration testing] bundler should ', () => {
   test('should return bundled doc', async () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
     const response = await bundle(
@@ -75,5 +76,14 @@ describe('bundler should ', () => {
         }
       )
     ).resolves;
+  });
+});
+
+describe('[unit testing]', () => {
+  test('`isExternalReference()` should return `true` on external reference', () => {
+    expect(isExternalReference('./components/messages/UserSignedUp')).toBeTruthy();
+  });
+  test('`isExternalReference()` should return `false` on local reference', () => {
+    expect(isExternalReference('#/components/messages/UserSignedUp')).toBeFalsy();
   });
 });

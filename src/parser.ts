@@ -41,7 +41,7 @@ function crawlChannelPropertiesForRefs(JSONSchema: AsyncAPIObject) {
  * @returns {boolean}
  * @private
  */
-function isExternalReference(ref: string): boolean {
+export function isExternalReference(ref: string): boolean {
   return typeof ref === 'string' && !ref.startsWith('#');
 }
 
