@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, jest } from '@jest/globals';
 import bundle from '../../src';
 import fs from 'fs';
 import path from 'path';
@@ -43,33 +43,31 @@ describe('bundler should ', () => {
 
   test('should not throw if value of `$ref` is not a string', async () => {
     const files = ['./tests/wrong-ref-not-string.yaml'];
-    const response = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-      ),
-      {
-        referenceIntoComponents: true,
-      }
-    );
 
-    const result = response.json();
-
-    expect(result).toBeDefined();
+    expect(
+      await bundle(
+        files.map(file =>
+          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+        ),
+        {
+          referenceIntoComponents: true,
+        }
+      )
+    ).resolves;
   });
 
   test('should not throw if value of `$ref` is absent', async () => {
     const files = ['./tests/wrong-ref-absent.yaml'];
-    const response = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-      ),
-      {
-        referenceIntoComponents: true,
-      }
-    );
 
-    const result = response.json();
-
-    expect(result).toBeDefined();
+    expect(
+      await bundle(
+        files.map(file =>
+          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+        ),
+        {
+          referenceIntoComponents: true,
+        }
+      )
+    ).resolves;
   });
 });
