@@ -21,7 +21,7 @@ describe('[integration testing] bundler should ', () => {
         validate: false,
       }
     );
-    
+
     expect(response).toBeDefined();
   });
 
@@ -77,6 +77,18 @@ describe('[integration testing] bundler should ', () => {
       )
     ).resolves;
   });
+
+  test('should be able to bundle base file', async () => {
+    const files = ['./tests/base-option/lights.yaml', './tests/base-option/camera.yaml']
+
+    expect(
+      await bundle(
+        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
+        { referenceIntoComponents: true, base: fs.readFileSync(path.resolve(process.cwd(), './tests/base-option/base.yaml'), 'utf-8') }
+      )
+    ).resolves;
+
+  })
 });
 
 describe('[unit testing]', () => {
