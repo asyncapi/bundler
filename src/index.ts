@@ -1,5 +1,6 @@
 import { toJS, resolve } from './util';
 import { Document } from './document';
+import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
 
@@ -73,6 +74,7 @@ import type { AsyncAPIObject } from './spec-types';
 export default async function bundle(files: string[], options: any = {}) {
   if (typeof options.base !== 'undefined') {
     options.base = toJS(options.base);
+    await parse(options.base);
   }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
