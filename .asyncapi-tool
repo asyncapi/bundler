@@ -1,6 +1,6 @@
 title: AsyncAPI Bundler
 filters:
-    languages:
+    language:
         - TypeScript
     technology:
         - TypeScript
