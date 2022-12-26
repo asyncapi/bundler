@@ -353,6 +353,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://github.com/aeworxet"><img src="https://avatars.githubusercontent.com/u/16149591?v=4?s=100" width="100px;" alt="Viacheslav Turovskyi"/><br /><sub><b>Viacheslav Turovskyi</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=aeworxet" title="Code">💻</a> <a href="#infra-aeworxet" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/bundler/commits?author=aeworxet" title="Documentation">📖</a> <a href="#maintenance-aeworxet" title="Maintenance">🚧</a> <a href="https://github.com/asyncapi/bundler/pulls?q=is%3Apr+reviewed-by%3Aaeworxet" title="Reviewed Pull Requests">👀</a> <a href="#ideas-aeworxet" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center"><a href="https://www.brainfart.dev/"><img src="https://avatars.githubusercontent.com/u/6995927?s=400&amp;u=70200e882bc86db94917031d3ced1e805ebe07ab&amp;v=4?s=100" width="100px;" alt="Lukasz Gornicki"/><br /><sub><b>Lukasz Gornicki</b></sub></a><br /><a href="#infra-derberg" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/bundler/pulls?q=is%3Apr+reviewed-by%3Aderberg" title="Reviewed Pull Requests">👀</a></td>
     </tr>
+    <tr>
+      <td align="center"><a href="https://akshatnema.netlify.app"><img src="https://avatars.githubusercontent.com/u/76521428?v=4?s=100" width="100px;" alt="Akshat Nema"/><br /><sub><b>Akshat Nema</b></sub></a><br /><a href="https://github.com/asyncapi/bundler/commits?author=akshatnema" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
