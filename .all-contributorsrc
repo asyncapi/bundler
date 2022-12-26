@@ -93,6 +93,15 @@
         "infra",
         "review"
       ]
+    },
+    {
+      "login": "akshatnema",
+      "name": "Akshat Nema",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76521428?v=4",
+      "profile": "https://akshatnema.netlify.app",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 4,
