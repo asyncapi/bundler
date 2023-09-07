@@ -1,0 +1,7 @@
+title: AsyncAPI Bundler
+filters:
+    language: TypeScript
+    technology:
+        - TypeScript
+    categories:
+        - bundler
