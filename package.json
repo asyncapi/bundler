@@ -36,28 +36,7 @@
     "LICENSE",
     "README.md",
     "/lib"
-  ],
-  "release": {
-    "branches": [
-      "master"
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ]
-  },
+  ], 
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@types/json-schema": "^7.0.11",
