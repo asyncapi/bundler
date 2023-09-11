@@ -11,7 +11,6 @@
     "get:version": "echo $npm_package_version",
     "get:name": "echo $npm_package_name",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "release": "semantic-release",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "generate:assets": "npm run build && npm run docs && npm run generate:readme:toc",
@@ -37,28 +36,7 @@
     "LICENSE",
     "README.md",
     "/lib"
-  ],
-  "release": {
-    "branches": [
-      "master"
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ]
-  },
+  ], 
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@types/json-schema": "^7.0.11",
@@ -71,17 +49,12 @@
     "@babel/core": "^7.19.3",
     "@babel/preset-env": "^7.19.3",
     "@babel/preset-typescript": "^7.18.6",
-    "@semantic-release/commit-analyzer": "^9.0.2",
-    "@semantic-release/github": "^8.0.6",
-    "@semantic-release/npm": "^8.0.3",
-    "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/jest": "^29.1.1",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash": "^4.14.186",
     "@types/node": "^18.8.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "conventional-changelog-conventionalcommits": "^4.6.3",
     "eslint": "^8.24.0",
     "eslint-plugin-github": "^4.3.7",
     "eslint-plugin-jest": "^27.1.0",
@@ -92,7 +65,6 @@
     "jsdoc-babel": "^0.5.0",
     "jsdoc-to-markdown": "^7.1.1",
     "markdown-toc": "^1.2.0",
-    "semantic-release": "^18.0.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
