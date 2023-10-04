@@ -77,3 +77,19 @@ export const resolve = async (
 
   return docs;
 };
+
+/**
+ * 
+ * @param asyncapiDocument {AsyncAPIObject}
+ * @returns {boolean}
+ */
+export const isVersionThree = (asyncapiDocuments: AsyncAPIObject[]): boolean => {
+  for (const asyncapiDocument of asyncapiDocuments ) {
+    const version = asyncapiDocument.asyncapi
+    const [major, rest] = version.split('.')
+    if (parseInt(major) < 3)  {
+      return false
+    }
+  }
+  return true
+}

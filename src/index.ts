@@ -1,4 +1,4 @@
-import { toJS, resolve } from './util';
+import { toJS, resolve, isVersionThree } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
@@ -78,6 +78,10 @@ export default async function bundle(files: string[], options: any = {}) {
   }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
+
+  if (isVersionThree(parsedJsons)) {
+    // parse and resolve according to the spec v3 and return Document.
+  }
 
   /**
    * Bundle all external references for each file.
