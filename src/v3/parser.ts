@@ -3,6 +3,7 @@ import { JSONPath } from 'jsonpath-plus'
 import { merge } from 'lodash'
 
 import { $Refs } from '@apidevtools/json-schema-ref-parser'
+import { AsyncAPIObject } from 'spec-types'
 
 class ExternalComponents {
   ref
@@ -30,7 +31,7 @@ function crawlChannelPropertiesForRefs(JSONSchema: any) {
 }
 
 export function isExternalReference(ref: string): boolean {
-  return ref === 'string' && !ref.startsWith('#')
+  return typeof ref === 'string' && !ref.startsWith('#')
 }
 
 async function resolveExternalRefs(parsedJSON: any, $refs: $Refs) {
@@ -59,12 +60,33 @@ async function resolveExternalRefs(parsedJSON: any, $refs: $Refs) {
   return componentObj
 }
 
+async function resolveExternalRefsForOperation(parsedJSON: any, $refs: $Refs) {
+  JSONPath({
+    json: parsedJSON,
+    resultType: 'all',
+    path: '$.operations.*.messages.*'
+  }).forEach(
+    ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
+      console.log(parentProperty)
+      parent.forEach( (reference: any) => {
+        const ref = reference['$ref']
+        if (isExternalReference(ref)) {
+          const value: any = $refs.get(ref)
+          const component = new ExternalComponents(ref, value)
+          parent[parentProperty]['$ref'] = `#/components/messages/${component.getKey()}`
+        }
+      })
+    }
+  )
+}
+
 export async function parse(JSONSchema: any) {
   const $ref: any = await $RefParser.resolve(JSONSchema)
   const refs = crawlChannelPropertiesForRefs(JSONSchema)
   for (const ref of refs) {
     if (isExternalReference(ref)) {
       const componentObj = await resolveExternalRefs(JSONSchema, $ref)
+      await resolveExternalRefsForOperation(JSONSchema, $ref)
       if (JSONSchema.components) {
         merge(JSONSchema.components, componentObj)
       } else {
@@ -72,4 +94,14 @@ export async function parse(JSONSchema: any) {
       }
     }
   }
+}
+
+export async function resolveV3Document(asyncapiDocuments: AsyncAPIObject[], options: any) {
+  const docs = []
+  for (const asyncapiDocument of asyncapiDocuments) {
+    await parse(asyncapiDocument)
+    //const bundledAsyncAPIDocument = await $RefParser.bundle(asyncapiDocument)
+    docs.push(asyncapiDocument)
+  }
+  return docs 
 }

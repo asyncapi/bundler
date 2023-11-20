@@ -1,8 +1,9 @@
-import { toJS, resolve, isVersionThree } from './util';
+import { toJS, resolve, isVersionThree, versionCheck } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
+import { resolveV3Document } from './v3/parser';
 
 /**
  *
@@ -79,17 +80,23 @@ export default async function bundle(files: string[], options: any = {}) {
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
 
-  if (isVersionThree(parsedJsons)) {
-    // parse and resolve according to the spec v3 and return Document.
+  const majorVersion = versionCheck(parsedJsons)
+  let resolvedJsons
+
+  if (majorVersion === 3) {
+    resolvedJsons = await resolveV3Document(parsedJsons, {
+      referenceIntoComponents: options.referenceIntoComponents
+    })
+  } else {
+    /**
+     * Bundle all external references for each file.
+     * @private
+     */
+    resolvedJsons = await resolve(parsedJsons, {
+      referenceIntoComponents: options.referenceIntoComponents,
+    });
   }
 
-  /**
-   * Bundle all external references for each file.
-   * @private
-   */
-  const resolvedJsons = await resolve(parsedJsons, {
-    referenceIntoComponents: options.referenceIntoComponents,
-  });
 
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);
 }

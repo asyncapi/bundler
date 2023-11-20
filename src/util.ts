@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash';
 import yaml from 'js-yaml';
 import { parse } from './parser';
 import { ParserError } from './errors';
+import {parse as parseV3} from './v3/parser'
 
 import type { AsyncAPIObject } from './spec-types';
 
@@ -92,4 +93,21 @@ export const isVersionThree = (asyncapiDocuments: AsyncAPIObject[]): boolean => 
     }
   }
   return true
+}
+
+export function getSpecVersion(asyncapiDocument: AsyncAPIObject): number{
+  const versionString = asyncapiDocument.asyncapi
+  return parseInt(versionString)
+}
+
+export function versionCheck(asyncapiDocuments: AsyncAPIObject[]): number {
+  let currentVersion = getSpecVersion(asyncapiDocuments[0])
+  for (const asyncapiDocument of asyncapiDocuments) {
+    const majorVersion = getSpecVersion(asyncapiDocument)
+    if (majorVersion !== currentVersion) {
+      throw new Error('Unable to bundle specification file of different major versions')
+    }
+    currentVersion = majorVersion
+  }
+  return currentVersion
 }
