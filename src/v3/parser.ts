@@ -67,7 +67,6 @@ async function resolveExternalRefsForOperation(parsedJSON: any, $refs: $Refs) {
     path: '$.operations.*.messages.*'
   }).forEach(
     ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
-      console.log(parentProperty)
       parent.forEach( (reference: any) => {
         const ref = reference['$ref']
         if (isExternalReference(ref)) {
