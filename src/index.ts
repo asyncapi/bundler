@@ -1,4 +1,4 @@
-import { toJS, resolve, isVersionThree, versionCheck } from './util';
+import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
@@ -80,13 +80,13 @@ export default async function bundle(files: string[], options: any = {}) {
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
 
-  const majorVersion = versionCheck(parsedJsons)
-  let resolvedJsons
+  const majorVersion = versionCheck(parsedJsons);
+  let resolvedJsons;
 
   if (majorVersion === 3) {
     resolvedJsons = await resolveV3Document(parsedJsons, {
       referenceIntoComponents: options.referenceIntoComponents
-    })
+    });
   } else {
     /**
      * Bundle all external references for each file.
@@ -96,7 +96,6 @@ export default async function bundle(files: string[], options: any = {}) {
       referenceIntoComponents: options.referenceIntoComponents,
     });
   }
-
 
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);
 }
