@@ -72,7 +72,7 @@ async function resolveExternalRefsForOperation(parsedJSON: any, $refs: $Refs) {
         if (isExternalReference(ref)) {
           const value: any = $refs.get(ref);
           const component = new ExternalComponents(ref, value);
-          parent[parentProperty]['$ref'] = `#/components/messages/${component.getKey()}`;
+          parent[String(parentProperty)]['$ref'] = `#/components/messages/${component.getKey()}`;
         }
       });
     }
@@ -95,7 +95,7 @@ export async function parse(JSONSchema: any) {
   }
 }
 
-export async function resolveV3Document(asyncapiDocuments: AsyncAPIObject[], options: any) {
+export async function resolveV3Document(asyncapiDocuments: AsyncAPIObject[]) {
   const docs = [];
   for (const asyncapiDocument of asyncapiDocuments) {
     await parse(asyncapiDocument);

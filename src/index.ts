@@ -84,9 +84,7 @@ export default async function bundle(files: string[], options: any = {}) {
   let resolvedJsons;
 
   if (majorVersion === 3) {
-    resolvedJsons = await resolveV3Document(parsedJsons, {
-      referenceIntoComponents: options.referenceIntoComponents
-    });
+    resolvedJsons = await resolveV3Document(parsedJsons);
   } else {
     /**
      * Bundle all external references for each file.
