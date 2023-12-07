@@ -5,6 +5,13 @@
 <dd></dd>
 </dl>
 
+## Members
+
+<dl>
+<dt><a href="#resolve">resolve</a> ⇒ <code>boolean</code></dt>
+<dd></dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -52,6 +59,15 @@ console.log(document.string()); // get JSON string
 
 ### document.string() ⇒ <code>string</code>
 **Kind**: instance method of [<code>Document</code>](#Document)  
+<a name="resolve"></a>
+
+## resolve ⇒ <code>boolean</code>
+**Kind**: global variable  
+
+| Param | Type |
+| --- | --- |
+| asyncapiDocument | <code>AsyncAPIObject</code> | 
+
 <a name="bundle"></a>
 
 ## bundle(files, [options]) ⇒ [<code>Document</code>](#Document)
