@@ -77,3 +77,26 @@ export const resolve = async (
 
   return docs;
 };
+
+/**
+ * 
+ * @param asyncapiDocument {AsyncAPIObject}
+ * @returns {boolean}
+ */
+
+export function getSpecVersion(asyncapiDocument: AsyncAPIObject): number {
+  const versionString = asyncapiDocument.asyncapi;
+  return parseInt(versionString, 10);
+}
+
+export function versionCheck(asyncapiDocuments: AsyncAPIObject[]): number {
+  let currentVersion = getSpecVersion(asyncapiDocuments[0]);
+  for (const asyncapiDocument of asyncapiDocuments) {
+    const majorVersion = getSpecVersion(asyncapiDocument);
+    if (majorVersion !== currentVersion) {
+      throw new Error('Unable to bundle specification file of different major versions');
+    }
+    currentVersion = majorVersion;
+  }
+  return currentVersion;
+}
