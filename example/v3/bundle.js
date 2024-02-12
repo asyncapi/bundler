@@ -4,14 +4,18 @@ const {readFileSync, writeFileSync} = require('fs')
 async function main() {
     await singleFile()
     await multiFile()
+    await singleFileWithBaseDir()
 }
 
 
-async function singleFile(){
-    const document = await bundle([readFileSync('./main.yaml', 'utf-8')] )
-
+async function singleFileWithBaseDir(){
+    const document = await bundle([readFileSync('./spec/main.yaml', 'utf-8')], {baseDir: './spec'})
     writeFileSync('asyncapi.yaml', document.yml())
-    
+}
+
+async function singleFile(){
+    const document = await bundle([readFileSync('./spec/main.yaml', 'utf-8')], {baseDir: './spec'})
+    writeFileSync('asyncapi.yaml', document.yml())
 }
 
 async function multiFile(){

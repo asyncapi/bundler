@@ -1,4 +1,4 @@
-import { toJS, resolve, versionCheck } from './util';
+import { toJS, resolve, versionCheck, resolveBaseFileDir } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
@@ -79,6 +79,10 @@ export default async function bundle(files: string[], options: any = {}) {
   }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
+
+  if (typeof options.baseDir !== 'undefined') {
+    parsedJsons.forEach( parsedJson => resolveBaseFileDir(parsedJson, options.baseDir))
+  }
 
   const majorVersion = versionCheck(parsedJsons);
   let resolvedJsons;
