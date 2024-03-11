@@ -76,7 +76,7 @@ import { resolveV3Document } from './v3/parser';
 export default async function bundle(files: string[], options: any = {}) {
   if (typeof options.base !== 'undefined') {
     options.base = toJS(options.base);
-    await parse(options.base);
+    await parse(options.base, options);
   }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
@@ -89,15 +89,13 @@ export default async function bundle(files: string[], options: any = {}) {
   let resolvedJsons;
 
   if (majorVersion === 3) {
-    resolvedJsons = await resolveV3Document(parsedJsons);
+    resolvedJsons = await resolveV3Document(parsedJsons, options);
   } else {
     /**
      * Bundle all external references for each file.
      * @private
      */
-    resolvedJsons = await resolve(parsedJsons, {
-      referenceIntoComponents: options.referenceIntoComponents,
-    });
+    resolvedJsons = await resolve(parsedJsons, options);
   }
 
   return new Document(resolvedJsons as AsyncAPIObject[], options.base);

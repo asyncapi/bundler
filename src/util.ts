@@ -65,7 +65,7 @@ export const resolve = async (
       //   await parse(asyncapiDocument);
       // }
       addXOrigins(asyncapiDocument); // eslint-disable-line @typescript-eslint/no-use-before-define
-      await parse(asyncapiDocument);
+      await parse(asyncapiDocument, options);
       // const bundledAsyncAPIDocument = await $RefParser.bundle(asyncapiDocument);
       docs.push(asyncapiDocument);
     }
