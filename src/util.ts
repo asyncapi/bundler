@@ -7,7 +7,6 @@ import {JSONPath} from 'jsonpath-plus';
 
 import type { AsyncAPIObject } from './spec-types';
 import path from 'path';
-import { parentPort } from 'worker_threads';
 
 /**
  * @private

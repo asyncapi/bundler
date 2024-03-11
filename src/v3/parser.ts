@@ -1,7 +1,6 @@
 import $RefParser, {$Refs} from '@apidevtools/json-schema-ref-parser';
 import { JSONPath } from 'jsonpath-plus';
 import { merge } from 'lodash';
-import path from 'path';
 
 import { AsyncAPIObject } from 'spec-types';
 
