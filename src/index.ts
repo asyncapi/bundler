@@ -98,7 +98,7 @@ export default async function bundle(files: string[], options: any = {}) {
     resolvedJsons = await resolve(parsedJsons, options);
   }
 
-  return new Document(resolvedJsons as AsyncAPIObject[], options.base);
+  return new Document(resolvedJsons, options.base);
 }
 
 // 'module.exports' is added to maintain backward compatibility with Node.js
