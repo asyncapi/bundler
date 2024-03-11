@@ -1,7 +1,6 @@
 import fs from 'fs';
-import $RefParser from '@apidevtools/json-schema-ref-parser';
 import axios from 'axios';
-import { cloneDeep, merge } from 'lodash';
+import { merge } from 'lodash';
 import yaml from 'js-yaml';
 import { parse } from './parser';
 import { ParserError } from './errors';
@@ -145,8 +144,6 @@ export function resolveBaseFileDir(file: object, baseFileDir: string) {
   );
 }
 
-// Moved 'addXOrigins' to the beginning of the scope to avoid an ESLint's error
-// `'addXOrigins' was used before it was defined`
 export function addXOrigins(asyncapiDocument: AsyncAPIObject) {
   // VALUE from 'asyncapiDocument' becomes KEY for the
   // underlying and recursive functions
