@@ -59,14 +59,17 @@ export const resolve = async (
 ) => {
   const docs = [];
 
-  for (const asyncapiDocument of asyncapiDocuments) {
-    if (options.referenceIntoComponents) {
+  try {
+    for (const asyncapiDocument of asyncapiDocuments) {
+      // if (options.referenceIntoComponents) {
+      //   await parse(asyncapiDocument);
+      // }
+      addXOrigins(asyncapiDocument); // eslint-disable-line @typescript-eslint/no-use-before-define
       await parse(asyncapiDocument);
+      // const bundledAsyncAPIDocument = await $RefParser.bundle(asyncapiDocument);
+      docs.push(asyncapiDocument);
     }
-    addXOrigins(asyncapiDocument); // eslint-disable-line @typescript-eslint/no-use-before-define
-    const bundledAsyncAPIDocument = await $RefParser.bundle(asyncapiDocument);
-    docs.push(bundledAsyncAPIDocument);
-  }
+  } catch (e) {}
 
   return docs;
 };

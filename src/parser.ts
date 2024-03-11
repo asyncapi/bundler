@@ -42,17 +42,22 @@ export async function parse(JSONSchema: AsyncAPIObject) {
   const result = await parser.validate(
     JSON.parse(JSON.stringify(dereferencedJSONSchema))
   );
-  
-  // If Parser's `validate()` function returns a non-empty array, that means
-  // there were errors during validation. Thus, the array is outputted as a list
-  // of remarks, and the program exits without doing anything further.
-  // if (result.length !== 0) {
-  //   console.log(
-  //     'Validation of the resulting AsyncAPI Document failed.\nList of remarks:\n',
-  //     result
-  //   );
-  //   throw new Error();
-  // }
+
+  // If Parser's `validate()` function returns a non-empty array with at least
+  // one `severity: 0`, that means there was at least one error during
+  // validation, not a `warning: 1`, `info: 2`, or `hint: 3`. Thus, array's
+  // elements with `severity: 0` are outputted as a list of remarks, and the
+  // program exits without doing anything further.
+  if (
+    result.length !== 0 &&
+    result.map(element => element.severity).includes(0)
+  ) {
+    console.log(
+      'Validation of the resulting AsyncAPI Document failed.\nList of remarks:\n',
+      result.filter(element => element.severity === 0)
+    );
+    throw new Error();
+  }
 
   return result;
 }
