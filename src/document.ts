@@ -55,6 +55,8 @@ export class Document {
    * @return {string}
    */
   string() {
-    return JSON.stringify(this._doc);
+    if (Object.keys(this._doc).length) {
+      return JSON.stringify(this._doc);
+    }
   }
 }
