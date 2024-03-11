@@ -79,6 +79,7 @@ console.log(document.string()); // get JSON string
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
 | [options.referenceIntoComponents] | <code>boolean</code> | <p>Pass <code>true</code> to resolve external references to components.</p> |
+| [options.baseDir] | <code>string</code> | <p>Pass folder path to</p> |
 
 **Example**  
 **TypeScript**

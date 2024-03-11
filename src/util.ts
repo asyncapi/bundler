@@ -104,15 +104,15 @@ export function versionCheck(asyncapiDocuments: AsyncAPIObject[]): number {
 }
 
 export function isExternalReference(ref: string): boolean {
-  return typeof ref === 'string' && !ref.startsWith('#')
+  return typeof ref === 'string' && !ref.startsWith('#');
 }
 
 export function notAUrl(ref: string): boolean {
   try {
-    new URL(ref)
-    return false
+    new URL(ref);
+    return false;
   } catch (error) {
-    return true
+    return true;
   }
 }
 
@@ -126,14 +126,14 @@ export function resolveBaseFileDir(file: object, baseFileDir: string) {
     json: file,
     resultType: 'all',
     path: '$.channels.*.messages.*'
-  }).forEach( ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
-    const ref = parent[String(parentProperty)]['$ref']
+  }).forEach(({parent, parentProperty}: {parent: any, parentProperty: string}) => {
+    const ref = parent[String(parentProperty)]['$ref'];
     if (isExternalReference(ref) && notAUrl(ref)) {
       // console.log(ref)
       // console.log(path.resolve(baseFileDir, ref))
-      parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref)
+      parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
     }
-  })
+  });
 
   JSONPath({
     json: file,
@@ -141,12 +141,12 @@ export function resolveBaseFileDir(file: object, baseFileDir: string) {
     path: '$.operations.*.messages.*'
   }).forEach(
     ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
-    const ref = parent[String(parentProperty)]['$ref']
-    if (isExternalReference(ref) && notAUrl(ref)) {
+      const ref = parent[String(parentProperty)]['$ref'];
+      if (isExternalReference(ref) && notAUrl(ref)) {
       // console.log(ref)
       // console.log(path.resolve(baseFileDir, ref))
-      parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref)
+        parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
+      }
     }
-    }
-  )
+  );
 }
