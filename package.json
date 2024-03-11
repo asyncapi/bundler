@@ -38,8 +38,10 @@
     "/lib"
   ],
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@apidevtools/json-schema-ref-parser": "^9.1.2",
+    "@asyncapi/parser": "^3.0.10",
     "@types/json-schema": "^7.0.11",
+    "axios": "^1.6.8",
     "js-yaml": "^4.1.0",
     "jsonpath-plus": "^6.0.1",
     "lodash": "^4.17.21"

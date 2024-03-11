@@ -1,9 +1,11 @@
+import fs from 'fs';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import { cloneDeep } from 'lodash';
+import axios from 'axios';
+import { cloneDeep, merge } from 'lodash';
 import yaml from 'js-yaml';
 import { parse } from './parser';
 import { ParserError } from './errors';
-import {JSONPath} from 'jsonpath-plus';
+import { JSONPath } from 'jsonpath-plus';
 
 import type { AsyncAPIObject } from './spec-types';
 import path from 'path';
@@ -39,7 +41,7 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
       title: 'The provided yaml is not valid.',
     });
   }
-  
+
   return yaml.load(asyncapiYAMLorJSON);
 };
 
@@ -73,6 +75,7 @@ export const resolve = async (
     if (options.referenceIntoComponents) {
       await parse(asyncapiDocument);
     }
+    addXOrigins(asyncapiDocument); // eslint-disable-line @typescript-eslint/no-use-before-define
     const bundledAsyncAPIDocument = await $RefParser.bundle(asyncapiDocument);
     docs.push(bundledAsyncAPIDocument);
   }
@@ -81,7 +84,7 @@ export const resolve = async (
 };
 
 /**
- * 
+ *
  * @param asyncapiDocument {AsyncAPIObject}
  * @returns {boolean}
  */
@@ -96,7 +99,9 @@ export function versionCheck(asyncapiDocuments: AsyncAPIObject[]): number {
   for (const asyncapiDocument of asyncapiDocuments) {
     const majorVersion = getSpecVersion(asyncapiDocument);
     if (majorVersion !== currentVersion) {
-      throw new Error('Unable to bundle specification file of different major versions');
+      throw new Error(
+        'Unable to bundle specification file of different major versions'
+      );
     }
     currentVersion = majorVersion;
   }
@@ -118,31 +123,81 @@ export function notAUrl(ref: string): boolean {
 
 export function resolveBaseFileDir(file: object, baseFileDir: string) {
   /**
-   * Update the local refences in a given file with the 
-   * absolute file path using the baseDir passed by the 
-   * user as an option. 
+   * Update the local refences in a given file with the
+   * absolute file path using the baseDir passed by the
+   * user as an option.
    */
   JSONPath({
     json: file,
     resultType: 'all',
-    path: '$.channels.*.messages.*'
-  }).forEach(({parent, parentProperty}: {parent: any, parentProperty: string}) => {
-    const ref = parent[String(parentProperty)]['$ref'];
-    if (isExternalReference(ref) && notAUrl(ref)) {
-      parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
-    }
-  });
-
-  JSONPath({
-    json: file,
-    resultType: 'all',
-    path: '$.operations.*.messages.*'
+    path: '$.channels.*.messages.*',
   }).forEach(
-    ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
+    ({ parent, parentProperty }: { parent: any; parentProperty: string }) => {
       const ref = parent[String(parentProperty)]['$ref'];
       if (isExternalReference(ref) && notAUrl(ref)) {
         parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
       }
     }
   );
+
+  JSONPath({
+    json: file,
+    resultType: 'all',
+    path: '$.operations.*.messages.*',
+  }).forEach(
+    ({ parent, parentProperty }: { parent: any; parentProperty: string }) => {
+      const ref = parent[String(parentProperty)]['$ref'];
+      if (isExternalReference(ref) && notAUrl(ref)) {
+        parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
+      }
+    }
+  );
+}
+
+// Moved 'addXOrigins' to the beginning of the scope to avoid an ESLint's error
+// `'addXOrigins' was used before it was defined`
+export function addXOrigins(asyncapiDocument: AsyncAPIObject) {
+  // VALUE from 'asyncapiDocument' becomes KEY for the
+  // underlying and recursive functions
+  Object.values(asyncapiDocument).forEach(async (key: any) => {
+    if (key && typeof key === 'object' && key !== '$ref') {
+      if (Object.keys(key).indexOf('$ref') !== -1) {
+        if (isExternalReference(key['$ref'])) {
+          key['x-origin'] = key['$ref'];
+
+          // If an external `$ref` is found, the function goes into
+          // second-level recursion to see if there are more `$ref`s whose
+          // values need to be copied to the `x-origin` properties of the
+          // `$ref`ed file.
+          // If an external `$ref` is found again, the function goes into the
+          // third-level recursion, and so on, until it reaches a file that
+          // contains no external `$ref`s at all.
+          // Then it exits all the way up in the opposite direction.
+
+          const inlineAsyncapiDocumentURI = key['$ref'].split('#/');
+          const inlineAsyncapiDocumentPath = inlineAsyncapiDocumentURI[0];
+          const inlineAsyncapiDocumentPointer = inlineAsyncapiDocumentURI[1];
+
+          let inlineAsyncapiDocument = inlineAsyncapiDocumentPath.startsWith(
+            'http'
+          )
+            ? yaml.load(await axios(inlineAsyncapiDocumentPath))
+            : (yaml.load(
+                fs.readFileSync(inlineAsyncapiDocumentPath, 'utf-8') // eslint-disable-line
+              ) as any); // eslint-disable-line
+
+          inlineAsyncapiDocument =
+            inlineAsyncapiDocument[String(inlineAsyncapiDocumentPointer)];
+
+          if (inlineAsyncapiDocument) {
+            addXOrigins(inlineAsyncapiDocument as AsyncAPIObject);
+            merge(key, inlineAsyncapiDocument);
+          }
+        }
+      } else {
+        addXOrigins(key);
+      }
+    }
+  });
+  return asyncapiDocument;
 }

@@ -37,7 +37,7 @@ describe('[integration testing] bundler should ', () => {
     );
 
     const asyncapiObject = doc.json();
-    const message = asyncapiObject.channels?.['user/signedup']?.subscribe?.message as ReferenceObject;
+    const message = asyncapiObject?.channels?.['user/signedup']?.subscribe?.message as ReferenceObject;
 
     expect(message.$ref).toMatch('#/components/messages/UserSignedUp');
   });
