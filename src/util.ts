@@ -46,18 +46,6 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
 };
 
 /**
- * @private
- */
-export const validate = async (
-  parsedJSONs: AsyncAPIObject[],
-  parser: { parse(asyncapi: string | any): Promise<any> }
-) => {
-  for (const parsedJSON of parsedJSONs) {
-    await parser.parse(cloneDeep(parsedJSON));
-  }
-};
-
-/**
  *
  * @param {Object} asyncapiDocuments
  * @param {Object} options
