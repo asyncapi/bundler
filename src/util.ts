@@ -129,8 +129,6 @@ export function resolveBaseFileDir(file: object, baseFileDir: string) {
   }).forEach(({parent, parentProperty}: {parent: any, parentProperty: string}) => {
     const ref = parent[String(parentProperty)]['$ref'];
     if (isExternalReference(ref) && notAUrl(ref)) {
-      // console.log(ref)
-      // console.log(path.resolve(baseFileDir, ref))
       parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
     }
   });
@@ -143,8 +141,6 @@ export function resolveBaseFileDir(file: object, baseFileDir: string) {
     ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
       const ref = parent[String(parentProperty)]['$ref'];
       if (isExternalReference(ref) && notAUrl(ref)) {
-      // console.log(ref)
-      // console.log(path.resolve(baseFileDir, ref))
         parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
       }
     }

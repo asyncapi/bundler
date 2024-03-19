@@ -14,7 +14,7 @@ async function singleFileWithBaseDir(){
 }
 
 async function singleFile(){
-    const document = await bundle([readFileSync('./spec/main.yaml', 'utf-8')], {baseDir: './spec'})
+    const document = await bundle([readFileSync('./spec/main.yaml', 'utf-8')])
     writeFileSync('asyncapi.yaml', document.yml())
 }
 
