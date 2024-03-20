@@ -3,8 +3,10 @@ import { cloneDeep } from 'lodash';
 import yaml from 'js-yaml';
 import { parse } from './parser';
 import { ParserError } from './errors';
+import {JSONPath} from 'jsonpath-plus';
 
 import type { AsyncAPIObject } from './spec-types';
+import path from 'path';
 
 /**
  * @private
@@ -99,4 +101,48 @@ export function versionCheck(asyncapiDocuments: AsyncAPIObject[]): number {
     currentVersion = majorVersion;
   }
   return currentVersion;
+}
+
+export function isExternalReference(ref: string): boolean {
+  return typeof ref === 'string' && !ref.startsWith('#');
+}
+
+export function notAUrl(ref: string): boolean {
+  try {
+    new URL(ref);
+    return false;
+  } catch (error) {
+    return true;
+  }
+}
+
+export function resolveBaseFileDir(file: object, baseFileDir: string) {
+  /**
+   * Update the local refences in a given file with the 
+   * absolute file path using the baseDir passed by the 
+   * user as an option. 
+   */
+  JSONPath({
+    json: file,
+    resultType: 'all',
+    path: '$.channels.*.messages.*'
+  }).forEach(({parent, parentProperty}: {parent: any, parentProperty: string}) => {
+    const ref = parent[String(parentProperty)]['$ref'];
+    if (isExternalReference(ref) && notAUrl(ref)) {
+      parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
+    }
+  });
+
+  JSONPath({
+    json: file,
+    resultType: 'all',
+    path: '$.operations.*.messages.*'
+  }).forEach(
+    ({parent, parentProperty}: {parent: any, parentProperty: string}) => {
+      const ref = parent[String(parentProperty)]['$ref'];
+      if (isExternalReference(ref) && notAUrl(ref)) {
+        parent[String(parentProperty)]['$ref'] = path.resolve(baseFileDir, ref);
+      }
+    }
+  );
 }

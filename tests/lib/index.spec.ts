@@ -89,6 +89,16 @@ describe('[integration testing] bundler should ', () => {
     ).resolves;
 
   })
+
+  test('should be able to change the baseDir folder', async () => {
+    const files = ['./tests/specfiles/main.yaml']
+    expect(
+      await bundle(
+        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
+        {baseDir: './tests/specfiles'}
+      )
+    ).resolves
+  })
 });
 
 describe('[unit testing]', () => {
