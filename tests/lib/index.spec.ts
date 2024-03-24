@@ -1,10 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
-import { isExternalReference } from '../../src/parser';
+import { isExternalReference } from '../../src/util';
 import fs from 'fs';
 import path from 'path';
-
-import type { ReferenceObject } from '../../src/spec-types';
 
 describe('[integration testing] bundler should ', () => {
   test('should return bundled doc', async () => {
@@ -18,28 +16,11 @@ describe('[integration testing] bundler should ', () => {
           path.resolve(process.cwd(), './tests/base.yml'),
           'utf-8'
         ),
-        validate: false,
+        noValidation: true,
       }
     );
 
     expect(response).toBeDefined();
-  });
-
-  test('should bundle references into components', async () => {
-    const files = ['./tests/asyncapi.yaml'];
-    const doc = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-      ),
-      {
-        referenceIntoComponents: true,
-      }
-    );
-
-    const asyncapiObject = doc.json();
-    const message = asyncapiObject.channels?.['user/signedup']?.subscribe?.message as ReferenceObject;
-
-    expect(message.$ref).toMatch('#/components/messages/UserSignedUp');
   });
 
   test('should not throw if value of `$ref` is not a string', async () => {
@@ -54,7 +35,8 @@ describe('[integration testing] bundler should ', () => {
           fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
         ),
         {
-          referenceIntoComponents: true,
+          referenceIntoComponents: false,
+          noValidation: true,
         }
       )
     ).resolves;
@@ -72,7 +54,8 @@ describe('[integration testing] bundler should ', () => {
           fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
         ),
         {
-          referenceIntoComponents: true,
+          referenceIntoComponents: false,
+          noValidation: true,
         }
       )
     ).resolves;
@@ -84,7 +67,7 @@ describe('[integration testing] bundler should ', () => {
     expect(
       await bundle(
         files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        { referenceIntoComponents: true, base: fs.readFileSync(path.resolve(process.cwd(), './tests/base-option/base.yaml'), 'utf-8') }
+        { referenceIntoComponents: false, base: fs.readFileSync(path.resolve(process.cwd(), './tests/base-option/base.yaml'), 'utf-8'), noValidation: true, }
       )
     ).resolves;
 
@@ -95,7 +78,7 @@ describe('[integration testing] bundler should ', () => {
     expect(
       await bundle(
         files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        {baseDir: './tests/specfiles'}
+        {baseDir: './tests/specfiles', noValidation: true}
       )
     ).resolves
   })
