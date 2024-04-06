@@ -19,7 +19,7 @@ describe('[integration testing] bundler should ', () => {
         noValidation: true,
       }
     );
-
+    console.log(response.yml())
     expect(response).toBeDefined();
   });
 
@@ -35,7 +35,7 @@ describe('[integration testing] bundler should ', () => {
           fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
         ),
         {
-          referenceIntoComponents: false,
+          xOrigin: true,
           noValidation: true,
         }
       )
@@ -54,7 +54,7 @@ describe('[integration testing] bundler should ', () => {
           fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
         ),
         {
-          referenceIntoComponents: false,
+          xOrigin: true,
           noValidation: true,
         }
       )
@@ -62,33 +62,50 @@ describe('[integration testing] bundler should ', () => {
   });
 
   test('should be able to bundle base file', async () => {
-    const files = ['./tests/base-option/lights.yaml', './tests/base-option/camera.yaml']
+    const files = [
+      './tests/base-option/lights.yaml',
+      './tests/base-option/camera.yaml',
+    ];
 
     expect(
       await bundle(
-        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        { referenceIntoComponents: false, base: fs.readFileSync(path.resolve(process.cwd(), './tests/base-option/base.yaml'), 'utf-8'), noValidation: true, }
+        files.map(file =>
+          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+        ),
+        {
+          xOrigin: true,
+          base: fs.readFileSync(
+            path.resolve(process.cwd(), './tests/base-option/base.yaml'),
+            'utf-8'
+          ),
+          noValidation: true,
+        }
       )
     ).resolves;
-
-  })
+  });
 
   test('should be able to change the baseDir folder', async () => {
-    const files = ['./tests/specfiles/main.yaml']
+    const files = ['./tests/specfiles/main.yaml'];
     expect(
       await bundle(
-        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        {baseDir: './tests/specfiles', noValidation: true}
+        files.map(file =>
+          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+        ),
+        { baseDir: './tests/specfiles', noValidation: true }
       )
-    ).resolves
-  })
+    ).resolves;
+  });
 });
 
 describe('[unit testing]', () => {
   test('`isExternalReference()` should return `true` on external reference', () => {
-    expect(isExternalReference('./components/messages/UserSignedUp')).toBeTruthy();
+    expect(
+      isExternalReference('./components/messages/UserSignedUp')
+    ).toBeTruthy();
   });
   test('`isExternalReference()` should return `false` on local reference', () => {
-    expect(isExternalReference('#/components/messages/UserSignedUp')).toBeFalsy();
+    expect(
+      isExternalReference('#/components/messages/UserSignedUp')
+    ).toBeFalsy();
   });
 });

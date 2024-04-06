@@ -3,7 +3,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
   writeFileSync('asyncapi.yaml', document.yml());
 }

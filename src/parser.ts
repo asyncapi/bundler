@@ -21,6 +21,7 @@ export async function parse(
   options: any = {}
 ) {
   let validationResult: any[] = [];
+
   /* eslint-disable indent */
   // It is assumed that there will be major Spec versions 4, 5 and on.
   switch (specVersion) {
@@ -32,7 +33,7 @@ export async function parse(
             return;
           },
           onDereference: (path: string, value: AsyncAPIObject) => {
-            if (options.xOrigin) {
+            if (options.xOrigin === true) {
               value['x-origin'] = path;
             }
           },
@@ -59,7 +60,7 @@ export async function parse(
             );
           },
           onDereference: (path: string, value: AsyncAPIObject) => {
-            if (options.xOrigin) {
+            if (options.xOrigin === true) {
               value['x-origin'] = path;
             }
           },

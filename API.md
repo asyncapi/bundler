@@ -78,8 +78,7 @@ console.log(document.string()); // get JSON string
 | files | <code>Array.&lt;string&gt;</code> | <p>Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via <code>Array.map()</code> and <code>fs.readFileSync</code>, which is the same, see <code>README.md</code>).</p> |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
-| [options.referenceIntoComponents] | <code>boolean</code> | <p>Pass <code>true</code> to resolve external references to components.</p> |
-| [options.baseDir] | <code>string</code> | <p>Pass folder path to</p> |
+| [options.xOrigin] | <code>boolean</code> | <p>Pass <code>true</code> to generate properties <code>x-origin</code> that will contain historical values of dereferenced <code>$ref</code>s.</p> |
 
 **Example**  
 **TypeScript**
@@ -89,7 +88,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
 
   console.log(document.yml()); // the complete bundled AsyncAPI document
@@ -108,7 +107,7 @@ const bundle = require('@asyncapi/bundler');
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
   writeFileSync('asyncapi.yaml', document.yml());
 }
@@ -125,7 +124,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
   writeFileSync('asyncapi.yaml', document.yml());
 }

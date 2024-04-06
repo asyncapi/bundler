@@ -43,7 +43,7 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
  *
  * @param {Object} asyncapiDocuments
  * @param {Object} options
- * @param {boolean} options.referenceIntoComponents
+ * @param {boolean} options.xOrigin
  * @returns {Array<Object>}
  * @private
  */

@@ -1,5 +1,6 @@
 import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
+import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
 
@@ -11,9 +12,8 @@ import type { AsyncAPIObject } from './spec-types';
  * @param {Object} [options]
  * @param {string | object} [options.base] Base object whose properties will be
  * retained.
- * @param {boolean} [options.referenceIntoComponents] Pass `true` to resolve
- * external references to components.
- * @param {string} [options.baseDir] Pass folder path to 
+ * @param {boolean} [options.xOrigin] Pass `true` to generate properties
+ * `x-origin` that will contain historical values of dereferenced `$ref`s.
  *
  * @return {Document}
  *
@@ -26,7 +26,7 @@ import type { AsyncAPIObject } from './spec-types';
  *
  * async function main() {
  *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
+ *     xOrigin: true,
  *   });
  *
  *   console.log(document.yml()); // the complete bundled AsyncAPI document
@@ -45,7 +45,7 @@ import type { AsyncAPIObject } from './spec-types';
  *
  * async function main() {
  *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
+ *     xOrigin: true,
  *   });
  *   writeFileSync('asyncapi.yaml', document.yml());
  * }
@@ -62,7 +62,7 @@ import type { AsyncAPIObject } from './spec-types';
  *
  * async function main() {
  *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
+ *     xOrigin: true,
  *   });
  *   writeFileSync('asyncapi.yaml', document.yml());
  * }
@@ -72,15 +72,15 @@ import type { AsyncAPIObject } from './spec-types';
  *
  */
 export default async function bundle(files: string[], options: any = {}) {
-  // if (typeof options.base !== 'undefined') {
-  //   options.base = toJS(options.base);
-  //   await parse(options.base, options);
-  // }
-
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
 
   const majorVersion = versionCheck(parsedJsons);
 
+  if (typeof options.base !== 'undefined') {
+    options.base = toJS(options.base);
+    await parse(options.base, majorVersion, options);
+  }
+  
   const resolvedJsons: AsyncAPIObject[] = await resolve(parsedJsons, majorVersion, options);
   
   return new Document(resolvedJsons, options.base);

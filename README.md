@@ -11,14 +11,19 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
-  * [Resolving external references into components](#resolving-external-references-into-components)
+  * [Dereference of the external references](#dereference-of-the-external-references)
+  * [Property `x-origin`](#property-x-origin)
+  * [Movement of components to `components`](#movement-of-components-to-components)
+  * [Code examples](#code-examples)
 - [bundle(files, [options])](#bundlefiles-options)
 - [Contributors](#contributors)
 
 <!-- tocstop -->
 
 ## Overview
-An official library that lets you bundle/merge your specification files into one. AsyncAPI Bundler can help you if:
+An official library that lets you bundle/dereference or merge into one your AsyncAPI Documents.
+
+AsyncAPI Bundler can help you if:
 
 <details>
 <summary>your specification file is divided into different smaller files and is using JSON `$ref` property to reference components </summary>
@@ -184,89 +189,55 @@ async function main() {
 main().catch(e => console.error(e));
 ```
 
-### Resolving external references into components
-You can resolve external references by moving them to Messages Object, under `components/messages`.
+### Dereference of the external references
 
-<details>
-<summary>For example</summary>
+`Bundler` dereferences the provided AsyncAPI Document to the maximum possible extent, leaving intact only those internal references that MUST be `Reference Object`s according to the AsyncAPI Specification (thus, should never be dereferenced):
 
-```yml
-# main.yaml
-asyncapi: 2.5.0
-info:
-  title: Account Service
-  version: 1.0.0
-  description: This service is in charge of processing user signups
-channels:
-  user/signedup:
-    subscribe:
-      message:
-        $ref: './messages.yaml#/messages/UserSignedUp'
-  test:
-    subscribe:
-      message:
-        $ref: '#/components/messages/TestMessage'
-components:
-  messages:
-    TestMessage:
-      payload:
-        type: string
+- AsyncAPI Specification v2.6.0
+  
+There are no internal references that MUST be `Reference Object`s.
 
-# messages.yaml
-messages:
-  UserSignedUp:
-    payload:
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Name of the user
-        email:
-          type: string
-          format: email
-          description: Email of the user
-  UserLoggedIn:
-    payload:
-      type: object
-      properties:
-        id: string
+- AsyncAPI Specification v3.0.0
 
-# After combining
-# asyncapi.yaml
-asyncapi: 2.5.0
-info:
-  title: Account Service
-  version: 1.0.0
-  description: This service is in charge of processing user signups
-channels:
-  user/signedup:
-    subscribe:
-      message:
-        $ref: '#/components/messages/UserSignedUp'
-  test:
-    subscribe:
-      message:
-        $ref: '#/components/messages/TestMessage'
-components:
-  messages:
-    TestMessage:
-      payload:
-        type: string
-    UserSignedUp:
-      payload:
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: Name of the user
-          email:
-            type: string
-            format: email
-            description: Email of the user
+Regexes of internal references that MUST be `Reference Object`s:
 
 ```
-</details>
-<br />
+/#\/channels\/[a-zA-Z0-9]*\/servers/
+/#\/operations\/[a-zA-Z0-9]*\/channel/
+/#\/operations\/[a-zA-Z0-9]*\/messages/
+/#\/operations\/[a-zA-Z0-9]*\/reply\/channel/
+/#\/operations\/[a-zA-Z0-9]*\/reply\/messages/
+/#\/components\/channels\/[a-zA-Z0-9]*\/servers/
+/#\/components\/operations\/[a-zA-Z0-9]*\/channel/
+/#\/components\/operations\/[a-zA-Z0-9]*\/messages/
+/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/
+/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/
+```
+
+
+### Property `x-origin`
+
+Property `x-origin` is used for origin tracing in `Bundler` and component naming in `Optimizer`.
+
+It originated from [this comment](https://github.com/asyncapi/bundler/issues/97#issuecomment-1330501758) in a year-long discussion: 
+
+> The $ref usually also carries a semantical meaning to understand easier what it is (example "$ref : financial-system.yaml#/components/schemas/bankAccountIdentifier"). If the bundling just resolves this ref inline, the semantical meaning of the $ref pointer gets lost and cannot be recovered in later steps. The optimizer would need to invent an artificial component name for the "bankAccountIdentifier" when moving it to the components section.
+
+Thus, property `x-origin` contains historical values of dereferenced `$ref`s, which are also used by `Optimizer` to give meaningful names to components it moves through the AsyncAPI Document.
+
+However, if a user doesn't need / doesn't want `x-origin` properties to be present in the structure of the AsyncAPI Document (values of the `x-origin` property may leak internal details about how the system described by the AsyncAPI Document is structured,) they can pass `{ xOrigin: false }` (or omit passing `xOrigin` at all) to the `Bundler` in the options object.
+
+
+### Movement of components to `components`
+
+The movement of all AsyncAPI Specification-valid components to the `components` section of the AsyncAPI Document is done by the [`Optimizer`](https://github.com/asyncapi/optimizer) v1.0.0+.
+
+To get in CI/code an AsyncAPI Document, that is dereferenced [to its maximum possible extent](#dereference-of-the-external-references) with all of its components moved to the `components` section, the original AsyncAPI Document must be run through chain `Bundler -> Optimizer`.
+
+If `Optimizer` is not able to find `x-origin` properties during optimization of the provided AsyncAPI Document, the existing names of components are used as a fallback mechanism, but keep in mind that components' names may lack semantic meaning in this case.
+
+
+### Code examples
 
 **TypeScript**
 ```ts
@@ -275,7 +246,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
 
   console.log(document.yml()); // the complete bundled AsyncAPI document
@@ -294,7 +265,7 @@ const bundle = require('@asyncapi/bundler');
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
   writeFileSync('asyncapi.yaml', document.yml());
 }
@@ -311,7 +282,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+    xOrigin: true,
   });
   writeFileSync('asyncapi.yaml', document.yml());
 }
@@ -319,6 +290,7 @@ async function main() {
 main().catch(e => console.error(e)); 
 
 ```
+
 
 <a name="bundle"></a>
 
@@ -330,7 +302,8 @@ main().catch(e => console.error(e));
 | files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via `Array.map()` and `fs.readFileSync`, which is the same). |
 | [options] | <code>Object</code> |  |
 | [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
-| [options.referenceIntoComponents] | <code>boolean<code> | Pass `true` to resolve external references to components. |
+| [options.xOrigin] | <code>boolean</code> | <p>Pass <code>true</code> to generate properties <code>x-origin</code> that will contain historical values of dereferenced <code>$ref</code>s.</p> |
+
 
 ## Contributors
 

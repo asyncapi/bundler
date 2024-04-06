@@ -12,7 +12,7 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: false,
+    xOrigin: true,
   });
   if (document.yml()) {
     writeFileSync('asyncapi.yaml', document.yml());
