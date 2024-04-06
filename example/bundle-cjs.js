@@ -14,7 +14,7 @@ async function main() {
   const filePaths = ['./camera.yml','./audio.yml'];
   const document = await bundle(
     filePaths.map(filePath => readFileSync(filePath, 'utf-8')), {
-      // base: readFileSync('./base.yml', 'utf-8'),
+      base: readFileSync('./base.yml', 'utf-8'),
       xOrigin: true
     }
   );

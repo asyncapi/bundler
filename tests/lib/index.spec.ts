@@ -19,7 +19,6 @@ describe('[integration testing] bundler should ', () => {
         noValidation: true,
       }
     );
-    console.log(response.yml())
     expect(response).toBeDefined();
   });
 

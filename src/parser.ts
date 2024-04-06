@@ -28,7 +28,8 @@ export async function parse(
     case 2:
       RefParserOptions = {
         dereference: {
-          circular: false, // prettier-ignore
+          circular: false,
+          // prettier-ignore
           excludedPathMatcher: (path: string): any => { // eslint-disable-line
             return;
           },
@@ -47,16 +48,16 @@ export async function parse(
           excludedPathMatcher: (path: string): any => {
             return (
               // prettier-ignore
-              (/#\/channels\/[a-zA-Z0-9]*\/servers/).test(path) ||
-            (/#\/operations\/[a-zA-Z0-9]*\/channel/).test(path) ||
-            (/#\/operations\/[a-zA-Z0-9]*\/messages/).test(path) ||
-            (/#\/operations\/[a-zA-Z0-9]*\/reply\/channel/).test(path) ||
-            (/#\/operations\/[a-zA-Z0-9]*\/reply\/messages/).test(path) ||
-            (/#\/components\/channels\/[a-zA-Z0-9]*\/servers/).test(path) ||
-            (/#\/components\/operations\/[a-zA-Z0-9]*\/channel/).test(path) ||
-            (/#\/components\/operations\/[a-zA-Z0-9]*\/messages/).test(path) ||
-            (/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/).test(path) ||
-            (/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/).test(path)
+              (/#\/channels\/,*\/servers/).test(path) ||
+              (/#\/operations\/.*\/channel/).test(path) ||
+              (/#\/operations\/.*\/messages/).test(path) ||
+              (/#\/operations\/.*\/reply\/channel/).test(path) ||
+              (/#\/operations\/,*\/reply\/messages/).test(path) ||
+              (/#\/components\/channels\/.*\/servers/).test(path) ||
+              (/#\/components\/operations\/.*\/channel/).test(path) ||
+              (/#\/components\/operations\/.*\/messages/).test(path) ||
+              (/#\/components\/operations\/.*\/reply\/channel/).test(path) ||
+              (/#\/components\/operations\/.*\/reply\/messages/).test(path)
             );
           },
           onDereference: (path: string, value: AsyncAPIObject) => {

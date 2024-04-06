@@ -9,8 +9,8 @@ const { readFileSync, writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const document = await bundle(['./main151.yaml', './main153.yaml'].map( f => readFileSync(f, 'utf-8')), {
-    xOrigin: false,
+  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+    xOrigin: true,
   });
   if (document.yml()) {
     writeFileSync('asyncapi.yaml', document.yml());

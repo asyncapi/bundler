@@ -202,16 +202,16 @@ There are no internal references that MUST be `Reference Object`s.
 Regexes of internal references that MUST be `Reference Object`s:
 
 ```
-/#\/channels\/[a-zA-Z0-9]*\/servers/
-/#\/operations\/[a-zA-Z0-9]*\/channel/
-/#\/operations\/[a-zA-Z0-9]*\/messages/
-/#\/operations\/[a-zA-Z0-9]*\/reply\/channel/
-/#\/operations\/[a-zA-Z0-9]*\/reply\/messages/
-/#\/components\/channels\/[a-zA-Z0-9]*\/servers/
-/#\/components\/operations\/[a-zA-Z0-9]*\/channel/
-/#\/components\/operations\/[a-zA-Z0-9]*\/messages/
-/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/
-/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/
+/#\/channels\/,*\/servers/
+/#\/operations\/.*\/channel/
+/#\/operations\/.*\/messages/
+/#\/operations\/.*\/reply\/channel/
+/#\/operations\/,*\/reply\/messages/
+/#\/components\/channels\/.*\/servers/
+/#\/components\/operations\/.*\/channel/
+/#\/components\/operations\/.*\/messages/
+/#\/components\/operations\/.*\/reply\/channel/
+/#\/components\/operations\/.*\/reply\/messages/
 ```
 
 
@@ -230,7 +230,7 @@ However, if a user doesn't need / doesn't want `x-origin` properties to be prese
 
 ### Movement of components to `components`
 
-The movement of all AsyncAPI Specification-valid components to the `components` section of the AsyncAPI Document is done by the [`Optimizer`](https://github.com/asyncapi/optimizer) v1.0.0+.
+The movement of all AsyncAPI Specification-valid components to the `components` section of the AsyncAPI Document starting from `Bundler` v0.5.0 is done by the [`Optimizer`](https://github.com/asyncapi/optimizer) v1.0.0+.
 
 To get in CI/code an AsyncAPI Document, that is dereferenced [to its maximum possible extent](#dereference-of-the-external-references) with all of its components moved to the `components` section, the original AsyncAPI Document must be run through chain `Bundler -> Optimizer`.
 
