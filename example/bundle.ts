@@ -3,11 +3,9 @@ import bundle from '@asyncapi/bundler';
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: false,
+    referenceIntoComponents: true,
   });
-  if (document.yml()) {
-    writeFileSync('asyncapi.yaml', document.yml());
-  }
+  writeFileSync('asyncapi.yaml', document.yml());
 }
 
 main().catch(e => console.error(e));

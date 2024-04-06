@@ -10,7 +10,7 @@ const bundle = require('@asyncapi/bundler');
 
 async function main() {
   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: false,
+    'x-origin': true,
   });
   if (document.yml()) {
     writeFileSync('asyncapi.yaml', document.yml());

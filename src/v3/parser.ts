@@ -1,6 +1,5 @@
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { Parser } from '@asyncapi/parser';
-import { addXOrigins } from '../util';
 
 import { AsyncAPIObject } from 'spec-types';
 
@@ -9,30 +8,28 @@ const parser = new Parser();
 export async function parse(JSONSchema: AsyncAPIObject, options: any = {}) {
   let validationResult: any[] = [];
 
-  addXOrigins(JSONSchema);
-
   const dereferencedJSONSchema = await $RefParser.dereference(JSONSchema, {
     dereference: {
       circular: false,
-      excludedPathMatcher: (path: string): boolean => {
+      excludedPathMatcher: (path: string): any => {
         return (
           // prettier-ignore
-          !!(/#\/[a-zA-Z0-9]*/).exec(path) ||          
-          !!(/#\/channels\/[a-zA-Z0-9]*\/servers/).exec(path) ||
-          !!(/#\/operations\/[a-zA-Z0-9]*\/channel/).exec(path) ||
-          !!(/#\/operations\/[a-zA-Z0-9]*\/messages/).exec(path) ||
-          !!(/#\/operations\/[a-zA-Z0-9]*\/reply\/channel/).exec(path) ||
-          !!(/#\/operations\/[a-zA-Z0-9]*\/reply\/messages/).exec(path) ||
-          !!(/#\/components\/channels\/[a-zA-Z0-9]*\/servers/).exec(path) ||
-          !!(/#\/components\/operations\/[a-zA-Z0-9]*\/channel/).exec(path) ||
-          !!(/#\/components\/operations\/[a-zA-Z0-9]*\/messages/).exec(path) ||
-          !!(/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/).exec(
-            path
-          ) ||
-          !!(/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/).exec(
-            path
-          )
+          /#\/channels\/[a-zA-Z0-9]*\/servers/.test(path) ||
+          /#\/operations\/[a-zA-Z0-9]*\/channel/.test(path) ||
+          /#\/operations\/[a-zA-Z0-9]*\/messages/.test(path) ||
+          /#\/operations\/[a-zA-Z0-9]*\/reply\/channel/.test(path) ||
+          /#\/operations\/[a-zA-Z0-9]*\/reply\/messages/.test(path) ||
+          /#\/components\/channels\/[a-zA-Z0-9]*\/servers/.test(path) ||
+          /#\/components\/operations\/[a-zA-Z0-9]*\/channel/.test(path) ||
+          /#\/components\/operations\/[a-zA-Z0-9]*\/messages/.test(path) ||
+          /#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/.test(path) ||
+          /#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/.test(path)
         );
+      },
+      onDereference: (path: string, value: AsyncAPIObject) => {
+        if (options['x-origin']) {
+          value['x-origin'] = path;
+        }
       },
     },
   });

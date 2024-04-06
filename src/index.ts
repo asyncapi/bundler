@@ -1,6 +1,5 @@
-import { toJS, resolve, versionCheck, resolveBaseFileDir } from './util';
+import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
-import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
 import { resolveV3Document } from './v3/parser';
@@ -74,16 +73,12 @@ import { resolveV3Document } from './v3/parser';
  *
  */
 export default async function bundle(files: string[], options: any = {}) {
-  if (typeof options.base !== 'undefined') {
-    options.base = toJS(options.base);
-    await parse(options.base, options);
-  }
+  // if (typeof options.base !== 'undefined') {
+  //   options.base = toJS(options.base);
+  //   await parse(options.base, options);
+  // }
 
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
-
-  if (typeof options.baseDir !== 'undefined') {
-    parsedJsons.forEach(parsedJson => resolveBaseFileDir(parsedJson, options.baseDir));
-  }
 
   const majorVersion = versionCheck(parsedJsons);
   let resolvedJsons;
