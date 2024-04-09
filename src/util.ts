@@ -49,16 +49,17 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
  */
 export const resolve = async (
   asyncapiDocuments: AsyncAPIObject[],
+  specVersion: number,
   options: any
 ) => {
   const docs = [];
 
   try {
     for (const asyncapiDocument of asyncapiDocuments) {
-      await parse(asyncapiDocument, options);
+      await parse(asyncapiDocument, specVersion, options);
       docs.push(asyncapiDocument);
     }
-  } catch (e) {}
+  } catch (e) {} // eslint-disable-line
 
   return docs;
 };

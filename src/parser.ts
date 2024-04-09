@@ -1,33 +1,81 @@
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { Parser } from '@asyncapi/parser';
 
-import { AsyncAPIObject } from 'spec-types';
+import type { ParserOptions as $RefParserOptions } from '@apidevtools/json-schema-ref-parser';
+import type { AsyncAPIObject } from 'spec-types';
 
 const parser = new Parser();
 
+let RefParserOptions: $RefParserOptions;
+
 /**
- * Fully dereferences the AsyncAPI Document.
+ * Function fully dereferences the provided AsyncAPI Document.
  * @param {Object[]} JSONSchema
+ * @param {number} specVersion
+ * @param {Object} options
  * @private
  */
-export async function parse(JSONSchema: AsyncAPIObject, options: any = {}) {
+export async function parse(
+  JSONSchema: AsyncAPIObject,
+  specVersion: number,
+  options: any = {}
+) {
   let validationResult: any[] = [];
+  /* eslint-disable indent */
+  // It is assumed that there will be major Spec versions 4, 5 and on.
+  switch (specVersion) {
+    case 2:
+      RefParserOptions = {
+        dereference: {
+          circular: false, // prettier-ignore
+          excludedPathMatcher: (path: string): any => { // eslint-disable-line
+            return;
+          },
+          onDereference: (path: string, value: AsyncAPIObject) => {
+            if (options.xOrigin) {
+              value['x-origin'] = path;
+            }
+          },
+        },
+      };
+      break;
+    case 3:
+      RefParserOptions = {
+        dereference: {
+          circular: false,
+          excludedPathMatcher: (path: string): any => {
+            return (
+              // prettier-ignore
+              (/#\/channels\/[a-zA-Z0-9]*\/servers/).test(path) ||
+            (/#\/operations\/[a-zA-Z0-9]*\/channel/).test(path) ||
+            (/#\/operations\/[a-zA-Z0-9]*\/messages/).test(path) ||
+            (/#\/operations\/[a-zA-Z0-9]*\/reply\/channel/).test(path) ||
+            (/#\/operations\/[a-zA-Z0-9]*\/reply\/messages/).test(path) ||
+            (/#\/components\/channels\/[a-zA-Z0-9]*\/servers/).test(path) ||
+            (/#\/components\/operations\/[a-zA-Z0-9]*\/channel/).test(path) ||
+            (/#\/components\/operations\/[a-zA-Z0-9]*\/messages/).test(path) ||
+            (/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/channel/).test(path) ||
+            (/#\/components\/operations\/[a-zA-Z0-9]*\/reply\/messages/).test(path)
+            );
+          },
+          onDereference: (path: string, value: AsyncAPIObject) => {
+            if (options.xOrigin) {
+              value['x-origin'] = path;
+            }
+          },
+        },
+      };
+      break;
+    default:
+      console.error(
+        `There is no support for AsyncAPI Specification v${specVersion}.`
+      );
+  }
 
-  const dereferencedJSONSchema = await $RefParser.dereference(JSONSchema, {
-    dereference: {
-      circular: false,
-      // excludedPathMatcher: (path: string): any => {
-      //   return (
-      //     // prettier-ignore
-      //   );
-      // },
-      onDereference: (path: string, value: AsyncAPIObject) => {
-        if (options['x-origin']) {
-          value['x-origin'] = path;
-        }
-      },
-    },
-  });
+  const dereferencedJSONSchema = await $RefParser.dereference(
+    JSONSchema,
+    RefParserOptions
+  );
 
   // Option `noValidation: true` is used by the testing system, which
   // intentionally feeds Bundler wrong AsyncAPI Documents, thus it is not

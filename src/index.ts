@@ -2,7 +2,6 @@ import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
 
 import type { AsyncAPIObject } from './spec-types';
-import { resolveV3Document } from './v3/parser';
 
 /**
  *
@@ -81,18 +80,9 @@ export default async function bundle(files: string[], options: any = {}) {
   const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
 
   const majorVersion = versionCheck(parsedJsons);
-  let resolvedJsons;
 
-  if (majorVersion === 3) {
-    resolvedJsons = await resolveV3Document(parsedJsons, options);
-  } else {
-    /**
-     * Bundle all external references for each file.
-     * @private
-     */
-    resolvedJsons = await resolve(parsedJsons, options);
-  }
-
+  const resolvedJsons: AsyncAPIObject[] = await resolve(parsedJsons, majorVersion, options);
+  
   return new Document(resolvedJsons, options.base);
 }
 
