@@ -7,18 +7,13 @@ import path from 'path';
 describe('[integration testing] bundler should ', () => {
   test('should return bundled doc', async () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
-    const response = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+    const response = await bundle(files, {
+      base: fs.readFileSync(
+        path.resolve(process.cwd(), './tests/base.yml'),
+        'utf-8'
       ),
-      {
-        base: fs.readFileSync(
-          path.resolve(process.cwd(), './tests/base.yml'),
-          'utf-8'
-        ),
-        noValidation: true,
-      }
-    );
+      noValidation: true,
+    });
     expect(response).toBeDefined();
   });
 
@@ -29,15 +24,10 @@ describe('[integration testing] bundler should ', () => {
     // did not throw exception during process of execution, which is the
     // objective of testing.
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-        ),
-        {
-          xOrigin: true,
-          noValidation: true,
-        }
-      )
+      await bundle(files, {
+        xOrigin: true,
+        noValidation: true,
+      })
     ).resolves;
   });
 
@@ -48,15 +38,10 @@ describe('[integration testing] bundler should ', () => {
     // did not throw exception during process of execution, which is the
     // objective of testing.
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-        ),
-        {
-          xOrigin: true,
-          noValidation: true,
-        }
-      )
+      await bundle(files, {
+        xOrigin: true,
+        noValidation: true,
+      })
     ).resolves;
   });
 
@@ -67,31 +52,21 @@ describe('[integration testing] bundler should ', () => {
     ];
 
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
+      await bundle(files, {
+        xOrigin: true,
+        base: fs.readFileSync(
+          path.resolve(process.cwd(), './tests/base-option/base.yaml'),
+          'utf-8'
         ),
-        {
-          xOrigin: true,
-          base: fs.readFileSync(
-            path.resolve(process.cwd(), './tests/base-option/base.yaml'),
-            'utf-8'
-          ),
-          noValidation: true,
-        }
-      )
+        noValidation: true,
+      })
     ).resolves;
   });
 
   test('should be able to change the baseDir folder', async () => {
-    const files = ['./tests/specfiles/main.yaml'];
+    const files = ['main.yaml'];
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-        ),
-        { baseDir: './tests/specfiles', noValidation: true }
-      )
+      await bundle(files, { baseDir: './tests/specfiles', noValidation: true })
     ).resolves;
   });
 });

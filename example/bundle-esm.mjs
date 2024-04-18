@@ -5,11 +5,11 @@
 
 'use strict';
 
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import bundle from '@asyncapi/bundler';
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+  const document = await bundle(['./main.yaml'], {
     xOrigin: true,
   });
   if (document.yml()) {

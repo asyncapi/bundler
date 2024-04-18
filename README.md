@@ -171,19 +171,18 @@ AsyncAPI Bundler can be easily used within your JavaScript projects as a Node.js
 ```js
 'use strict';
 
-const { readFileSync, writeFileSync } = require('fs');
+const { writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const filePaths = ['./camera.yml','./audio.yml'];
-  const document = await bundle(
-    filePaths.map(filePath => readFileSync(filePath, 'utf-8')), {
-      base: readFileSync('./base.yml', 'utf-8'),
-    }
-  );
-
-  console.log(document.yml()); // the complete bundled AsyncAPI document
-  writeFileSync('asyncapi.yaml', document.yml()); // the complete bundled AsyncAPI document
+  const document = await bundle(['social-media/comments-service/main.yaml'], {
+    baseDir: 'example-data',
+    xOrigin: true,
+  });
+  if (document.yml()) {
+    console.log(document.yml()); // the complete bundled AsyncAPI document
+    writeFileSync('asyncapi.yaml', document.yml()); // the complete bundled AsyncAPI document
+  }
 }
 
 main().catch(e => console.error(e));
@@ -241,17 +240,17 @@ If `Optimizer` is not able to find `x-origin` properties during optimization of 
 
 **TypeScript**
 ```ts
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import bundle from '@asyncapi/bundler';
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+  const document = await bundle(['social-media/comments-service/main.yaml'], {
+    baseDir: 'example-data',
     xOrigin: true,
   });
-
-  console.log(document.yml()); // the complete bundled AsyncAPI document
-  writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
-}
+  if (document.yml()) {
+    writeFileSync('asyncapi.yaml', document.yml());
+  }
 
 main().catch(e => console.error(e));
 ```
@@ -260,15 +259,17 @@ main().catch(e => console.error(e));
 ```js
 'use strict';
 
-const { readFileSync, writeFileSync } = require('fs');
+const { writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+  const document = await bundle(['social-media/comments-service/main.yaml'], {
+    baseDir: 'example-data',
     xOrigin: true,
   });
-  writeFileSync('asyncapi.yaml', document.yml());
-}
+  if (document.yml()) {
+    writeFileSync('asyncapi.yaml', document.yml());
+  }
 
 main().catch(e => console.error(e));
 ```
@@ -277,15 +278,17 @@ main().catch(e => console.error(e));
 ```js
 'use strict';
 
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import bundle from '@asyncapi/bundler';
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
+  const document = await bundle(['social-media/comments-service/main.yaml'], {
+    baseDir: 'example-data',
     xOrigin: true,
   });
-  writeFileSync('asyncapi.yaml', document.yml());
-}
+  if (document.yml()) {
+    writeFileSync('asyncapi.yaml', document.yml());
+  }
 
 main().catch(e => console.error(e)); 
 
@@ -299,9 +302,10 @@ main().catch(e => console.error(e));
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt; | Array of stringified AsyncAPI documents in YAML format, that are to be bundled (or array of filepaths, resolved and passed via `Array.map()` and `fs.readFileSync`, which is the same). |
+| files | <code>Array.&lt;string&gt;</code> | <p>Array of relative or absolute paths to AsyncAPI Documents that should be bundled.</p> |
 | [options] | <code>Object</code> |  |
-| [options.base] | <code>string</code> \| <code>object</code> | Base object whose properties will be retained. |
+| [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
+| [options.baseDir] | <code>string</code> | <p>Relative or absolute path to directory relative to which paths to AsyncAPI Documents that should be bundled will be resolved.</p> |
 | [options.xOrigin] | <code>boolean</code> | <p>Pass <code>true</code> to generate properties <code>x-origin</code> that will contain historical values of dereferenced <code>$ref</code>s.</p> |
 
 
