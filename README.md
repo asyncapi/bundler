@@ -12,6 +12,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   * [Dereference of the external references](#dereference-of-the-external-references)
+  * [Option `baseDir`](#option-basedir)
   * [Property `x-origin`](#property-x-origin)
   * [Movement of components to `components`](#movement-of-components-to-components)
   * [Code examples](#code-examples)
@@ -214,6 +215,25 @@ Regexes of internal references that MUST be `Reference Object`s:
 ```
 
 
+### Option `baseDir`
+
+Option `baseDir` represents the main working directory of the program, "root directory," relatively to which will be resolved all paths of AsyncAPI Documents passed to the `Bundler`.
+
+Starting from `Bundler` v0.5.0, option `baseDir` is reimplemented with changed logic, and `Bundler` accepts only **paths** of AsyncAPI Documents, which will be read with `readFileSync()` internally.
+
+In a nutshell, the process looks like this:
+
+- Paths of AsyncAPI Documents are passed as `'main.yaml'` | `'./main.yaml'` | `'../main.yaml'` | `['./main.yaml']` | `['main.yaml', 'audio.yaml']`, etc.
+
+- Path/paths are assured to have an `Array` type with `Array.from()` to make them iterable.
+
+- Working directory of the program is changed to the `baseDir` with `process.chdir()`.
+
+- **And only then** are the paths of the AsyncAPI Documents starting to be read from the array the are currently in, one by one, resolving paths and `$ref`s relatively to the `baseDir`.
+
+Take a look at `./example/bundle-cjs.cjs`, which demonstrates working with `baseDir` and `$ref`s of different levels of nesting.
+
+
 ### Property `x-origin`
 
 Property `x-origin` is used for origin tracing in `Bundler` and component naming in `Optimizer`.
@@ -302,10 +322,10 @@ main().catch(e => console.error(e));
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> | <p>Array of relative or absolute paths to AsyncAPI Documents that should be bundled.</p> |
+| files | <code>string</code> \| <code>Array.&lt;string&gt;</code> | <p>One or more relative/absolute paths to AsyncAPI Documents that should be bundled.</p> |
 | [options] | <code>Object</code> |  |
-| [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
-| [options.baseDir] | <code>string</code> | <p>Relative or absolute path to directory relative to which paths to AsyncAPI Documents that should be bundled will be resolved.</p> |
+| [options.base] | <code>string</code> | <p>One relative/absolute path to base object whose properties will be retained.</p> |
+| [options.baseDir] | <code>string</code> | <p>One relative/absolute path to directory relative to which paths to AsyncAPI Documents that should be bundled will be resolved.</p> |
 | [options.xOrigin] | <code>boolean</code> | <p>Pass <code>true</code> to generate properties <code>x-origin</code> that will contain historical values of dereferenced <code>$ref</code>s.</p> |
 
 

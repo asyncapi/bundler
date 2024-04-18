@@ -7,12 +7,12 @@ import type { AsyncAPIObject } from './spec-types';
 
 /**
  *
- * @param {string[]} files Array of relative or absolute paths to AsyncAPI
- * Documents that should be bundled.
+ * @param {string | string[]} files One or more relative/absolute paths to
+ * AsyncAPI Documents that should be bundled.
  * @param {Object} [options]
- * @param {string | object} [options.base] Base object whose properties will be
- * retained.
- * @param {string} [options.baseDir] Relative or absolute path to directory
+ * @param {string} [options.base] One relative/absolute path to base object whose
+ * properties will be retained.
+ * @param {string} [options.baseDir] One relative/absolute path to directory
  * relative to which paths to AsyncAPI Documents that should be bundled will be
  * resolved.
  * @param {boolean} [options.xOrigin] Pass `true` to generate properties
@@ -77,9 +77,19 @@ import type { AsyncAPIObject } from './spec-types';
  *```
  *
  */
-export default async function bundle(files: string[], options: any = {}) {
-  if (options.baseDir) {
+export default async function bundle(
+  files: string[] | string,
+  options: any = {}
+) {
+  // if one string was passed, convert it to an array
+  if (typeof files === 'string') {
+    files = Array.from(files.split(' '));
+  }
+
+  if (options.baseDir && typeof options.baseDir === 'string') {
     process.chdir(options.baseDir);
+  } else if (options.baseDir && Array.isArray(options.baseDir)) {
+    process.chdir(String(options.baseDir[0])); // guard against passing an array
   }
 
   const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
@@ -89,6 +99,11 @@ export default async function bundle(files: string[], options: any = {}) {
   const majorVersion = versionCheck(parsedJsons);
 
   if (typeof options.base !== 'undefined') {
+    if (typeof options.base === 'string') {
+      options.base = readFileSync(options.base, 'utf-8'); // eslint-disable-line
+    } else if (Array.isArray(options.base)) {
+      options.base = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
+    }
     options.base = toJS(options.base);
     await parse(options.base, majorVersion, options);
   }

@@ -1,17 +1,13 @@
 import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
 import { isExternalReference } from '../../src/util';
-import fs from 'fs';
 import path from 'path';
 
 describe('[integration testing] bundler should ', () => {
   test('should return bundled doc', async () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
     const response = await bundle(files, {
-      base: fs.readFileSync(
-        path.resolve(process.cwd(), './tests/base.yml'),
-        'utf-8'
-      ),
+      base: path.resolve(process.cwd(), './tests/base.yml'),
       noValidation: true,
     });
     expect(response).toBeDefined();
@@ -54,10 +50,7 @@ describe('[integration testing] bundler should ', () => {
     expect(
       await bundle(files, {
         xOrigin: true,
-        base: fs.readFileSync(
-          path.resolve(process.cwd(), './tests/base-option/base.yaml'),
-          'utf-8'
-        ),
+        base: path.resolve(process.cwd(), './tests/base-option/base.yaml'),
         noValidation: true,
       })
     ).resolves;

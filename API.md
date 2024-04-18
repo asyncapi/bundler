@@ -75,10 +75,10 @@ console.log(document.string()); // get JSON string
 
 | Param | Type | Description |
 | --- | --- | --- |
-| files | <code>Array.&lt;string&gt;</code> | <p>Array of relative or absolute paths to AsyncAPI Documents that should be bundled.</p> |
+| files | <code>string</code> \| <code>Array.&lt;string&gt;</code> | <p>One or more relative/absolute paths to AsyncAPI Documents that should be bundled.</p> |
 | [options] | <code>Object</code> |  |
-| [options.base] | <code>string</code> \| <code>object</code> | <p>Base object whose properties will be retained.</p> |
-| [options.baseDir] | <code>string</code> | <p>Relative or absolute path to directory relative to which paths to AsyncAPI Documents that should be bundled will be resolved.</p> |
+| [options.base] | <code>string</code> | <p>One relative/absolute path to base object whose properties will be retained.</p> |
+| [options.baseDir] | <code>string</code> | <p>One relative/absolute path to directory relative to which paths to AsyncAPI Documents that should be bundled will be resolved.</p> |
 | [options.xOrigin] | <code>boolean</code> | <p>Pass <code>true</code> to generate properties <code>x-origin</code> that will contain historical values of dereferenced <code>$ref</code>s.</p> |
 
 **Example**  

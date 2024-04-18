@@ -9,7 +9,7 @@ const { writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const document = await bundle(['social-media/comments-service/main.yaml'], {
+  const document = await bundle(['./social-media/comments-service/main.yaml', '../main.yaml'], {
     baseDir: 'example-data',
     xOrigin: true,
   });

@@ -13,7 +13,7 @@ const bundle = require('@asyncapi/bundler');
 async function main() {
   const filePaths = ['./camera.yml', './audio.yml'];
   const document = await bundle(filePaths, {
-    base: readFileSync('./base.yml', 'utf-8'),
+    base: ['./base.yml'],
     xOrigin: true,
   });
   if (document.yml()) {
