@@ -37,20 +37,26 @@ export class Document {
    * @return {Object}
    */
   json() {
-    return this._doc;
+    if (Object.keys(this._doc).length) {
+      return this._doc;
+    }
   }
 
   /**
    * @return {string}
    */
   yml() {
-    return yaml.dump(this._doc);
+    if (Object.keys(this._doc).length) {
+      return yaml.dump(this._doc);
+    }
   }
 
   /**
    * @return {string}
    */
   string() {
-    return JSON.stringify(this._doc);
+    if (Object.keys(this._doc).length) {
+      return JSON.stringify(this._doc);
+    }
   }
 }

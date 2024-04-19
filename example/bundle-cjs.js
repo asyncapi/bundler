@@ -11,10 +11,14 @@ const { readFileSync, writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+  const filePaths = ['./camera.yml', './audio.yml'];
+  const document = await bundle(filePaths, {
+    base: ['./base.yml'],
+    xOrigin: true,
   });
-  writeFileSync('asyncapi.yaml', document.yml());
+  if (document.yml()) {
+    writeFileSync('asyncapi.yaml', document.yml());
+  }
 }
 
 main().catch(e => console.error(e));

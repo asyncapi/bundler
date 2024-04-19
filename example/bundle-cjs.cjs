@@ -5,14 +5,17 @@
 
 'use strict';
 
-const { readFileSync, writeFileSync } = require('fs');
+const { writeFileSync } = require('fs');
 const bundle = require('@asyncapi/bundler');
 
 async function main() {
-  const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
-    referenceIntoComponents: true,
+  const document = await bundle(['./social-media/comments-service/main.yaml', '../main.yaml'], {
+    baseDir: 'example-data',
+    xOrigin: true,
   });
-  writeFileSync('asyncapi.yaml', document.yml());
+  if (document.yml()) {
+    writeFileSync('asyncapi.yaml', document.yml());
+  }
 }
 
 main().catch(e => console.error(e));

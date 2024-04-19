@@ -1,106 +1,120 @@
-import { toJS, resolve, versionCheck, resolveBaseFileDir } from './util';
+import { readFileSync } from 'fs';
+import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
-import { resolveV3Document } from './v3/parser';
 
 /**
  *
- * @param {string[]} files Array of stringified AsyncAPI documents in YAML
- * format, that are to be bundled (or array of filepaths, resolved and passed
- * via `Array.map()` and `fs.readFileSync`, which is the same, see `README.md`).
+ * @param {string | string[]} files One or more relative/absolute paths to
+ * AsyncAPI Documents that should be bundled.
  * @param {Object} [options]
- * @param {string | object} [options.base] Base object whose properties will be
- * retained.
- * @param {boolean} [options.referenceIntoComponents] Pass `true` to resolve
- * external references to components.
- * @param {string} [options.baseDir] Pass folder path to 
+ * @param {string} [options.base] One relative/absolute path to base object whose
+ * properties will be retained.
+ * @param {string} [options.baseDir] One relative/absolute path to directory
+ * relative to which paths to AsyncAPI Documents that should be bundled will be
+ * resolved.
+ * @param {boolean} [options.xOrigin] Pass `true` to generate properties
+ * `x-origin` that will contain historical values of dereferenced `$ref`s.
  *
  * @return {Document}
  *
  * @example
  *
- * **TypeScript**
- * ```ts
- * import { readFileSync, writeFileSync } from 'fs';
- * import bundle from '@asyncapi/bundler';
+ ***TypeScript**
+ *```ts
+ *import { writeFileSync } from 'fs';
+ *import bundle from '@asyncapi/bundler';
  *
- * async function main() {
- *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
- *   });
+ *async function main() {
+ *  const document = await bundle(['social-media/comments-service/main.yaml'], {
+ *    baseDir: 'example-data',
+ *    xOrigin: true,
+ *  });
  *
- *   console.log(document.yml()); // the complete bundled AsyncAPI document
- *   writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
- * }
+ *  console.log(document.yml()); // the complete bundled AsyncAPI document
+ *  writeFileSync('asyncapi.yaml', document.yml());  // the complete bundled AsyncAPI document
+ *}
  *
- * main().catch(e => console.error(e));
- * ```
+ *main().catch(e => console.error(e));
+ *```
  *
- * **JavaScript CJS module system**
- * ```js
- * 'use strict';
+ ***JavaScript CJS module system**
+ *```js
+ *'use strict';
  *
- * const { readFileSync, writeFileSync } = require('fs');
- * const bundle = require('@asyncapi/bundler');
+ *const { writeFileSync } = require('fs');
+ *const bundle = require('@asyncapi/bundler');
  *
- * async function main() {
- *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
- *   });
- *   writeFileSync('asyncapi.yaml', document.yml());
- * }
+ *async function main() {
+ *  const document = await bundle(['social-media/comments-service/main.yaml'], {
+ *    baseDir: 'example-data',
+ *    xOrigin: true,
+ *  });
+ *  writeFileSync('asyncapi.yaml', document.yml());
+ *}
  *
- * main().catch(e => console.error(e));
- * ```
+ *main().catch(e => console.error(e));
+ *```
  *
- * **JavaScript ESM module system**
- * ```js
- * 'use strict';
+ ***JavaScript ESM module system**
+ *```js
+ *'use strict';
  *
- * import { readFileSync, writeFileSync } from 'fs';
- * import bundle from '@asyncapi/bundler';
+ *import { writeFileSync } from 'fs';
+ *import bundle from '@asyncapi/bundler';
  *
- * async function main() {
- *   const document = await bundle([readFileSync('./main.yaml', 'utf-8')], {
- *     referenceIntoComponents: true,
- *   });
- *   writeFileSync('asyncapi.yaml', document.yml());
- * }
+ *async function main() {
+ *  const document = await bundle(['social-media/comments-service/main.yaml'], {
+ *    baseDir: 'example-data',
+ *    xOrigin: true,
+ *  });
+ *  writeFileSync('asyncapi.yaml', document.yml());
+ *}
  *
- * main().catch(e => console.error(e)); 
- * ```
+ *main().catch(e => console.error(e));
+ *```
  *
  */
-export default async function bundle(files: string[], options: any = {}) {
-  if (typeof options.base !== 'undefined') {
-    options.base = toJS(options.base);
-    await parse(options.base);
+export default async function bundle(
+  files: string[] | string,
+  options: any = {}
+) {
+  // if one string was passed, convert it to an array
+  if (typeof files === 'string') {
+    files = Array.from(files.split(' '));
   }
 
-  const parsedJsons = files.map(file => toJS(file)) as AsyncAPIObject[];
-
-  if (typeof options.baseDir !== 'undefined') {
-    parsedJsons.forEach(parsedJson => resolveBaseFileDir(parsedJson, options.baseDir));
+  if (options.baseDir && typeof options.baseDir === 'string') {
+    process.chdir(options.baseDir);
+  } else if (options.baseDir && Array.isArray(options.baseDir)) {
+    process.chdir(String(options.baseDir[0])); // guard against passing an array
   }
+
+  const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
+
+  const parsedJsons = readFiles.map(file => toJS(file)) as AsyncAPIObject[];
 
   const majorVersion = versionCheck(parsedJsons);
-  let resolvedJsons;
 
-  if (majorVersion === 3) {
-    resolvedJsons = await resolveV3Document(parsedJsons);
-  } else {
-    /**
-     * Bundle all external references for each file.
-     * @private
-     */
-    resolvedJsons = await resolve(parsedJsons, {
-      referenceIntoComponents: options.referenceIntoComponents,
-    });
+  if (typeof options.base !== 'undefined') {
+    if (typeof options.base === 'string') {
+      options.base = readFileSync(options.base, 'utf-8'); // eslint-disable-line
+    } else if (Array.isArray(options.base)) {
+      options.base = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
+    }
+    options.base = toJS(options.base);
+    await parse(options.base, majorVersion, options);
   }
 
-  return new Document(resolvedJsons as AsyncAPIObject[], options.base);
+  const resolvedJsons: AsyncAPIObject[] = await resolve(
+    parsedJsons,
+    majorVersion,
+    options
+  );
+
+  return new Document(resolvedJsons, options.base);
 }
 
 // 'module.exports' is added to maintain backward compatibility with Node.js

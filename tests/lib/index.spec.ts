@@ -1,45 +1,16 @@
 import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
-import { isExternalReference } from '../../src/parser';
-import fs from 'fs';
+import { isExternalReference } from '../../src/util';
 import path from 'path';
-
-import type { ReferenceObject } from '../../src/spec-types';
 
 describe('[integration testing] bundler should ', () => {
   test('should return bundled doc', async () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
-    const response = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-      ),
-      {
-        base: fs.readFileSync(
-          path.resolve(process.cwd(), './tests/base.yml'),
-          'utf-8'
-        ),
-        validate: false,
-      }
-    );
-
+    const response = await bundle(files, {
+      base: path.resolve(process.cwd(), './tests/base.yml'),
+      noValidation: true,
+    });
     expect(response).toBeDefined();
-  });
-
-  test('should bundle references into components', async () => {
-    const files = ['./tests/asyncapi.yaml'];
-    const doc = await bundle(
-      files.map(file =>
-        fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-      ),
-      {
-        referenceIntoComponents: true,
-      }
-    );
-
-    const asyncapiObject = doc.json();
-    const message = asyncapiObject.channels?.['user/signedup']?.subscribe?.message as ReferenceObject;
-
-    expect(message.$ref).toMatch('#/components/messages/UserSignedUp');
   });
 
   test('should not throw if value of `$ref` is not a string', async () => {
@@ -49,14 +20,10 @@ describe('[integration testing] bundler should ', () => {
     // did not throw exception during process of execution, which is the
     // objective of testing.
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-        ),
-        {
-          referenceIntoComponents: true,
-        }
-      )
+      await bundle(files, {
+        xOrigin: true,
+        noValidation: true,
+      })
     ).resolves;
   });
 
@@ -67,45 +34,45 @@ describe('[integration testing] bundler should ', () => {
     // did not throw exception during process of execution, which is the
     // objective of testing.
     expect(
-      await bundle(
-        files.map(file =>
-          fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')
-        ),
-        {
-          referenceIntoComponents: true,
-        }
-      )
+      await bundle(files, {
+        xOrigin: true,
+        noValidation: true,
+      })
     ).resolves;
   });
 
   test('should be able to bundle base file', async () => {
-    const files = ['./tests/base-option/lights.yaml', './tests/base-option/camera.yaml']
+    const files = [
+      './tests/base-option/lights.yaml',
+      './tests/base-option/camera.yaml',
+    ];
 
     expect(
-      await bundle(
-        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        { referenceIntoComponents: true, base: fs.readFileSync(path.resolve(process.cwd(), './tests/base-option/base.yaml'), 'utf-8') }
-      )
+      await bundle(files, {
+        xOrigin: true,
+        base: path.resolve(process.cwd(), './tests/base-option/base.yaml'),
+        noValidation: true,
+      })
     ).resolves;
-
-  })
+  });
 
   test('should be able to change the baseDir folder', async () => {
-    const files = ['./tests/specfiles/main.yaml']
+    const files = ['main.yaml'];
     expect(
-      await bundle(
-        files.map(file => fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8')),
-        {baseDir: './tests/specfiles'}
-      )
-    ).resolves
-  })
+      await bundle(files, { baseDir: './tests/specfiles', noValidation: true })
+    ).resolves;
+  });
 });
 
 describe('[unit testing]', () => {
   test('`isExternalReference()` should return `true` on external reference', () => {
-    expect(isExternalReference('./components/messages/UserSignedUp')).toBeTruthy();
+    expect(
+      isExternalReference('./components/messages/UserSignedUp')
+    ).toBeTruthy();
   });
   test('`isExternalReference()` should return `false` on local reference', () => {
-    expect(isExternalReference('#/components/messages/UserSignedUp')).toBeFalsy();
+    expect(
+      isExternalReference('#/components/messages/UserSignedUp')
+    ).toBeFalsy();
   });
 });
