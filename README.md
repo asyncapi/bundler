@@ -202,11 +202,11 @@ There are no internal references that MUST be `Reference Object`s.
 Regexes of internal references that MUST be `Reference Object`s:
 
 ```
-/#\/channels\/,*\/servers/
+/#\/channels\/.*\/servers/
 /#\/operations\/.*\/channel/
 /#\/operations\/.*\/messages/
 /#\/operations\/.*\/reply\/channel/
-/#\/operations\/,*\/reply\/messages/
+/#\/operations\/.*\/reply\/messages/
 /#\/components\/channels\/.*\/servers/
 /#\/components\/operations\/.*\/channel/
 /#\/components\/operations\/.*\/messages/
