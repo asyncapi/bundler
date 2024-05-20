@@ -48,11 +48,11 @@ export async function parse(
           excludedPathMatcher: (path: string): any => {
             return (
               // prettier-ignore
-              (/#\/channels\/,*\/servers/).test(path) ||
+              (/#\/channels\/.*\/servers/).test(path) ||
               (/#\/operations\/.*\/channel/).test(path) ||
               (/#\/operations\/.*\/messages/).test(path) ||
               (/#\/operations\/.*\/reply\/channel/).test(path) ||
-              (/#\/operations\/,*\/reply\/messages/).test(path) ||
+              (/#\/operations\/.*\/reply\/messages/).test(path) ||
               (/#\/components\/channels\/.*\/servers/).test(path) ||
               (/#\/components\/operations\/.*\/channel/).test(path) ||
               (/#\/components\/operations\/.*\/messages/).test(path) ||
