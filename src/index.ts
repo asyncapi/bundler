@@ -91,9 +91,9 @@ export default async function bundle(
   }
 
   if (options.baseDir && typeof options.baseDir === 'string') {
-    process.chdir(path.resolve(originDir, options.baseDir));
+    process.chdir(options.baseDir);
   } else if (options.baseDir && Array.isArray(options.baseDir)) {
-    process.chdir(path.resolve(originDir, String(options.baseDir[0]))); // guard against passing an array
+    process.chdir(String(options.baseDir[0])); // guard against passing an array
   }
 
   const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
