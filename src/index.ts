@@ -7,7 +7,7 @@ import { parse } from './parser';
 import type { AsyncAPIObject } from './spec-types';
 
 // remember the directory where execution of the program started
-export const originDir: string = String(process.env.PWD);
+export const originDir = String(process.env.PWD);
 
 /**
  *
