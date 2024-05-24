@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import path from 'path';
 import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
 import { parse } from './parser';
