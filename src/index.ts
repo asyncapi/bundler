@@ -5,6 +5,9 @@ import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
 
+// remember the directory where execution of the program started
+const originDir = String(process.cwd());
+
 /**
  *
  * @param {string | string[]} files One or more relative/absolute paths to
@@ -81,9 +84,6 @@ export default async function bundle(
   files: string[] | string,
   options: any = {}
 ) {
-  // remember the directory where execution of the program started
-  const originDir = String(process.env.PWD);
-
   // if one string was passed, convert it to an array
   if (typeof files === 'string') {
     files = Array.from(files.split(' '));
