@@ -119,7 +119,9 @@ export default async function bundle(
   );
 
   // return to the starting directory before finishing the execution
-  process.chdir(originDir);
+  if (options.baseDir) {
+    process.chdir(originDir);    
+  }
 
   return new Document(resolvedJsons, options.base);
 }
