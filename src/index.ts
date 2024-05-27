@@ -1,9 +1,13 @@
 import { readFileSync } from 'fs';
+import path from 'path';
 import { toJS, resolve, versionCheck } from './util';
 import { Document } from './document';
 import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
+
+// remember the directory where execution of the program started
+const originDir = String(process.cwd());
 
 /**
  *
@@ -87,9 +91,9 @@ export default async function bundle(
   }
 
   if (options.baseDir && typeof options.baseDir === 'string') {
-    process.chdir(options.baseDir);
+    process.chdir(path.resolve(originDir, options.baseDir));
   } else if (options.baseDir && Array.isArray(options.baseDir)) {
-    process.chdir(String(options.baseDir[0])); // guard against passing an array
+    process.chdir(path.resolve(originDir, String(options.baseDir[0]))); // guard against passing an array
   }
 
   const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
@@ -113,6 +117,11 @@ export default async function bundle(
     majorVersion,
     options
   );
+
+  // return to the starting directory before finishing the execution
+  if (options.baseDir) {
+    process.chdir(originDir);
+  }
 
   return new Document(resolvedJsons, options.base);
 }
