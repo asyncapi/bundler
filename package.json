@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.5.4",
-    "@asyncapi/parser": "^3.0.15",
+    "@asyncapi/parser": "^3.0.16",
     "@types/json-schema": "^7.0.11",
     "js-yaml": "^4.1.0",
     "jsonpath-plus": "^6.0.1",
