@@ -2,8 +2,15 @@ import { describe, expect, test } from '@jest/globals';
 import bundle from '../../src';
 import { isExternalReference } from '../../src/util';
 import path from 'path';
+import { JSONParserError } from '@apidevtools/json-schema-ref-parser';
 
 describe('[integration testing] bundler should ', () => {
+  // as the working directory might get changed, make sure to reset it
+  let workingDirectory: string = process.cwd();
+  afterEach(() => {
+    process.chdir(workingDirectory);
+  });
+
   test('should return bundled doc', async () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
     const response = await bundle(files, {
@@ -39,6 +46,21 @@ describe('[integration testing] bundler should ', () => {
         noValidation: true,
       })
     ).resolves;
+  });
+
+  test('should throw if external `$ref` cannot be resolved', async () => {
+    const files = ['wrong-external-ref.yaml'];
+
+    await expect(
+      async () => {
+        await bundle(files, {
+          xOrigin: true,
+          base: 'base.yml',
+          baseDir: path.resolve(process.cwd(), './tests'),
+          noValidation: true,
+        })
+      }
+    ).rejects.toThrow(JSONParserError);
   });
 
   test('should be able to bundle base file', async () => {
