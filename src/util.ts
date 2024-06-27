@@ -54,12 +54,10 @@ export const resolve = async (
 ) => {
   const docs = [];
 
-  try {
-    for (const asyncapiDocument of asyncapiDocuments) {
-      await parse(asyncapiDocument, specVersion, options);
-      docs.push(asyncapiDocument);
-    }
-  } catch (e) {} // eslint-disable-line
+  for (const asyncapiDocument of asyncapiDocuments) {
+    await parse(asyncapiDocument, specVersion, options);
+    docs.push(asyncapiDocument);
+  }
 
   return docs;
 };
