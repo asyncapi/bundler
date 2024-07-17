@@ -4,6 +4,8 @@ import { Parser } from '@asyncapi/parser';
 import type { ParserOptions as $RefParserOptions } from '@apidevtools/json-schema-ref-parser';
 import type { AsyncAPIObject } from 'spec-types';
 
+import path from 'path';
+
 const parser = new Parser();
 
 let RefParserOptions: $RefParserOptions;
@@ -12,12 +14,14 @@ let RefParserOptions: $RefParserOptions;
  * Function fully dereferences the provided AsyncAPI Document.
  * @param {Object[]} JSONSchema
  * @param {number} specVersion
+ * @param {string} filePath
  * @param {Object} options
  * @private
  */
 export async function parse(
   JSONSchema: AsyncAPIObject,
   specVersion: number,
+  filePath: string,
   options: any = {}
 ) {
   let validationResult: any[] = [];
@@ -74,6 +78,12 @@ export async function parse(
       );
   }
 
+  let previousDir: string | null = null;
+  if (!options.baseDir) {
+    previousDir = process.cwd();
+    process.chdir(path.dirname(filePath));
+  }
+
   const dereferencedJSONSchema = await $RefParser.dereference(
     JSONSchema,
     RefParserOptions
@@ -102,6 +112,10 @@ export async function parse(
       validationResult.filter(element => element.severity === 0)
     );
     throw new Error();
+  }
+
+  if (previousDir) {
+    process.chdir(previousDir);
   }
 
   return dereferencedJSONSchema;

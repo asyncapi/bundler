@@ -4,6 +4,11 @@ import { ParserError } from './errors';
 
 import type { AsyncAPIObject } from './spec-types';
 
+export interface AsyncAPIDocumentFromFileSystem {
+  asyncapi: AsyncAPIObject;
+  path: string;
+}
+
 /**
  * @private
  */
@@ -48,15 +53,15 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
  * @private
  */
 export const resolve = async (
-  asyncapiDocuments: AsyncAPIObject[],
+  asyncapiDocuments: AsyncAPIDocumentFromFileSystem[],
   specVersion: number,
   options: any
 ) => {
   const docs = [];
 
   for (const asyncapiDocument of asyncapiDocuments) {
-    await parse(asyncapiDocument, specVersion, options);
-    docs.push(asyncapiDocument);
+    await parse(asyncapiDocument.asyncapi, specVersion, asyncapiDocument.path, options);
+    docs.push(asyncapiDocument.asyncapi);
   }
 
   return docs;

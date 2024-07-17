@@ -5,6 +5,7 @@ import { Document } from './document';
 import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
+import type { AsyncAPIDocumentFromFileSystem } from './util';
 
 // remember the directory where execution of the program started
 const originDir = String(process.cwd());
@@ -96,20 +97,28 @@ export default async function bundle(
     process.chdir(path.resolve(originDir, String(options.baseDir[0]))); // guard against passing an array
   }
 
-  const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
+  const parsedJsons = files.map((file): AsyncAPIDocumentFromFileSystem => {
+    const readFile = readFileSync(file, 'utf-8'); // eslint-disable-line
+    return {asyncapi: toJS(readFile) as AsyncAPIObject, path: file};
+  });
 
-  const parsedJsons = readFiles.map(file => toJS(file)) as AsyncAPIObject[];
+  const majorVersion = versionCheck(parsedJsons.map((parsedJson) => parsedJson.asyncapi));
 
-  const majorVersion = versionCheck(parsedJsons);
-
+  let parsedBaseFile: AsyncAPIObject | undefined;
   if (typeof options.base !== 'undefined') {
+    let baseFile = '';
+    let baseFilePath = '';
+
     if (typeof options.base === 'string') {
-      options.base = readFileSync(options.base, 'utf-8'); // eslint-disable-line
+      baseFilePath = options.base;
+      baseFile = readFileSync(baseFilePath, 'utf-8'); // eslint-disable-line
     } else if (Array.isArray(options.base)) {
-      options.base = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
+      baseFilePath = String(options.base[0]);
+      baseFile = readFileSync(baseFilePath, 'utf-8'); // eslint-disable-line
     }
-    options.base = toJS(options.base);
-    await parse(options.base, majorVersion, options);
+
+    parsedBaseFile = toJS(baseFile) as AsyncAPIObject;
+    await parse(parsedBaseFile, majorVersion, path.dirname(baseFilePath), options);
   }
 
   const resolvedJsons: AsyncAPIObject[] = await resolve(
@@ -123,7 +132,7 @@ export default async function bundle(
     process.chdir(originDir);
   }
 
-  return new Document(resolvedJsons, options.base);
+  return new Document(resolvedJsons, parsedBaseFile);
 }
 
 // 'module.exports' is added to maintain backward compatibility with Node.js
