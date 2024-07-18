@@ -3,6 +3,7 @@ import { parse } from './parser';
 import { ParserError } from './errors';
 
 import type { AsyncAPIObject } from './spec-types';
+import type { BundlerOptions } from './index';
 
 /**
  * @private
@@ -39,20 +40,12 @@ export const toJS = (asyncapiYAMLorJSON: string | object) => {
   return yaml.load(asyncapiYAMLorJSON);
 };
 
-/**
- *
- * @param {Object} asyncapiDocuments
- * @param {Object} options
- * @param {boolean} options.xOrigin
- * @returns {Array<Object>}
- * @private
- */
-export const resolve = async (
+export async function resolve(
   asyncapiDocuments: AsyncAPIObject[],
   specVersion: number,
-  options: any
-) => {
-  const docs = [];
+  options: BundlerOptions
+) {
+  const docs: AsyncAPIObject[] = [];
 
   for (const asyncapiDocument of asyncapiDocuments) {
     await parse(asyncapiDocument, specVersion, options);
@@ -60,7 +53,7 @@ export const resolve = async (
   }
 
   return docs;
-};
+}
 
 /**
  *
