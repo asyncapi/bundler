@@ -23,12 +23,12 @@ export class Document {
    * @param {Object[]} parsedJSONList
    * @param {Object} base
    */
-  constructor(parsedJSONList: AsyncAPIObject[], base: AsyncAPIObject) {
+  constructor(parsedJSONList: AsyncAPIObject[], base?: AsyncAPIObject) {
     for (const resolvedJSON of parsedJSONList) {
       this._doc = merge(this._doc, resolvedJSON);
     }
 
-    if (typeof base !== 'undefined') {
+    if (base) {
       this._doc = merge(this._doc, base);
     }
   }

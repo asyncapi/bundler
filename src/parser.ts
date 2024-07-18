@@ -3,6 +3,7 @@ import { Parser } from '@asyncapi/parser';
 
 import type { ParserOptions as $RefParserOptions } from '@apidevtools/json-schema-ref-parser';
 import type { AsyncAPIObject } from 'spec-types';
+import type { BundlerOptions } from 'index';
 
 const parser = new Parser();
 
@@ -18,7 +19,7 @@ let RefParserOptions: $RefParserOptions;
 export async function parse(
   JSONSchema: AsyncAPIObject,
   specVersion: number,
-  options: any = {}
+  options: BundlerOptions = {}
 ) {
   let validationResult: any[] = [];
 
@@ -82,6 +83,7 @@ export async function parse(
   // Option `noValidation: true` is used by the testing system, which
   // intentionally feeds Bundler wrong AsyncAPI Documents, thus it is not
   // documented.
+  // @ts-ignore
   if (!options.noValidation) {
     validationResult = await parser.validate(
       JSON.parse(JSON.stringify(dereferencedJSONSchema))

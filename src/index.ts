@@ -9,19 +9,28 @@ import type { AsyncAPIObject } from './spec-types';
 // remember the directory where execution of the program started
 const originDir = String(process.cwd());
 
+export declare interface BundlerOptions {
+  /**
+   * One relative/absolute path to base object whose properties will be retained.
+   */
+  base?: string;
+  /**
+   * One relative/absolute path to directory relative to which paths to AsyncAPI
+   * Documents that should be bundled will be resolved.
+   */
+  baseDir?: string;
+  /**
+   * Pass `true` to generate properties `x-origin` that will contain historical
+   * values of dereferenced `$ref`s.
+   */
+  xOrigin?: boolean;
+}
+
 /**
  *
  * @param {string | string[]} files One or more relative/absolute paths to
  * AsyncAPI Documents that should be bundled.
  * @param {Object} [options]
- * @param {string} [options.base] One relative/absolute path to base object whose
- * properties will be retained.
- * @param {string} [options.baseDir] One relative/absolute path to directory
- * relative to which paths to AsyncAPI Documents that should be bundled will be
- * resolved.
- * @param {boolean} [options.xOrigin] Pass `true` to generate properties
- * `x-origin` that will contain historical values of dereferenced `$ref`s.
- *
  * @return {Document}
  *
  * @example
@@ -83,7 +92,7 @@ const originDir = String(process.cwd());
  */
 export default async function bundle(
   files: string[] | string,
-  options: any = {}
+  options: BundlerOptions & Record<string, unknown> = {}
 ) {
   // if one string was passed, convert it to an array
   if (typeof files === 'string') {
@@ -102,14 +111,17 @@ export default async function bundle(
 
   const majorVersion = versionCheck(parsedJsons);
 
-  if (typeof options.base !== 'undefined') {
+  let parsedBaseFile: AsyncAPIObject | undefined;
+  if (options.base) {
+    let baseFile = '';
+
     if (typeof options.base === 'string') {
-      options.base = readFileSync(options.base, 'utf-8'); // eslint-disable-line
+      baseFile = readFileSync(options.base, 'utf-8'); // eslint-disable-line
     } else if (Array.isArray(options.base)) {
-      options.base = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
+      baseFile = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
     }
-    options.base = toJS(options.base);
-    await parse(options.base, majorVersion, options);
+    parsedBaseFile = toJS(baseFile) as AsyncAPIObject;
+    await parse(parsedBaseFile, majorVersion, options);
   }
 
   const resolvedJsons: AsyncAPIObject[] = await resolve(
@@ -123,7 +135,7 @@ export default async function bundle(
     process.chdir(originDir);
   }
 
-  return new Document(resolvedJsons, options.base);
+  return new Document(resolvedJsons, parsedBaseFile);
 }
 
 // 'module.exports' is added to maintain backward compatibility with Node.js
