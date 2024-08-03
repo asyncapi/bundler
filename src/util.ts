@@ -79,14 +79,19 @@ export function isExternalReference(ref: string): boolean {
  * @private
  */
 export const resolve = async (files: string | string[], options: any) => {
-  const parsedJsons: any = [];
+  const parsedJsons: AsyncAPIObject[] = [];
 
   for (const file of files) {
     const prevDir = process.cwd();
 
     let filePath: any = file.split(path.sep);
-    filePath.pop();
-    filePath = filePath.join(path.sep);
+
+    if (filePath.length > 1) {
+      filePath.pop();
+      filePath = filePath.join(path.sep);
+    } else {
+      filePath = './';
+    }
 
     let readFile: any = readFileSync(file, 'utf-8'); // eslint-disable-line
     readFile = toJS(readFile);
@@ -104,7 +109,7 @@ export const resolve = async (files: string | string[], options: any) => {
     }
   }
 
-  return parsedJsons as AsyncAPIObject[];
+  return parsedJsons;
 };
 
 export async function mergeIntoBaseFile(
