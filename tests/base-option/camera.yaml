@@ -7,4 +7,4 @@ channels:
   camera/click:
     subcribe:
       message:
-        $ref: './tests/base-option/messages.yaml#/messages/clickPhoto'
+        $ref: './messages.yaml#/messages/clickPhoto'

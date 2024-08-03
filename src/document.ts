@@ -1,4 +1,3 @@
-import { merge } from 'lodash';
 import yaml from 'js-yaml';
 
 import type { AsyncAPIObject } from './spec-types';
@@ -8,7 +7,7 @@ import type { AsyncAPIObject } from './spec-types';
  *
  * @example
  *
- * const document = new Document(parsedJSONList, base);
+ * const document = new Document(bundledDocument);
  *
  * console.log(document.json()); // get JSON object
  * console.log(document.yml()); // get YAML string
@@ -16,21 +15,13 @@ import type { AsyncAPIObject } from './spec-types';
  */
 
 export class Document {
-  private _doc: AsyncAPIObject = {} as any;
+  private _doc: AsyncAPIObject;
 
   /**
-   *
-   * @param {Object[]} parsedJSONList
-   * @param {Object} base
+   * @param {Object} AsyncAPIObject
    */
-  constructor(parsedJSONList: AsyncAPIObject[], base: AsyncAPIObject) {
-    for (const resolvedJSON of parsedJSONList) {
-      this._doc = merge(this._doc, resolvedJSON);
-    }
-
-    if (typeof base !== 'undefined') {
-      this._doc = merge(this._doc, base);
-    }
+  constructor(bundledDocument: AsyncAPIObject) {
+    this._doc = bundledDocument;
   }
 
   /**
