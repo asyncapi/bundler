@@ -79,7 +79,7 @@ export function isExternalReference(ref: string): boolean {
  * @private
  */
 export const resolve = async (files: string | string[], options: any) => {
-  const parsedJsons: AsyncAPIObject[] = [];
+  const parsedJsons: any = [];
 
   for (const file of files) {
     const prevDir = process.cwd();
@@ -92,7 +92,7 @@ export const resolve = async (files: string | string[], options: any) => {
     readFile = toJS(readFile);
 
     if (filePath) {
-      process.chdir(filePath);
+      process.chdir(path.resolve(prevDir, filePath));
     }
 
     readFile = await parse(readFile, getSpecVersion(readFile), options);
