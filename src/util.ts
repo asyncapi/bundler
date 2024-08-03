@@ -84,14 +84,9 @@ export const resolve = async (files: string | string[], options: any) => {
   for (const file of files) {
     const prevDir = process.cwd();
 
-    let filePath: any = file.split(path.sep);
-
-    if (filePath.length > 1) {
-      filePath.pop();
-      filePath = filePath.join(path.sep);
-    } else {
-      filePath = './';
-    }
+    let filePath: any = file.split('/');
+    filePath.pop();
+    filePath = filePath.join('/');
 
     let readFile: any = readFileSync(file, 'utf-8'); // eslint-disable-line
     readFile = toJS(readFile);
