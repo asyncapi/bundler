@@ -5,13 +5,6 @@
 <dd></dd>
 </dl>
 
-## Members
-
-<dl>
-<dt><a href="#resolve">resolve</a> ⇒ <code>boolean</code></dt>
-<dd></dd>
-</dl>
-
 ## Functions
 
 <dl>
@@ -25,23 +18,22 @@
 **Kind**: global class  
 
 * [Document](#Document)
-    * [new Document(parsedJSONList, base)](#new_Document_new)
+    * [new Document(AsyncAPIObject)](#new_Document_new)
     * [.json()](#Document+json) ⇒ <code>Object</code>
     * [.yml()](#Document+yml) ⇒ <code>string</code>
     * [.string()](#Document+string) ⇒ <code>string</code>
 
 <a name="new_Document_new"></a>
 
-### new Document(parsedJSONList, base)
+### new Document(AsyncAPIObject)
 
 | Param | Type |
 | --- | --- |
-| parsedJSONList | <code>Array.&lt;Object&gt;</code> | 
-| base | <code>Object</code> | 
+| AsyncAPIObject | <code>Object</code> | 
 
 **Example**  
 ```js
-const document = new Document(parsedJSONList, base);
+const document = new Document(bundledDocument);
 
 console.log(document.json()); // get JSON object
 console.log(document.yml()); // get YAML string
@@ -59,15 +51,6 @@ console.log(document.string()); // get JSON string
 
 ### document.string() ⇒ <code>string</code>
 **Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="resolve"></a>
-
-## resolve ⇒ <code>boolean</code>
-**Kind**: global variable  
-
-| Param | Type |
-| --- | --- |
-| asyncapiDocument | <code>AsyncAPIObject</code> | 
-
 <a name="bundle"></a>
 
 ## bundle(files, [options]) ⇒ [<code>Document</code>](#Document)

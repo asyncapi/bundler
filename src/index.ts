@@ -1,8 +1,14 @@
-import { readFileSync } from 'fs';
 import path from 'path';
-import { toJS, resolve, versionCheck } from './util';
+import { merge } from 'lodash';
+import { Parser } from '@asyncapi/parser';
+import {
+  resolve,
+  versionCheck,
+  orderPropsAccToAsyncAPISpec,
+  mergeIntoBaseFile,
+} from './util';
+
 import { Document } from './document';
-import { parse } from './parser';
 
 import type { AsyncAPIObject } from './spec-types';
 
@@ -85,6 +91,11 @@ export default async function bundle(
   files: string[] | string,
   options: any = {}
 ) {
+  let bundledDocument: any = {};
+  let validationResult: any = [];
+
+  const parser = new Parser();
+
   // if one string was passed, convert it to an array
   if (typeof files === 'string') {
     files = Array.from(files.split(' '));
@@ -96,34 +107,58 @@ export default async function bundle(
     process.chdir(path.resolve(originDir, String(options.baseDir[0]))); // guard against passing an array
   }
 
-  const readFiles = files.map(file => readFileSync(file, 'utf-8')); // eslint-disable-line
-
-  const parsedJsons = readFiles.map(file => toJS(file)) as AsyncAPIObject[];
+  const parsedJsons: AsyncAPIObject[] = await resolve(files, options);
 
   const majorVersion = versionCheck(parsedJsons);
 
-  if (typeof options.base !== 'undefined') {
-    if (typeof options.base === 'string') {
-      options.base = readFileSync(options.base, 'utf-8'); // eslint-disable-line
-    } else if (Array.isArray(options.base)) {
-      options.base = readFileSync(String(options.base[0]), 'utf-8'); // eslint-disable-line
-    }
-    options.base = toJS(options.base);
-    await parse(options.base, majorVersion, options);
+  for (const parsedJson of parsedJsons) {
+    bundledDocument = merge(bundledDocument, parsedJson);
   }
 
-  const resolvedJsons: AsyncAPIObject[] = await resolve(
-    parsedJsons,
-    majorVersion,
-    options
-  );
+  if (options.base) {
+    bundledDocument = await mergeIntoBaseFile(
+      options.base,
+      bundledDocument,
+      majorVersion,
+      options
+    );
+  }
+
+  // Purely decorative stuff, just to bring the order of the AsyncAPI Document's
+  // properties into a familiar form.
+  bundledDocument = orderPropsAccToAsyncAPISpec(bundledDocument);
+
+  // Option `noValidation: true` is used by the testing system, which
+  // intentionally feeds Bundler wrong AsyncAPI Documents, thus it is not
+  // documented.
+  if (!options.noValidation) {
+    validationResult = await parser.validate(
+      JSON.parse(JSON.stringify(bundledDocument))
+    );
+  }
+
+  // If Parser's `validate()` function returns a non-empty array with at least
+  // one `severity: 0`, that means there was at least one error during
+  // validation, not a `warning: 1`, `info: 2`, or `hint: 3`. Thus, array's
+  // elements with `severity: 0` are outputted as a list of remarks, and the
+  // program throws.
+  if (
+    validationResult.length !== 0 &&
+    validationResult.map((element: any) => element.severity).includes(0)
+  ) {
+    console.log(
+      'Validation of the resulting AsyncAPI Document failed.\nList of remarks:\n',
+      validationResult.filter((element: any) => element.severity === 0)
+    );
+    throw new Error();
+  }
 
   // return to the starting directory before finishing the execution
   if (options.baseDir) {
     process.chdir(originDir);
   }
 
-  return new Document(resolvedJsons, options.base);
+  return new Document(bundledDocument as AsyncAPIObject);
 }
 
 // 'module.exports' is added to maintain backward compatibility with Node.js
