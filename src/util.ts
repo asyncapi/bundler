@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import { merge } from 'lodash';
+import structuredClone from '@ungap/structured-clone';
 import { parse } from './parser';
 import { ParserError } from './errors';
 
