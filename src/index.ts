@@ -11,6 +11,7 @@ import {
 import { Document } from './document';
 
 import type { AsyncAPIObject, Options } from './types';
+export type { AsyncAPIObject, Options } from './types';
 
 // remember the directory where execution of the program started
 const originDir = String(process.cwd());
