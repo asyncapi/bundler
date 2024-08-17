@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 
-import type { AsyncAPIObject } from './types';
+import type { AsyncAPIObject } from './spec-types';
 
 /**
  * @class

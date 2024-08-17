@@ -1,6 +1,5 @@
 import path from 'path';
 import { merge } from 'lodash';
-import { Parser } from '@asyncapi/parser';
 import {
   resolve,
   versionCheck,
@@ -10,8 +9,8 @@ import {
 
 import { Document } from './document';
 
-import type { AsyncAPIObject, Options } from './types';
-export type { AsyncAPIObject, Options } from './types';
+import type { AsyncAPIObject, Options } from './spec-types';
+export type { AsyncAPIObject, Options } from './spec-types';
 
 // remember the directory where execution of the program started
 const originDir = String(process.cwd());
@@ -93,9 +92,6 @@ export default async function bundle(
   options: Options = {}
 ) {
   let bundledDocument: any = {};
-  let validationResult: any = [];
-
-  const parser = new Parser();
 
   // if one string was passed, convert it to an array
   if (typeof files === 'string') {
@@ -128,31 +124,6 @@ export default async function bundle(
   // Purely decorative stuff, just to bring the order of the AsyncAPI Document's
   // properties into a familiar form.
   bundledDocument = orderPropsAccToAsyncAPISpec(bundledDocument);
-
-  // Option `noValidation: true` is used by the testing system, which
-  // intentionally feeds Bundler wrong AsyncAPI Documents, thus it is not
-  // documented.
-  if (!options.noValidation) {
-    validationResult = await parser.validate(
-      JSON.parse(JSON.stringify(bundledDocument))
-    );
-  }
-
-  // If Parser's `validate()` function returns a non-empty array with at least
-  // one `severity: 0`, that means there was at least one error during
-  // validation, not a `warning: 1`, `info: 2`, or `hint: 3`. Thus, array's
-  // elements with `severity: 0` are outputted as a list of remarks, and the
-  // program throws.
-  if (
-    validationResult.length !== 0 &&
-    validationResult.map((element: any) => element.severity).includes(0)
-  ) {
-    console.log(
-      'Validation of the resulting AsyncAPI Document failed.\nList of remarks:\n',
-      validationResult.filter((element: any) => element.severity === 0)
-    );
-    throw new Error();
-  }
 
   // return to the starting directory before finishing the execution
   if (options.baseDir) {

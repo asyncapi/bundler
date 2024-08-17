@@ -6,7 +6,7 @@ import structuredClone from '@ungap/structured-clone';
 import { parse } from './parser';
 import { ParserError } from './errors';
 
-import type { AsyncAPIObject, Options } from './types';
+import type { AsyncAPIObject, Options } from './spec-types';
 
 /**
  * @private

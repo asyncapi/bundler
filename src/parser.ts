@@ -1,7 +1,7 @@
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 
 import type { ParserOptions as $RefParserOptions } from '@apidevtools/json-schema-ref-parser';
-import type { AsyncAPIObject, Options as BundlerOptions } from './types';
+import type { AsyncAPIObject, Options as BundlerOptions } from './spec-types';
 
 let RefParserOptions: $RefParserOptions;
 
