@@ -1,7 +1,7 @@
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 
 import type { ParserOptions as $RefParserOptions } from '@apidevtools/json-schema-ref-parser';
-import type { AsyncAPIObject } from 'spec-types';
+import type { AsyncAPIObject, Options as BundlerOptions } from './types';
 
 let RefParserOptions: $RefParserOptions;
 
@@ -15,7 +15,7 @@ let RefParserOptions: $RefParserOptions;
 export async function parse(
   JSONSchema: AsyncAPIObject,
   specVersion: number,
-  options: any = {}
+  options: BundlerOptions = {}
 ) {
   /* eslint-disable indent */
   // It is assumed that there will be major Spec versions 4, 5 and on.

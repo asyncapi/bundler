@@ -10,7 +10,7 @@ import {
 
 import { Document } from './document';
 
-import type { AsyncAPIObject } from './spec-types';
+import type { AsyncAPIObject, Options } from './types';
 
 // remember the directory where execution of the program started
 const originDir = String(process.cwd());
@@ -89,7 +89,7 @@ const originDir = String(process.cwd());
  */
 export default async function bundle(
   files: string[] | string,
-  options: any = {}
+  options: Options = {}
 ) {
   let bundledDocument: any = {};
   let validationResult: any = [];
