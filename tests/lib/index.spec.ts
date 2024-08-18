@@ -84,7 +84,7 @@ describe('[integration testing] bundler should ', () => {
   });
 
   test('should be able to bundle specification files in subdirectories and merge them into the base file', async () => {
-    const object = {
+    const resultingObject = {
       asyncapi: '3.0.0',
       info: {
         title: 'Streetlights MQTT API',
@@ -306,7 +306,85 @@ describe('[integration testing] bundler should ', () => {
       noValidation: true,
     });
 
-    expect(document.json()).toMatchObject(object);
+    expect(document.json()).toMatchObject(resultingObject);
+  });
+
+  test('should be able to bundle v2 YAML, leaving `x-` properties intact and sorting root props according to AsyncAPI Spec', async () => {
+    const resultingObject = {
+      asyncapi: '2.0.0',
+      'x-company-attr-1': 'attr-value-1',
+      'x-company-attr-2': 'attr-value-2',
+      id: 'urn:rpc:example:server',
+      defaultContentType: 'application/json',
+      info: {
+        title: 'RPC Server Example',
+        description: 'This example demonstrates how to define an RPC server.',
+        version: '1.0.0',
+        'x-company-version': '1.2.3',
+      },
+      tags: [
+        {
+          name: 'my-tag',
+          description: 'tag description',
+        },
+      ],
+      servers: {
+        production: {
+          url: 'rabbitmq.example.org',
+          protocol: 'amqp',
+        },
+      },
+      channels: {
+        '{queue}': {
+          parameters: {
+            queue: {
+              schema: {
+                type: 'string',
+                pattern: '^amq\\\\.gen\\\\-.+$',
+              },
+            },
+          },
+          bindings: {
+            amqp: {
+              is: 'queue',
+              queue: {
+                exclusive: true,
+              },
+            },
+          },
+          subscribe: {
+            operationId: 'sendSumResult',
+            bindings: {
+              amqp: {
+                ack: true,
+              },
+            },
+            message: {
+              correlationId: {
+                location: '$message.header#/correlation_id',
+              },
+              payload: {
+                type: 'object',
+                properties: {
+                  result: {
+                    type: 'number',
+                    examples: [7],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const files = 'tests/gh-185.yaml';
+
+    const document = await bundle(files, {
+      noValidation: true,
+    });
+
+    expect(document.json()).toMatchObject(resultingObject);
   });
 });
 

@@ -140,7 +140,7 @@ export async function mergeIntoBaseFile(
 }
 
 // Purely decorative stuff, just to bring the order of the AsyncAPI Document's
-// properties into a familiar form.
+// root properties into a familiar form.
 export function orderPropsAccToAsyncAPISpec(
   inputAsyncAPIObject: any
 ): AsyncAPIObject {
@@ -148,6 +148,8 @@ export function orderPropsAccToAsyncAPISpec(
     'asyncapi',
     'id',
     'info',
+    'tags', // v2-specific root property
+    'externalDocs', // v2-specific root property
     'defaultContentType',
     'servers',
     'channels',
@@ -156,7 +158,21 @@ export function orderPropsAccToAsyncAPISpec(
   ];
 
   const outputAsyncAPIObject: any = {};
+  let i = 0;
 
+  // Making the best guess where root properties that are not specified in the
+  // AsyncAPI Specification were located in the original AsyncAPI Document
+  // (inserting them between known root properties.)
+  // DISCLAIMER: The original order is not guaranteed, it is only an
+  // extrapolating guess.
+  for (const key of Object.keys(inputAsyncAPIObject)) {
+    if (!orderOfPropsAccToAsyncAPISpec.includes(key)) {
+      orderOfPropsAccToAsyncAPISpec.splice(i, 0, key);
+    }
+    i++;
+  }
+
+  // Merging of known AsyncAPI Object root properties in a familiar order.
   for (const prop of orderOfPropsAccToAsyncAPISpec) {
     if (inputAsyncAPIObject[`${prop}`]) {
       outputAsyncAPIObject[`${prop}`] = structuredClone(
