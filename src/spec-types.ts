@@ -450,3 +450,9 @@ export type SpecificationExtension<T = any> = T;
 export interface ReferenceObject {
   $ref: string;
 }
+
+export interface Options {
+  base?: string;
+  baseDir?: string;
+  xOrigin?: boolean;
+}

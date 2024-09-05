@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
-    "baseUrl": "./src",
+    "outDir": "lib",
+    "baseUrl": "./",
     "target": "ES2017",
-    "types": [
-      "node", "jest"
-    ],
-    "lib": [
-      "esnext",
-    ],
+    "types": ["node", "jest"],
+    "lib": ["esnext"],
     "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,9 +16,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src/**/*.ts"]
 }

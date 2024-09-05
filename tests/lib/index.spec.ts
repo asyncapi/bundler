@@ -15,7 +15,6 @@ describe('[integration testing] bundler should ', () => {
     const files = ['./tests/camera.yml', './tests/audio.yml'];
     const response = await bundle(files, {
       base: path.resolve(process.cwd(), './tests/base.yml'),
-      noValidation: true,
     });
     expect(response).toBeDefined();
   });
@@ -29,7 +28,6 @@ describe('[integration testing] bundler should ', () => {
     expect(
       await bundle(files, {
         xOrigin: true,
-        noValidation: true,
       })
     ).resolves;
   });
@@ -43,7 +41,6 @@ describe('[integration testing] bundler should ', () => {
     expect(
       await bundle(files, {
         xOrigin: true,
-        noValidation: true,
       })
     ).resolves;
   });
@@ -56,7 +53,6 @@ describe('[integration testing] bundler should ', () => {
         xOrigin: true,
         base: 'base.yml',
         baseDir: path.resolve(process.cwd(), './tests'),
-        noValidation: true,
       });
     }).rejects.toThrow(JSONParserError);
   });
@@ -71,7 +67,6 @@ describe('[integration testing] bundler should ', () => {
       await bundle(files, {
         base: path.resolve(process.cwd(), './tests/base-option/base.yaml'),
         xOrigin: true,
-        noValidation: true,
       })
     ).resolves;
   });
@@ -79,7 +74,7 @@ describe('[integration testing] bundler should ', () => {
   test('should be able to change the baseDir folder', async () => {
     const files = ['main.yaml'];
     expect(
-      await bundle(files, { baseDir: './tests/specfiles', noValidation: true })
+      await bundle(files, { baseDir: './tests/specfiles' })
     ).resolves;
   });
 
@@ -303,7 +298,6 @@ describe('[integration testing] bundler should ', () => {
     const document = await bundle(files, {
       base: 'asyncapi/index.yaml',
       baseDir: path.resolve(process.cwd(), 'tests/nested-dirs-mixed'),
-      noValidation: true,
     });
 
     expect(document.json()).toMatchObject(resultingObject);
@@ -380,9 +374,7 @@ describe('[integration testing] bundler should ', () => {
 
     const files = 'tests/gh-185.yaml';
 
-    const document = await bundle(files, {
-      noValidation: true,
-    });
+    const document = await bundle(files);
 
     expect(document.json()).toMatchObject(resultingObject);
   });

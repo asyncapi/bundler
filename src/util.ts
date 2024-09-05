@@ -6,7 +6,7 @@ import structuredClone from '@ungap/structured-clone';
 import { parse } from './parser';
 import { ParserError } from './errors';
 
-import type { AsyncAPIObject } from './spec-types';
+import type { AsyncAPIObject, Options } from './spec-types';
 
 /**
  * @private
@@ -79,7 +79,7 @@ export function isExternalReference(ref: string): boolean {
  * @returns {Array<Object>}
  * @private
  */
-export const resolve = async (files: string | string[], options: any) => {
+export const resolve = async (files: string | string[], options: Options) => {
   const parsedJsons: AsyncAPIObject[] = [];
 
   for (const file of files) {
@@ -112,7 +112,7 @@ export async function mergeIntoBaseFile(
   baseFilePath: string | string[],
   bundledDocument: AsyncAPIObject,
   majorVersion: number,
-  options: any = {}
+  options: Options = {}
 ) {
   // The base file's path must be an array of exactly one element to be properly
   // iterated in `resolve()`. Even if it was passed to the main script as a
