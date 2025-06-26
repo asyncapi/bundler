@@ -18,12 +18,18 @@ export async function parse(
   options: BundlerOptions = {}
 ) {
   /* eslint-disable indent */
+
+  let circular: boolean | 'ignore' = false;
+  if (options.dereference === 'ignore-circular') {
+    circular = 'ignore';
+  }
+
   // It is assumed that there will be major Spec versions 4, 5 and on.
   switch (specVersion) {
     case 2:
       RefParserOptions = {
         dereference: {
-          circular: false,
+          circular,
           // prettier-ignore
           excludedPathMatcher: (path: string): any => { // eslint-disable-line
             return;
@@ -39,7 +45,7 @@ export async function parse(
     case 3:
       RefParserOptions = {
         dereference: {
-          circular: false,
+          circular,
           excludedPathMatcher: (path: string): any => {
             return (
               // prettier-ignore
@@ -69,5 +75,9 @@ export async function parse(
       );
   }
 
-  return await $RefParser.dereference(JSONSchema, RefParserOptions) as AsyncAPIObject;
+  let bundled = JSONSchema;
+  if (circular !== false) {
+    bundled = await $RefParser.bundle(bundled, RefParserOptions);
+  }
+  return await $RefParser.dereference(bundled, RefParserOptions) as AsyncAPIObject;
 }
