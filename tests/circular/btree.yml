@@ -1,0 +1,6 @@
+$schema: "https://json-schema.org/draft-07/schema#"
+title: BTree
+type: object
+properties:
+  root:
+    $ref: "./node.yml"
