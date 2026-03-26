@@ -4,22 +4,21 @@
 [![PR testing - if Node project](https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml/badge.svg)](https://github.com/asyncapi/bundler/actions/workflows/if-nodejs-pr-testing.yml)
 [![npm](https://img.shields.io/npm/dw/@asyncapi/bundler)](https://www.npmjs.com/package/@asyncapi/bundler)
 
-<!-- toc is generated with GitHub Actions do not remove toc markers  -->
-
-<!-- toc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
-  * [Dereference of the external references](#dereference-of-the-external-references)
-  * [Option `baseDir`](#option-basedir)
-  * [Property `x-origin`](#property-x-origin)
-  * [Movement of components to `components`](#movement-of-components-to-components)
-  * [Code examples](#code-examples)
+  - [Dereference of the external references](#dereference-of-the-external-references)
+  - [Option `baseDir`](#option-basedir)
+  - [Property `x-origin`](#property-x-origin)
+  - [Movement of components to `components`](#movement-of-components-to-components)
+  - [Code examples](#code-examples)
 - [bundle(files, [options])](#bundlefiles-options)
 - [Contributors](#contributors)
 
-<!-- tocstop -->
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Overview
 An official library that lets you bundle/dereference or merge into one your AsyncAPI Documents.
