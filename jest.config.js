@@ -10,14 +10,25 @@ module.exports = {
 
   preset: 'ts-jest',
   testEnvironment: 'node',
+  extensionsToTreatAsEsm: ['.ts'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.test.json',
+        useESM: true,
+      },
+    ],
+    '^.+\\.jsx?$': [
+      'ts-jest',
+      {
+        useESM: true,
       },
     ],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@apidevtools|json-schema-ref-parser))',
+  ],
 
   // Test spec file resolution pattern
   // Matches parent folder `tests` or `__tests__` and filename
