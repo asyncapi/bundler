@@ -41,7 +41,7 @@
     "/lib"
   ],
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^14.2.1",
+    "@apidevtools/json-schema-ref-parser": "^15.3.6",
     "@types/json-schema": "^7.0.11",
     "@ungap/structured-clone": "^1.2.0",
     "js-yaml": "^4.1.0",
