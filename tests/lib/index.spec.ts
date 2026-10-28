@@ -378,6 +378,88 @@ describe('[integration testing] bundler should ', () => {
 
     expect(document.json()).toMatchObject(resultingObject);
   });
+
+  test('should throw if circular `$ref` exists and derefrence for circular references is disabled for single file', async () => {
+    const files = ['circular.yml'];
+
+    await expect(async () => {
+      await bundle(files, {
+        xOrigin: true,
+        baseDir: path.resolve(process.cwd(), './tests'),
+        dereference: 'strict',
+      })
+    }).rejects.toThrow(Error);
+  });
+
+  test('should not throw if circular `$ref` exists and derefrence for circular references is ignored for single file', async () => {
+    const files = ['circular.yml'];
+
+    const response = await bundle(files, {
+      xOrigin: true,
+      baseDir: path.resolve(process.cwd(), './tests'),
+      dereference: 'ignore-circular',
+    });
+    expect(response).resolves;
+  });
+
+  test('should throw if circular `$ref` exists and derefrence for circular references is disabled for multiple files', async () => {
+    const files = ['asyncapi.yaml'];
+
+    await expect(async () => {
+      await bundle(files, {
+        xOrigin: true,
+        baseDir: path.resolve(process.cwd(), './tests/circular'),
+        dereference: 'strict',
+      })
+    }).rejects.toThrow(Error);
+  });
+
+  test('should not throw if circular `$ref` exists and derefrence for circular references is ignored for multiple files', async () => {
+    const resultingObject = {
+      asyncapi: '3.0.0',
+      info: {
+        title: 'Test model',
+        version: '1.0.0',
+      },
+      components: {
+        messages: {
+          btree: {
+            title: 'BTree',
+            payload: {
+              $schema: 'https://json-schema.org/draft-07/schema#',
+              title: 'BTree',
+              type: 'object',
+              properties: {
+                root: {
+                  $schema: 'https://json-schema.org/draft-07/schema#',
+                  title: 'Node',
+                  type: 'object',
+                  properties: {
+                    left: {
+                      $ref: '#/components/messages/btree/payload/properties/root'
+                    },
+                    right: {
+                      $ref: '#/components/messages/btree/payload/properties/root'
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const files = ['asyncapi.yaml'];
+
+    const response =      await bundle(files, {
+      xOrigin: true,
+      baseDir: path.resolve(process.cwd(), './tests/circular'),
+      dereference: 'ignore-circular',
+    });
+
+    expect(response.json()).toMatchObject(resultingObject);
+  });
 });
 
 describe('[unit testing]', () => {

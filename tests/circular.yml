@@ -1,0 +1,20 @@
+asyncapi: 3.0.0
+info:
+  title: Test model
+  version: 1.0.0
+components:
+  messages:
+    btree:
+      payload:
+        type: object
+        properties:
+          root:
+            $ref: '#/components/messages/node'
+    node:
+      payload:
+        type: object
+        properties:
+          left:
+            $ref: '#/components/messages/node'
+          right:
+            $ref: '#/components/messages/node'

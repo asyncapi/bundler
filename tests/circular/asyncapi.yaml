@@ -1,0 +1,10 @@
+asyncapi: 3.0.0
+info:
+  title: Test model
+  version: 1.0.0
+components:
+  messages:
+    btree:
+      title: BTree
+      payload:
+        $ref: "./btree.yml"
