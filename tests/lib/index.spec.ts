@@ -378,6 +378,41 @@ describe('[integration testing] bundler should ', () => {
 
     expect(document.json()).toMatchObject(resultingObject);
   });
+
+  test('should rewrite nested external `$ref`s in v3 reference object slots to internal pointers', async () => {
+    const document = await bundle('tests/gh-237/asyncapi.yaml');
+
+    expect(document.json()).toEqual({
+      asyncapi: '3.1.0',
+      info: {
+        title: 'AsyncAPI Bundle Common Document Reproduction',
+        version: '1.0.0',
+      },
+      servers: {
+        nats: {
+          host: 'localhost:4222',
+          protocol: 'nats',
+        },
+      },
+      channels: {
+        events: {
+          address: 'example.events',
+          servers: [
+            {
+              $ref: '#/servers/nats',
+            },
+          ],
+          messages: {
+            event: {
+              payload: {
+                type: 'object',
+              },
+            },
+          },
+        },
+      },
+    });
+  });
 });
 
 describe('[unit testing]', () => {
