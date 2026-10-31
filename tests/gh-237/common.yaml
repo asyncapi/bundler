@@ -1,0 +1,4 @@
+servers:
+  nats:
+    host: localhost:4222
+    protocol: nats

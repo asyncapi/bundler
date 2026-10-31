@@ -1,0 +1,10 @@
+asyncapi: 3.1.0
+info:
+  title: AsyncAPI Bundle Common Document Reproduction
+  version: 1.0.0
+servers:
+  nats:
+    $ref: './common.yaml#/servers/nats'
+channels:
+  events:
+    $ref: './events.yaml#/channels/events'

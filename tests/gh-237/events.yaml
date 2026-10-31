@@ -1,0 +1,9 @@
+channels:
+  events:
+    address: example.events
+    servers:
+      - $ref: './common.yaml#/servers/nats'
+    messages:
+      event:
+        payload:
+          type: object
