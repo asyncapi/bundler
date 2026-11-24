@@ -455,4 +455,5 @@ export interface Options {
   base?: string;
   baseDir?: string;
   xOrigin?: boolean;
+  dereference?: string;
 }
