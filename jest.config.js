@@ -26,10 +26,6 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(@apidevtools|json-schema-ref-parser))',
-  ],
-
   // Test spec file resolution pattern
   // Matches parent folder `tests` or `__tests__` and filename
   // should contain `test` or `spec`.
